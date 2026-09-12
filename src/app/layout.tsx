@@ -24,6 +24,15 @@ const plusJakarta = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: 'Bagja Iskandar Jamil',
   description: 'Portfolio of Bagja Iskandar Jamil — Software Engineering, Distributed Systems & Applied AI.',
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: '32x32' },
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/brand/bij-logo-structure.svg', type: 'image/svg+xml' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
+  },
 };
 
 export default function RootLayout({

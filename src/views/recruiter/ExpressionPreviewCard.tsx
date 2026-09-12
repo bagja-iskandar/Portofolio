@@ -4,7 +4,6 @@ import React, { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import BijLogo from '@/components/brand/BijLogo';
 
 export interface ExpressionPreviewCardProps {
   className?: string;
@@ -320,8 +319,8 @@ export const ExpressionPreviewCard = React.memo(function ExpressionPreviewCard({
       <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="flex flex-col max-w-2xl">
           {/* Tag: Terracotta / Ochre accent in editorial Cormorant Garamond */}
-          <div className="font-serif italic text-xs sm:text-sm font-medium text-terracotta tracking-wider mb-2 flex items-center gap-2.5">
-            <BijLogo variant="expression" size="xs" withContainer />
+          <div className="font-serif italic text-xs sm:text-sm font-medium text-terracotta tracking-wider mb-1.5 flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-terracotta/70 animate-pulse" />
             <span>{tag}</span>
           </div>
 
