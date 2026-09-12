@@ -71,11 +71,11 @@ export default function StructureHeader({ onBackToThreshold }: StructureHeaderPr
         </h1>
       </div>
 
-      {/* ================= 3. REPOSITIONED BALANCED BIO & TELEMETRY SECTION ================= */}
+      {/* ================= 3. BALANCED 7:5 GRID (BIO & ARCHITECTURAL DOSSIER) ================= */}
       <div className="mt-8 pt-8 border-t border-cream/10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Left / Dominant Column (Col span 8): Status Beacon + Bio + Telemetry Chips */}
-          <div className="lg:col-span-8 flex flex-col space-y-5">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+          {/* Left Column (Col span 7): Status Beacon + High-Readability Bio Narrative */}
+          <div className="lg:col-span-7 flex flex-col justify-center space-y-6">
             {/* Availability Status Beacon */}
             <div className="self-start inline-flex items-center gap-2.5 px-3 py-1 rounded-full bg-ochre/10 border border-ochre/30 text-ochre font-mono text-[11px] tracking-wider uppercase">
               <span className="relative flex h-2 w-2">
@@ -85,64 +85,50 @@ export default function StructureHeader({ onBackToThreshold }: StructureHeaderPr
               <span>SYSTEM STATUS: AVAILABLE FOR HIRE [WEST JAVA / REMOTE READY]</span>
             </div>
 
-            {/* Executive Bio Narrative */}
-            <p className="font-sans text-sm sm:text-base md:text-[17px] text-[#A8A29A] leading-relaxed font-normal">
+            {/* Executive Bio Narrative with Editorial Hierarchy */}
+            <p className="font-sans text-sm sm:text-base md:text-[18px] text-[#A8A29A] leading-[1.8] font-normal">
               Fresh Graduate in Computer Science (<span className="text-cream font-medium">Informatika</span>) from Universitas Jenderal Achmad Yani (GPA 3.37) with proven engineering execution across cross-border fintech frontend (<span className="text-ochre font-medium">Swap-On ID-JP</span>), enterprise CMS refactoring (<span className="text-cream font-medium">Diskominfo Kota Cimahi</span>), and peer-reviewed Brain–Computer Interface research published at <span className="text-ochre font-medium">IEEE ICIC 2025</span>.
             </p>
-
-            {/* Quick Telemetry Chips */}
-            <div className="flex flex-wrap gap-2 pt-1 font-mono text-[11px] text-cream/70">
-              <span className="px-2.5 py-1 rounded bg-[#181614] border border-cream/10 flex items-center gap-1.5">
-                <span className="text-ochre font-semibold">ACAD:</span> UNJANI CS &apos;25 // GPA 3.37
-              </span>
-              <span className="px-2.5 py-1 rounded bg-[#181614] border border-cream/10 flex items-center gap-1.5">
-                <span className="text-ochre font-semibold">STACK:</span> Next.js 15 &bull; TypeScript &bull; Vue &bull; KMP
-              </span>
-              <span className="px-2.5 py-1 rounded bg-[#181614] border border-ochre/30 text-ochre bg-ochre/[0.04] flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-ochre shrink-0" />
-                IEEE ICIC 2025 First Author
-              </span>
-              <span className="px-2.5 py-1 rounded bg-[#181614] border border-cream/10 flex items-center gap-1.5">
-                <span className="text-ochre font-semibold">LOC:</span> Bandung Barat // Remote Ready
-              </span>
-            </div>
           </div>
 
-          {/* Right Column (Col span 4): High-Signal Fast-Scan Dossier Telemetry Card */}
-          <div className="lg:col-span-4 p-5 rounded-lg bg-[#141210] border border-cream/10 flex flex-col justify-between space-y-4 font-mono text-xs">
-            <div className="flex items-center justify-between border-b border-cream/10 pb-3">
-              <div className="flex items-center gap-2 text-cream/60 uppercase tracking-wider text-[11px]">
+          {/* Right Column (Col span 5): Architectural Engineering Dossier Panel */}
+          <div className="lg:col-span-5 relative overflow-hidden group p-6 rounded-lg bg-[#100E0C] border border-cream/15 transition-colors hover:border-cream/25 flex flex-col justify-between">
+            {/* Dossier Header */}
+            <div className="flex items-center justify-between border-b border-cream/10 pb-3 mb-1">
+              <div className="flex items-center gap-2 text-cream/60 font-mono text-[11px] uppercase tracking-wider">
                 <Terminal className="w-3.5 h-3.5 text-ochre" />
                 <span>CANDIDATE DOSSIER</span>
               </div>
-              <div className="flex items-center gap-1.5 text-ochre text-[10px] uppercase tracking-widest font-semibold">
+              <div className="flex items-center gap-1.5 text-ochre font-mono text-[10px] uppercase tracking-widest font-semibold">
                 <ShieldCheck className="w-3.5 h-3.5" />
                 <span>AUTHENTIC</span>
               </div>
             </div>
 
-            <div className="space-y-2.5 text-[11px]">
-              <div className="flex items-center justify-between">
-                <span className="text-cream/50 uppercase">Primary Focus:</span>
-                <span className="text-cream font-medium">Software Engineering</span>
+            {/* Dossier Data Rows */}
+            <div className="divide-y divide-cream/5">
+              <div className="flex items-center justify-between py-2.5 border-b border-cream/5 group/row hover:bg-cream/[0.02] hover:px-2 transition-all duration-300">
+                <span className="font-mono text-[11px] text-cream/40 uppercase tracking-wider">Primary Focus</span>
+                <span className="font-mono text-[11px] text-cream/90 font-medium text-right">Software Engineering</span>
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-cream/50 uppercase">Systems Depth:</span>
-                <span className="text-cream font-medium">Full-Stack &amp; Research</span>
+              <div className="flex items-center justify-between py-2.5 border-b border-cream/5 group/row hover:bg-cream/[0.02] hover:px-2 transition-all duration-300">
+                <span className="font-mono text-[11px] text-cream/40 uppercase tracking-wider">Systems Depth</span>
+                <span className="font-mono text-[11px] text-cream/90 font-medium text-right">Full-Stack &amp; Research</span>
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-cream/50 uppercase">Timezone:</span>
-                <span className="text-cream font-medium">WIB (UTC+7) // Global Ready</span>
+              <div className="flex items-center justify-between py-2.5 border-b border-cream/5 group/row hover:bg-cream/[0.02] hover:px-2 transition-all duration-300">
+                <span className="font-mono text-[11px] text-cream/40 uppercase tracking-wider">Timezone</span>
+                <span className="font-mono text-[11px] text-cream/90 font-medium text-right">WIB (UTC+7) // Global Ready</span>
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-cream/50 uppercase">Data Integrity:</span>
-                <span className="text-ochre font-medium">100% Resume Conforming</span>
+              <div className="flex items-center justify-between py-2.5 border-b border-cream/5 group/row hover:bg-cream/[0.02] hover:px-2 transition-all duration-300">
+                <span className="font-mono text-[11px] text-cream/40 uppercase tracking-wider">Data Integrity</span>
+                <span className="font-mono text-[11px] text-ochre font-medium text-right">100% Resume Conforming</span>
               </div>
             </div>
 
-            <div className="pt-2 border-t border-cream/5 flex items-center justify-between text-[10px] text-cream/40 uppercase tracking-wider">
+            {/* Dossier Footer */}
+            <div className="pt-3 mt-1 flex items-center justify-between text-[10px] text-cream/40 uppercase tracking-wider font-mono">
               <span>SECURITY PROTOCOL</span>
-              <span className="text-cream/60">§39 CANONICAL</span>
+              <span className="text-cream/70 font-semibold">§39 CANONICAL</span>
             </div>
           </div>
         </div>
