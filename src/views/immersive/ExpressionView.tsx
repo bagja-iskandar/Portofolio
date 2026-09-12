@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { ArrowLeft, ArrowRight, Compass, Layers } from 'lucide-react';
 import gsap from 'gsap';
 import { VariableFontCursorProximity } from '@/components/ui/variable-font-cursor-proximity';
+import BijLogo from '@/components/brand/BijLogo';
 
 interface ExpressionViewProps {
   onBackToThreshold?: () => void;
@@ -327,7 +328,10 @@ export default function ExpressionView({
         </button>
 
         {/* Telemetry & Modality Switcher */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3.5">
+          <Link href="/" title="Return to Gateway" className="group shrink-0">
+            <BijLogo variant="expression" size={24} withContainer />
+          </Link>
           <span className="hidden md:inline-block font-mono text-[11px] tracking-[0.2em] text-charcoal/50 uppercase">
             MODALITY 02 // EXPRESSION
           </span>

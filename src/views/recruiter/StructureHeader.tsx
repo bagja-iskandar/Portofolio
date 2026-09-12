@@ -3,6 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { ArrowLeft, ArrowRight, ShieldCheck, Terminal } from 'lucide-react';
+import BijLogo from '@/components/brand/BijLogo';
 
 interface StructureHeaderProps {
   onBackToThreshold?: () => void;
@@ -14,11 +15,16 @@ export default function StructureHeader({ onBackToThreshold }: StructureHeaderPr
       {/* ================= 1. TOP TELEMETRY & NAV SWITCHER ================= */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-8 text-xs font-mono text-[#8A847C]">
         {/* Top telemetry breadcrumbs */}
-        <div className="flex items-center gap-2 tracking-[0.18em] uppercase text-cream/70">
-          <span className="text-ochre font-semibold">STRUCTURE://</span>
-          <span className="text-cream">THE SHORT READ</span>
-          <span className="text-cream/30">//</span>
-          <span className="text-cream/50">HIGH-SIGNAL RECRUITER DIGEST</span>
+        <div className="flex items-center gap-3 tracking-[0.18em] uppercase text-cream/70">
+          <Link href="/" title="Return to Gateway" className="group shrink-0">
+            <BijLogo variant="structure" size={24} withContainer />
+          </Link>
+          <div className="flex items-center gap-2">
+            <span className="text-ochre font-semibold">STRUCTURE://</span>
+            <span className="text-cream">THE SHORT READ</span>
+            <span className="text-cream/30">//</span>
+            <span className="text-cream/50">HIGH-SIGNAL RECRUITER DIGEST</span>
+          </div>
         </div>
 
         {/* Switcher Controls */}

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import gsap from 'gsap';
 import { VariableFontCursorProximity } from '@/components/ui/variable-font-cursor-proximity';
+import BijLogo from '@/components/brand/BijLogo';
 
 export interface ThresholdGatewayProps {
   onSelectLens?: (lens: 'structure' | 'expression') => void;
@@ -925,6 +926,16 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
       className="relative w-screen h-screen overflow-hidden select-none cursor-default"
       aria-label="Duality Threshold — Choose your narrative lens: Structure or Expression"
     >
+      {/* ================= FLOATING THRESHOLD BRAND EMBLEM ================= */}
+      <div className="absolute top-6 sm:top-8 left-1/2 -translate-x-1/2 z-30 pointer-events-auto flex items-center justify-center">
+        <BijLogo
+          variant="threshold"
+          size={36}
+          withContainer
+          className="shadow-xl shadow-black/40 hover:scale-105 transition-transform duration-300 cursor-pointer"
+        />
+      </div>
+
       {/* ================= CANVAS BACKGROUNDS ================= */}
 
       {/* BASE IVORY CANVAS (Bottom-Right) */}
