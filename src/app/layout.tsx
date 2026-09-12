@@ -22,8 +22,8 @@ const plusJakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: 'DUALITY — Threshold',
-  description: 'Duality — A Canvas in Motion. Choose your narrative lens: Structure or Expression.',
+  title: 'Bagja Iskandar Jamil',
+  description: 'Portfolio of Bagja Iskandar Jamil — Software Engineering, Distributed Systems & Applied AI.',
 };
 
 export default function RootLayout({
