@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { ArrowLeft, ArrowRight, Compass, Layers } from 'lucide-react';
 import gsap from 'gsap';
 import { VariableFontCursorProximity } from '@/components/ui/variable-font-cursor-proximity';
+import { setDynamicFavicon } from '@/lib/favicon';
 
 interface ExpressionViewProps {
   onBackToThreshold?: () => void;
@@ -275,6 +276,11 @@ export default function ExpressionView({
     }, containerRef);
 
     return () => ctx.revert();
+  }, []);
+
+  // Ensure browser tab favicon dynamically matches the Expression Ivory/Terracotta palette
+  useEffect(() => {
+    setDynamicFavicon('expression');
   }, []);
 
   return (

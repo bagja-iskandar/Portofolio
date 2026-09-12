@@ -14,6 +14,7 @@ import SystemsCapabilities from './SystemsCapabilities';
 import DirectActionFooter from './DirectActionFooter';
 import type { StructureViewData } from '@/types/duality';
 import { STRUCTURE_VIEW_DATA } from '@/data';
+import { setDynamicFavicon } from '@/lib/favicon';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -39,6 +40,11 @@ export default function RecruiterStructureView({
     contentRef: mainRef,
     enabled: true,
   });
+
+  // Ensure browser tab favicon matches the Structure Obsidian/Ochre palette
+  useEffect(() => {
+    setDynamicFavicon('structure');
+  }, []);
 
   const handleReturn = useCallback(() => {
     if (isExitingRef.current) return;

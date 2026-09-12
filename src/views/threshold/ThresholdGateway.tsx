@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import gsap from 'gsap';
 import { VariableFontCursorProximity } from '@/components/ui/variable-font-cursor-proximity';
+import { setDynamicFavicon } from '@/lib/favicon';
 
 export interface ThresholdGatewayProps {
   onSelectLens?: (lens: 'structure' | 'expression') => void;
@@ -916,6 +917,11 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
       }
     };
   }, [handlePointerLeave, tick, updateCachedGeometry]);
+
+  // Ensure browser tab favicon dynamically matches the Threshold Duality seam palette
+  useEffect(() => {
+    setDynamicFavicon('threshold');
+  }, []);
 
   return (
     <main

@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import ThresholdGateway from '@/views/threshold/ThresholdGateway';
 import RecruiterStructureView from '@/views/recruiter/RecruiterStructureView';
 import ExpressionView from '@/views/immersive/ExpressionView';
+import { setDynamicFavicon } from '@/lib/favicon';
 
 function HomeContent() {
   const searchParams = useSearchParams();
@@ -30,6 +31,11 @@ function HomeContent() {
       setCurrentLens('threshold');
     }
   }, [queryLens]);
+
+  // Synchronize browser tab favicon dynamically with active modality
+  useEffect(() => {
+    setDynamicFavicon(currentLens);
+  }, [currentLens]);
 
   // Transition handler when user selects a lens
   const handleSelectLens = useCallback(
