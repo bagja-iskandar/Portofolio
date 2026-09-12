@@ -1,0 +1,234 @@
+'use client';
+
+import React from 'react';
+import {
+  SiKotlin,
+  SiAndroid,
+  SiSwift,
+  SiStripe,
+  SiGradle,
+  SiNuxt,
+  SiVuedotjs,
+  SiVite,
+  SiTypescript,
+  SiJavascript,
+  SiNextdotjs,
+  SiReact,
+  SiNestjs,
+  SiSupabase,
+  SiPostgresql,
+  SiPrisma,
+  SiPytorch,
+  SiPython,
+  SiDocker,
+  SiPinia,
+  SiBootstrap,
+  SiZod,
+  SiGit,
+  SiTailwindcss,
+  SiHtml5,
+  SiCss,
+  SiPhp,
+  SiMysql,
+  SiLaravel,
+  SiCodeigniter,
+  SiJupyter,
+  SiScikitlearn,
+  SiNumpy,
+  SiPandas,
+  SiScipy,
+  SiOpenjdk,
+  SiJetpackcompose,
+  SiWebgl,
+  SiReactquery,
+  SiMinio,
+  SiCanvas,
+  SiAndroidstudio,
+  SiRedis,
+  SiGithubcopilot,
+  SiGooglechrome,
+} from 'react-icons/si';
+import { Code2, Cpu, Layers, Network, Activity, GitBranch } from 'lucide-react';
+
+export interface TechItem {
+  id?: string;
+  name: string;
+  category?: string;
+  isCore?: boolean;
+}
+
+export interface TechLogoBadgeProps {
+  tech: string | TechItem;
+  className?: string;
+  size?: 'sm' | 'md' | 'lg';
+  tooltipSide?: 'top' | 'bottom';
+  showTooltip?: boolean;
+  isCore?: boolean;
+}
+
+type TechVisual =
+  | { type: 'icon'; Icon: React.ComponentType<{ className?: string }> }
+  | { type: 'text'; text: string };
+
+function getTechVisual(rawTech: string): TechVisual {
+  const t = rawTech.toLowerCase().trim();
+
+  // 1. Explicit Monogram / Letter Badges (Resolves duplicate brand icons & provides crisp monograms for scientific paradigms)
+  if (t.includes('kmp') || (t.includes('kotlin') && t.includes('multiplatform'))) {
+    if (t.includes('compose')) return { type: 'icon', Icon: SiJetpackcompose };
+    return { type: 'text', text: 'KMP' };
+  }
+  if (t.includes('wpt') || t.includes('wavelet')) return { type: 'text', text: 'WPT' };
+  if (t.includes('lda') || t.includes('discriminant')) return { type: 'text', text: 'LDA' };
+  if (t.includes('srs') || t.includes('requirements specification')) return { type: 'text', text: 'SRS' };
+  if (t.includes('uml')) return { type: 'text', text: 'UML' };
+  if (t.includes('rbac')) return { type: 'text', text: 'RBAC' };
+  if (t.includes('sdlc') || t.includes('life cycle') || t.includes('lifecycle')) return { type: 'text', text: 'SDLC' };
+  if (t.includes('rest')) return { type: 'text', text: 'REST' };
+  if (t.includes('antigravity')) return { type: 'text', text: 'AG' };
+  if (t.includes('pedagogy') || (t.includes('artificial intelligence') && !t.includes('python'))) return { type: 'text', text: 'AI' };
+  if (t.includes('gcn') || (t.includes('graph') && t.includes('convolutional'))) return { type: 'text', text: 'GCN' };
+  if (t.includes('ssm') || (t.includes('state space') && t.includes('mamba'))) return { type: 'text', text: 'SSM' };
+
+  // 2. High-Specificity External SDKs, Tools & Frameworks (Checked before generic language / substring matchers)
+  if (t.includes('bootstrap')) return { type: 'icon', Icon: SiBootstrap };
+  if (t.includes('copilot')) return { type: 'icon', Icon: SiGithubcopilot };
+  if (t.includes('devtools') || t.includes('chrome')) return { type: 'icon', Icon: SiGooglechrome };
+  if (t.includes('stripe')) return { type: 'icon', Icon: SiStripe };
+  if (t.includes('gradle')) return { type: 'icon', Icon: SiGradle };
+  if (t.includes('android studio')) return { type: 'icon', Icon: SiAndroidstudio };
+  if (t.includes('compose')) return { type: 'icon', Icon: SiJetpackcompose };
+  if (t.includes('canvas') || t.includes('bitmap')) return { type: 'icon', Icon: SiCanvas };
+
+  // 3. Web & Backend Frameworks (Checked before JavaScript/TypeScript/SQL substring matchers)
+  if (t.includes('next')) return { type: 'icon', Icon: SiNextdotjs };
+  if (t.includes('nuxt')) return { type: 'icon', Icon: SiNuxt };
+  if (t.includes('vue')) return { type: 'icon', Icon: SiVuedotjs };
+  if (t.includes('pinia')) return { type: 'icon', Icon: SiPinia };
+  if (t.includes('vite')) return { type: 'icon', Icon: SiVite };
+  if (t.includes('tanstack') || t.includes('react query') || t.includes('query')) return { type: 'icon', Icon: SiReactquery };
+  if (t.includes('react')) return { type: 'icon', Icon: SiReact };
+  if (t.includes('nest')) return { type: 'icon', Icon: SiNestjs };
+  if (t.includes('tailwind')) return { type: 'icon', Icon: SiTailwindcss };
+  if (t.includes('zod')) return { type: 'icon', Icon: SiZod };
+  if (t.includes('git')) return { type: 'icon', Icon: SiGit };
+  if (t.includes('html')) return { type: 'icon', Icon: SiHtml5 };
+  if (t.includes('css')) return { type: 'icon', Icon: SiCss };
+  if (t.includes('laravel')) return { type: 'icon', Icon: SiLaravel };
+  if (t.includes('codeigniter')) return { type: 'icon', Icon: SiCodeigniter };
+
+  // 4. Databases & Persistence (Checked before generic SQL text monogram)
+  if (t.includes('supabase')) return { type: 'icon', Icon: SiSupabase };
+  if (t.includes('postgres') || t.includes('psql')) return { type: 'icon', Icon: SiPostgresql };
+  if (t.includes('mysql')) return { type: 'icon', Icon: SiMysql };
+  if (t.includes('redis')) return { type: 'icon', Icon: SiRedis };
+  if (t.includes('docker')) return { type: 'icon', Icon: SiDocker };
+  if (t.includes('minio')) return { type: 'icon', Icon: SiMinio };
+  if (t.includes('prisma')) return { type: 'icon', Icon: SiPrisma };
+  if (t.includes('sql') || t.includes('data modeling')) return { type: 'text', text: 'SQL' };
+
+  // 5. Scientific, Signal Processing & Neural Architectures
+  if (t.includes('pytorch')) return { type: 'icon', Icon: SiPytorch };
+  if (t.includes('jupyter')) return { type: 'icon', Icon: SiJupyter };
+  if (t.includes('scikit') || t.includes('sklearn')) return { type: 'icon', Icon: SiScikitlearn };
+  if (t.includes('numpy')) return { type: 'icon', Icon: SiNumpy };
+  if (t.includes('pandas')) return { type: 'icon', Icon: SiPandas };
+  if (t.includes('scipy')) return { type: 'icon', Icon: SiScipy };
+  if (t.includes('mne') || t.includes('eeg') || t.includes('signal')) return { type: 'icon', Icon: Activity };
+  if (t.includes('webgl') || t.includes('glsl') || t.includes('shader')) return { type: 'icon', Icon: SiWebgl };
+
+  // 6. Languages (With strict boundary matching for 'ts' / 'js' to prevent greedy substring collisions)
+  if (t.includes('kotlin')) return { type: 'icon', Icon: SiKotlin };
+  if (t.includes('swift') || t.includes('ios')) return { type: 'icon', Icon: SiSwift };
+  if (t.includes('android')) return { type: 'icon', Icon: SiAndroid };
+  if (t.includes('typescript') || /\btypescript\b/.test(t) || t === 'ts' || t === 'tech-typescript') return { type: 'icon', Icon: SiTypescript };
+  if (t.includes('javascript') || t === 'js' || t === 'tech-js' || t.includes('es6')) return { type: 'icon', Icon: SiJavascript };
+  if (t.includes('python')) return { type: 'icon', Icon: SiPython };
+  if (t.includes('php')) return { type: 'icon', Icon: SiPhp };
+  if (t.includes('java') && !t.includes('javascript')) return { type: 'icon', Icon: SiOpenjdk };
+
+  // 7. Conceptual Systems, Workflows & Architecture
+  if (t.includes('flowchart') || t.includes('flow') || t.includes('monorepo') || t.includes('subsystem')) return { type: 'icon', Icon: GitBranch };
+  if (t.includes('journey') || t.includes('state machine') || t.includes('nitro') || t.includes('engine')) return { type: 'icon', Icon: Layers };
+  if (t.includes('gnn') || t.includes('graph')) return { type: 'icon', Icon: Network };
+  if (t.includes('mamba') || t.includes('cpu')) return { type: 'icon', Icon: Cpu };
+
+  // Fallback
+  return { type: 'icon', Icon: Code2 };
+}
+
+export function TechLogoBadge({
+  tech,
+  className = '',
+  size = 'md',
+  tooltipSide = 'top',
+  showTooltip = true,
+  isCore,
+}: TechLogoBadgeProps) {
+  const label = typeof tech === 'string' ? tech : tech.name;
+  const isCoreEffective = isCore ?? (typeof tech === 'object' ? Boolean(tech.isCore) : false);
+  const visual = getTechVisual(label);
+
+  const sizeClasses = {
+    sm: 'w-7 h-7',
+    md: 'w-8 h-8',
+    lg: 'w-9 h-9',
+  }[size];
+
+  const iconSizes = {
+    sm: 'w-3.5 h-3.5',
+    md: 'w-4 h-4',
+    lg: 'w-4.5 h-4.5',
+  }[size];
+
+  const textSizes = {
+    sm: 'text-[9px]',
+    md: 'text-[10px]',
+    lg: 'text-[11px]',
+  }[size];
+
+  const tooltipPosition =
+    tooltipSide === 'top'
+      ? '-top-8 left-1/2 -translate-x-1/2'
+      : '-bottom-8 left-1/2 -translate-x-1/2';
+
+  const arrowClass =
+    tooltipSide === 'top'
+      ? 'top-full left-1/2 -translate-x-1/2 -mt-[1px] border-t-[#181614] border-b-transparent'
+      : 'bottom-full left-1/2 -translate-x-1/2 -mb-[1px] border-b-[#181614] border-t-transparent';
+
+  const badgeThemeClass = isCoreEffective
+    ? 'bg-ochre/10 border-ochre/30 text-ochre hover:border-ochre/60 hover:bg-ochre/20'
+    : 'bg-cream/[0.04] border-cream/10 text-cream/70 hover:border-ochre/40 hover:bg-ochre/10 hover:text-ochre';
+
+  return (
+    <div
+      aria-label={label}
+      tabIndex={0}
+      className={`group/badge relative flex items-center justify-center rounded-lg border transition-all duration-200 select-none cursor-default shrink-0 focus:outline-none focus-visible:ring-1 focus-visible:ring-ochre ${badgeThemeClass} ${sizeClasses} ${className}`}
+    >
+      {/* Monochromatic SVG Icon or Distinct Letter Monogram (e.g. KMP, WPT, LDA) */}
+      {visual.type === 'icon' ? (
+        <visual.Icon className={`${iconSizes} transition-transform duration-200 group-hover/badge:scale-110 shrink-0`} />
+      ) : (
+        <span className={`font-mono font-bold tracking-tight uppercase transition-transform duration-200 group-hover/badge:scale-110 select-none leading-none ${textSizes}`}>
+          {visual.text}
+        </span>
+      )}
+
+      {/* Floating Micro Tooltip - Scoped strictly to group/badge to avoid simultaneous popup on card hover */}
+      {showTooltip && (
+        <div
+          role="tooltip"
+          className={`absolute ${tooltipPosition} px-2 py-0.5 rounded bg-[#181614] border border-cream/15 text-cream font-mono text-[10px] tracking-wider uppercase shadow-xl shadow-black/90 pointer-events-none opacity-0 group-hover/badge:opacity-100 group-focus-visible/badge:opacity-100 transition-opacity duration-150 whitespace-nowrap z-40 flex items-center gap-1.5`}
+        >
+          {isCoreEffective && <span className="w-1.5 h-1.5 rounded-full bg-ochre shrink-0" />}
+          <span>{label}</span>
+          <div className={`absolute border-4 border-transparent ${arrowClass}`} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default TechLogoBadge;
