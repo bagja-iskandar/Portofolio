@@ -263,7 +263,7 @@ export default function ExpressionView({
         <button
           onClick={handleReturn}
           className="group inline-flex items-center gap-2 px-3.5 py-1.5 rounded-md border border-charcoal/15 bg-charcoal/[0.03] text-charcoal/80 hover:text-charcoal hover:border-charcoal/40 hover:bg-charcoal/[0.06] transition-all font-mono text-xs tracking-wider uppercase focus:outline-none focus-visible:ring-1 focus-visible:ring-charcoal"
-          title="Kembali ke Threshold Gateway (Esc)"
+          title="Return to Threshold Gateway (Esc)"
         >
           <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-1 duration-200" />
           <span>Threshold</span>
@@ -297,7 +297,7 @@ export default function ExpressionView({
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#B85A3A] opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-[#B85A3A]" />
             </span>
-            <span>DALAM TAHAP PENGEMBANGAN // UNDER CURATION</span>
+            <span>EDITORIAL CURATION IN PROGRESS // UNDER DEVELOPMENT</span>
           </div>
 
           {/* Monumental Editorial Title with Variable Font Cursor Proximity */}
@@ -322,12 +322,12 @@ export default function ExpressionView({
 
           {/* Large Development Notice */}
           <h2 className="font-serif text-xl sm:text-2xl md:text-3xl text-charcoal/90 font-light mt-8 tracking-normal">
-            Halaman Narasi Editorial &amp; Eksplorasi Mendalam Sedang Disiapkan
+            The Complete Editorial Journey &amp; Long-Form Narratives Are Being Prepared
           </h2>
 
           {/* Editorial Paragraph */}
           <p className="font-sans text-sm sm:text-base md:text-lg text-charcoal/70 leading-relaxed max-w-2xl mt-4 font-normal">
-            Ruang ini didedikasikan untuk pengalaman editorial menyeluruh: esai arsitektural di balik setiap proyek, dialektika pemikiran rekayasa, interaksi kanvas visual eksperimental, dan narasi riset BCI. Saat ini bagian ini sedang dalam tahap kurasi dan penyusunan estetika.
+            This space is reserved for a comprehensive editorial immersion: architectural deep-dives behind each system, engineering reflections, experimental canvas interactions, and peer-reviewed research narratives. The complete curated journey is currently being written.
           </p>
 
           {/* Interactive Navigation Action Cards */}
@@ -338,7 +338,7 @@ export default function ExpressionView({
               className="group inline-flex items-center gap-3 px-6 py-3.5 rounded-lg bg-charcoal text-ivory font-mono text-xs sm:text-sm tracking-[0.18em] uppercase hover:bg-charcoal/90 hover:scale-[1.02] transition-all shadow-xl shadow-charcoal/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-charcoal"
             >
               <Compass className="w-4 h-4 text-ochre transition-transform group-hover:rotate-45 duration-300" />
-              <span>Buka Structure Lens (Technical View)</span>
+              <span>Explore Structure Lens (Technical View)</span>
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1 duration-200" />
             </button>
 
@@ -348,7 +348,7 @@ export default function ExpressionView({
               className="group inline-flex items-center gap-2 px-5 py-3.5 rounded-lg border border-charcoal/20 bg-charcoal/[0.04] text-charcoal/80 font-mono text-xs sm:text-sm tracking-[0.16em] uppercase hover:text-charcoal hover:border-charcoal/40 hover:bg-charcoal/[0.08] transition-all focus:outline-none focus-visible:ring-1 focus-visible:ring-charcoal"
             >
               <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1 duration-200" />
-              <span>Kembali ke Gateway</span>
+              <span>Return to Gateway</span>
             </button>
           </div>
         </div>
