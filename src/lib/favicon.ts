@@ -12,13 +12,10 @@ export type LensVariant = 'threshold' | 'structure' | 'expression';
 export function setDynamicFavicon(lens: LensVariant) {
   if (typeof window === 'undefined') return;
 
-  const iconMap: Record<LensVariant, string> = {
-    threshold: '/brand/bij-logo-threshold.svg',
-    structure: '/brand/bij-logo-structure.svg',
-    expression: '/brand/bij-logo-expression.svg',
-  };
-
-  const targetUrl = iconMap[lens] || iconMap.threshold;
+  // Threshold uses the Structure logo; the only dynamic switch occurs when entering Expression
+  const targetUrl = lens === 'expression'
+    ? '/brand/bij-logo-expression.svg'
+    : '/brand/bij-logo-structure.svg';
 
   // Remove existing icon tags to force browser to repaint tab icon
   const existingLinks = document.querySelectorAll<HTMLLinkElement>("link[rel*='icon']");

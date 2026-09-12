@@ -46,11 +46,11 @@ export default function BijLogo({
       glow: 'rgba(184, 90, 58, 0.12)',
     },
     threshold: {
-      primary: '#C4975A', // Dual Seam Gold
-      dot: '#EDE8DF',     // High-contrast Cream
-      bg: '#141210',      // Balanced Seam Badge
-      border: 'rgba(237, 232, 223, 0.2)',
-      glow: 'rgba(196, 151, 90, 0.25)',
+      primary: '#D4A366', // Structure Ochre Gold
+      dot: '#EDE8DF',     // Warm Cream
+      bg: '#0E0D0C',      // Dark Obsidian Container
+      border: 'rgba(212, 163, 102, 0.35)',
+      glow: 'rgba(212, 163, 102, 0.15)',
     },
   }[variant];
 

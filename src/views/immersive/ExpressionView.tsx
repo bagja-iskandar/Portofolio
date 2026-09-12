@@ -386,7 +386,7 @@ export default function ExpressionView({
           </h2>
 
           {/* Editorial Paragraph */}
-          <p className="font-sans text-sm sm:text-base md:text-lg text-charcoal/70 leading-relaxed max-w-2xl mt-4 font-normal text-justify">
+          <p className="font-sans text-sm sm:text-base md:text-lg text-charcoal/70 leading-relaxed max-w-2xl mt-4 font-normal text-center">
             This space is reserved for a comprehensive editorial immersion: architectural deep-dives behind each system, engineering reflections, experimental canvas interactions, and peer-reviewed research narratives. The complete curated journey is currently being written.
           </p>
 
