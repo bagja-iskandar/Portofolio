@@ -125,8 +125,8 @@ export default function WorkExperienceSection({
               <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
                 {exp.problemStatement && (
                   <div className="p-4 rounded-lg bg-black/40 border border-cream/5 space-y-1.5">
-                    <div className="flex items-center gap-2 font-mono text-[11px] tracking-wider text-amber-400/80 uppercase">
-                      <Target className="w-3.5 h-3.5 text-amber-400" />
+                    <div className="flex items-center gap-2 font-mono text-[11px] tracking-wider text-ochre/80 uppercase">
+                      <Target className="w-3.5 h-3.5 text-ochre" />
                       <span>The Challenge</span>
                     </div>
                     <p className="text-xs sm:text-sm text-cream/70 leading-relaxed font-sans text-justify">

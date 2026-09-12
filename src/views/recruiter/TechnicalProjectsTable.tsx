@@ -414,8 +414,8 @@ export default function TechnicalProjectsTable({
                           {/* The Challenge */}
                           <div className="p-4 rounded-lg bg-black/40 border border-cream/5 space-y-1.5 flex flex-col justify-between">
                             <div>
-                              <div className="flex items-center gap-2 font-mono text-[11px] tracking-wider text-amber-400/90 uppercase mb-1">
-                                <Target className="w-3.5 h-3.5 text-amber-400" />
+                              <div className="flex items-center gap-2 font-mono text-[11px] tracking-wider text-ochre/90 uppercase mb-1">
+                                <Target className="w-3.5 h-3.5 text-ochre" />
                                 <span>The Challenge</span>
                               </div>
                               <p className="text-xs sm:text-sm text-cream/70 leading-relaxed font-sans text-justify">
