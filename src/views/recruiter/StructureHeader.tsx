@@ -67,15 +67,14 @@ export default function StructureHeader({ onBackToThreshold }: StructureHeaderPr
       {/* ================= HERO EDITORIAL TITLE & TAGLINE ================= */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
         <div className="lg:col-span-7 flex flex-col">
-          <div className="font-mono text-xs tracking-[0.25em] text-ochre uppercase mb-2">
-            MODALITY 01 // HIGH-SIGNAL RECRUITER DIGEST
+          <div className="font-mono text-xs tracking-[0.25em] text-ochre uppercase mb-3 flex items-center gap-2">
+            <span>STRUCTURE</span>
+            <span className="text-cream/30">//</span>
+            <span className="text-cream/70">THE SHORT READ</span>
           </div>
-          <h1 className="font-mono text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-cream tracking-[0.14em] uppercase leading-[0.95]">
-            STRUCTURE
+          <h1 className="font-mono text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-cream tracking-[0.06em] uppercase leading-[1.05]">
+            BAGJA ISKANDAR JAMIL
           </h1>
-          <p className="font-mono text-xs sm:text-sm tracking-[0.25em] text-ochre uppercase mt-3">
-            the short read.
-          </p>
         </div>
 
         {/* ================= EXECUTIVE BIO SUMMARY ================= */}
