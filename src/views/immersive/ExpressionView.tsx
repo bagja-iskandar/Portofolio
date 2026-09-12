@@ -93,7 +93,26 @@ export default function ExpressionView({
     const container = containerRef.current;
     if (!canvas || !container) return;
 
-    const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let isReduced = mediaQuery.matches;
+
+    const handleReducedChange = (e: MediaQueryListEvent) => {
+      isReduced = e.matches;
+      if (isReduced) {
+        if (rafIdRef.current) {
+          cancelAnimationFrame(rafIdRef.current);
+          rafIdRef.current = null;
+        }
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          const bounds = container.getBoundingClientRect();
+          ctx.clearRect(0, 0, bounds.width, bounds.height);
+        }
+      } else if (!document.hidden && !rafIdRef.current) {
+        rafIdRef.current = requestAnimationFrame(tick);
+      }
+    };
+    mediaQuery.addEventListener('change', handleReducedChange);
 
     // 1. Initialize 40 organic dark brown dust particles (strictly capped at §40 max limit: 40 particles)
     const initialParticles: DustParticle[] = [];
@@ -125,8 +144,8 @@ export default function ExpressionView({
       if (width === 0 || height === 0) return;
 
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
 
@@ -137,9 +156,11 @@ export default function ExpressionView({
     handleResize();
     window.addEventListener('resize', handleResize);
 
-    // 3. Animation RAF Loop
+    // 3. Batched Animation RAF Loop (3 draw calls per frame per §44)
     let time = 0;
     const tick = () => {
+      if (isReduced) return;
+
       time++;
       const ctx = canvas.getContext('2d');
       if (ctx) {
@@ -149,35 +170,63 @@ export default function ExpressionView({
         ctx.clearRect(0, 0, width, height);
 
         const particles = dustParticlesRef.current;
+        const tier0: DustParticle[] = [];
+        const tier1: DustParticle[] = [];
+        const tier2: DustParticle[] = [];
+
         for (let i = 0; i < particles.length; i++) {
           const p = particles[i];
-
-          if (!isReduced) {
-            p.y += p.speedY;
-            if (p.y < -10) {
-              p.y = height + 10;
-              p.x = Math.random() * width;
-            }
+          p.y += p.speedY;
+          if (p.y < -10) {
+            p.y = height + 10;
+            p.x = Math.random() * width;
           }
 
-          const currentX = p.x + Math.sin(time * p.swayFreq + p.swayOffset) * p.swayAmp;
-
-          ctx.beginPath();
-          ctx.arc(currentX, p.y, p.radius, 0, Math.PI * 2);
-          ctx.fillStyle =
-            p.tier === 0
-              ? 'rgba(40, 32, 26, 0.12)'
-              : p.tier === 1
-              ? 'rgba(32, 26, 22, 0.18)'
-              : 'rgba(24, 20, 16, 0.25)';
-          ctx.fill();
+          if (p.tier === 0) tier0.push(p);
+          else if (p.tier === 1) tier1.push(p);
+          else tier2.push(p);
         }
+
+        // Tier 0: Far (batch 1)
+        ctx.fillStyle = 'rgba(40, 32, 26, 0.12)';
+        ctx.beginPath();
+        for (let i = 0; i < tier0.length; i++) {
+          const p = tier0[i];
+          const cx = p.x + Math.sin(time * p.swayFreq + p.swayOffset) * p.swayAmp;
+          ctx.moveTo(cx + p.radius, p.y);
+          ctx.arc(cx, p.y, p.radius, 0, Math.PI * 2);
+        }
+        ctx.fill();
+
+        // Tier 1: Mid (batch 2)
+        ctx.fillStyle = 'rgba(32, 26, 22, 0.18)';
+        ctx.beginPath();
+        for (let i = 0; i < tier1.length; i++) {
+          const p = tier1[i];
+          const cx = p.x + Math.sin(time * p.swayFreq + p.swayOffset) * p.swayAmp;
+          ctx.moveTo(cx + p.radius, p.y);
+          ctx.arc(cx, p.y, p.radius, 0, Math.PI * 2);
+        }
+        ctx.fill();
+
+        // Tier 2: Near (batch 3)
+        ctx.fillStyle = 'rgba(24, 20, 16, 0.25)';
+        ctx.beginPath();
+        for (let i = 0; i < tier2.length; i++) {
+          const p = tier2[i];
+          const cx = p.x + Math.sin(time * p.swayFreq + p.swayOffset) * p.swayAmp;
+          ctx.moveTo(cx + p.radius, p.y);
+          ctx.arc(cx, p.y, p.radius, 0, Math.PI * 2);
+        }
+        ctx.fill();
       }
 
       rafIdRef.current = requestAnimationFrame(tick);
     };
 
-    rafIdRef.current = requestAnimationFrame(tick);
+    if (!isReduced) {
+      rafIdRef.current = requestAnimationFrame(tick);
+    }
 
     // 4. Tab Inactivity handling
     const handleVisibilityChange = () => {
@@ -187,7 +236,7 @@ export default function ExpressionView({
           rafIdRef.current = null;
         }
       } else {
-        if (!rafIdRef.current) {
+        if (!rafIdRef.current && !isReduced) {
           rafIdRef.current = requestAnimationFrame(tick);
         }
       }
@@ -195,6 +244,7 @@ export default function ExpressionView({
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
     return () => {
+      mediaQuery.removeEventListener('change', handleReducedChange);
       window.removeEventListener('resize', handleResize);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       if (rafIdRef.current) {
@@ -203,24 +253,28 @@ export default function ExpressionView({
     };
   }, []);
 
-  // Entrance GSAP Stagger Animation
+  // Entrance GSAP Stagger Animation wrapped in gsap.context (§45)
   useEffect(() => {
     const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (isReduced) return;
 
-    if (contentRef.current) {
-      gsap.fromTo(
-        contentRef.current.children,
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          stagger: 0.12,
-          ease: 'power3.out',
-        }
-      );
-    }
+    const ctx = gsap.context(() => {
+      if (contentRef.current) {
+        gsap.fromTo(
+          contentRef.current.children,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.12,
+            ease: 'power3.out',
+          }
+        );
+      }
+    }, containerRef);
+
+    return () => ctx.revert();
   }, []);
 
   return (
