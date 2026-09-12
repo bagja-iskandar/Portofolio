@@ -67,7 +67,7 @@ export default function EngineeringHighlights({
               <h3 className="font-mono text-xs font-semibold tracking-wider text-cream/90 uppercase mt-2">
                 {card.label}
               </h3>
-              <p className="font-sans text-xs text-[#8A847C] mt-2.5 leading-relaxed line-clamp-3">
+              <p className="font-sans text-xs text-[#8A847C] mt-2.5 leading-relaxed text-justify">
                 {card.description}
               </p>
             </div>
@@ -76,7 +76,7 @@ export default function EngineeringHighlights({
             <div className="pt-3.5 border-t border-cream/5 flex items-center justify-between gap-2 text-[11px] font-mono text-cream/50 min-h-[44px]">
               <div className="flex items-start gap-2 min-w-0">
                 <span className="text-ochre/60 transition-transform duration-200 group-hover:translate-x-0.5 shrink-0 pt-0.5">&gt;</span>
-                <span className="line-clamp-2">{card.context}</span>
+                <span className="leading-snug">{card.context}</span>
               </div>
               {card.linkUrl && (
                 <a
@@ -110,11 +110,11 @@ export default function EngineeringHighlights({
                 <h4 className="font-mono text-xs font-semibold text-cream uppercase group-hover:text-ochre transition-colors duration-200">
                   {idx + 1}. {principle.title}
                 </h4>
-                <p className="font-sans text-xs text-[#8A847C] leading-relaxed mt-2.5">
+                <p className="font-sans text-xs text-[#8A847C] leading-relaxed mt-2.5 text-justify">
                   {principle.premise}
                 </p>
               </div>
-              <div className="font-mono text-[10px] text-ochre/90 mt-5 bg-ink/60 p-2.5 rounded border border-cream/5">
+              <div className="font-mono text-[10px] text-ochre/90 mt-5 bg-ink/60 p-2.5 rounded border border-cream/5 text-justify">
                 <span className="text-cream/50">Rule: </span>
                 {principle.enforcement}
               </div>

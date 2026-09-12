@@ -116,7 +116,7 @@ export default function WorkExperienceSection({
             </div>
 
             {/* EXECUTIVE SUMMARY */}
-            <p className="mt-5 text-sm sm:text-base text-cream/80 leading-relaxed max-w-4xl font-sans">
+            <p className="mt-5 text-sm sm:text-base text-cream/80 leading-relaxed max-w-4xl font-sans text-justify">
               {exp.executiveSummary}
             </p>
 
@@ -129,7 +129,7 @@ export default function WorkExperienceSection({
                       <Target className="w-3.5 h-3.5 text-amber-400" />
                       <span>The Challenge</span>
                     </div>
-                    <p className="text-xs sm:text-sm text-cream/70 leading-relaxed font-sans">
+                    <p className="text-xs sm:text-sm text-cream/70 leading-relaxed font-sans text-justify">
                       {exp.problemStatement}
                     </p>
                   </div>
@@ -140,7 +140,7 @@ export default function WorkExperienceSection({
                       <Cpu className="w-3.5 h-3.5 text-ochre" />
                       <span>Architectural Solution</span>
                     </div>
-                    <p className="text-xs sm:text-sm text-cream/80 leading-relaxed font-sans">
+                    <p className="text-xs sm:text-sm text-cream/80 leading-relaxed font-sans text-justify">
                       {exp.engineeringSolution}
                     </p>
                   </div>
@@ -164,7 +164,7 @@ export default function WorkExperienceSection({
                       <div className="font-mono text-xs font-semibold text-cream/90 tracking-wide mb-1">
                         {sub.name}
                       </div>
-                      <p className="text-[12px] text-cream/60 leading-normal font-sans">
+                      <p className="text-[12px] text-cream/60 leading-normal font-sans text-justify">
                         {sub.responsibility}
                       </p>
                     </div>

@@ -418,7 +418,7 @@ export default function TechnicalProjectsTable({
                                 <Target className="w-3.5 h-3.5 text-amber-400" />
                                 <span>The Challenge</span>
                               </div>
-                              <p className="text-xs sm:text-sm text-cream/70 leading-relaxed font-sans">
+                              <p className="text-xs sm:text-sm text-cream/70 leading-relaxed font-sans text-justify">
                                 {project.structureRead.problemStatement}
                               </p>
                             </div>
@@ -431,7 +431,7 @@ export default function TechnicalProjectsTable({
                                 <Cpu className="w-3.5 h-3.5 text-ochre" />
                                 <span>Architectural Solution</span>
                               </div>
-                              <p className="text-xs sm:text-sm text-cream/90 leading-relaxed font-sans font-normal">
+                              <p className="text-xs sm:text-sm text-cream/90 leading-relaxed font-sans font-normal text-justify">
                                 {project.structureRead.engineeringSolution}
                               </p>
                             </div>
@@ -454,7 +454,7 @@ export default function TechnicalProjectsTable({
                                   <div className="font-mono text-cream font-medium mb-1">
                                     {sub.name}
                                   </div>
-                                  <div className="text-[#8A847C] font-sans leading-relaxed">
+                                  <div className="text-[#8A847C] font-sans leading-relaxed text-justify">
                                     {sub.responsibility}
                                   </div>
                                 </div>
@@ -478,11 +478,11 @@ export default function TechnicalProjectsTable({
                                 <div className="font-mono text-xs font-semibold text-cream">
                                   &bull; {decision.decision}
                                 </div>
-                                <div className="mt-1.5 text-[#8A847C] leading-relaxed">
+                                <div className="mt-1.5 text-[#8A847C] leading-relaxed text-justify">
                                   <span className="text-cream/70 font-mono text-[11px]">Rationale: </span>
                                   {decision.rationale}
                                 </div>
-                                <div className="mt-1 text-ochre/80 leading-relaxed">
+                                <div className="mt-1 text-ochre/80 leading-relaxed text-justify">
                                   <span className="text-ochre font-mono text-[11px]">Trade-off: </span>
                                   {decision.tradeOff}
                                 </div>

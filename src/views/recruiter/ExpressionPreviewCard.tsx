@@ -330,7 +330,7 @@ export const ExpressionPreviewCard = React.memo(function ExpressionPreviewCard({
           </h3>
 
           {/* Body: High-legibility warm neutral (#5C554E) */}
-          <p className="font-sans text-xs sm:text-sm text-[#5C554E] mt-2 leading-relaxed">
+          <p className="font-sans text-xs sm:text-sm text-[#5C554E] mt-2 leading-relaxed text-justify">
             {description}
           </p>
         </div>

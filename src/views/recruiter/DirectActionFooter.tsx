@@ -78,7 +78,7 @@ export default function DirectActionFooter({
             <h3 className="font-mono text-base font-bold text-cream mb-1">
               Official Resume (PDF)
             </h3>
-            <p className="font-sans text-xs text-[#8A847C] leading-relaxed mb-6">
+            <p className="font-sans text-xs text-[#8A847C] leading-relaxed mb-6 text-justify">
               Complete chronological CV, university transcript notes, verified technical proficiencies, and project citations.
             </p>
           </div>
@@ -110,7 +110,7 @@ export default function DirectActionFooter({
             <div className="font-mono text-xs text-ochre tracking-wider select-all mt-1 mb-2">
               {email}
             </div>
-            <p className="font-sans text-xs text-[#8A847C] leading-relaxed mb-6">
+            <p className="font-sans text-xs text-[#8A847C] leading-relaxed mb-6 text-justify">
               Direct inbox monitoring for technical interview invitations and project discussions.
             </p>
           </div>
@@ -149,7 +149,7 @@ export default function DirectActionFooter({
             <h3 className="font-mono text-base font-bold text-cream mb-1">
               Online Footprint
             </h3>
-            <p className="font-sans text-xs text-[#8A847C] leading-relaxed mb-4">
+            <p className="font-sans text-xs text-[#8A847C] leading-relaxed mb-4 text-justify">
               Explore public repositories, open-source code contributions, and professional network recommendations.
             </p>
           </div>

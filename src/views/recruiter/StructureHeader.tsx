@@ -86,7 +86,7 @@ export default function StructureHeader({ onBackToThreshold }: StructureHeaderPr
             </div>
 
             {/* Executive Bio Narrative with Editorial Hierarchy */}
-            <p className="font-sans text-sm sm:text-base md:text-[18px] text-[#A8A29A] leading-[1.8] font-normal">
+            <p className="font-sans text-sm sm:text-base md:text-[18px] text-[#A8A29A] leading-[1.8] font-normal text-justify">
               Fresh Graduate in Computer Science (<span className="text-cream font-medium">Informatika</span>) from Universitas Jenderal Achmad Yani (GPA 3.37) with proven engineering execution across cross-border fintech frontend (<span className="text-ochre font-medium">Swap-On ID-JP</span>), enterprise CMS refactoring (<span className="text-cream font-medium">Diskominfo Kota Cimahi</span>), and peer-reviewed Brain–Computer Interface research published at <span className="text-ochre font-medium">IEEE ICIC 2025</span>.
             </p>
           </div>

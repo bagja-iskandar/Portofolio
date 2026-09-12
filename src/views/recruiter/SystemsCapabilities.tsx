@@ -190,7 +190,7 @@ export default function SystemsCapabilities({
                   <h3 className="font-mono text-base font-bold text-cream tracking-tight mb-2">
                     {discipline.title}
                   </h3>
-                  <p className="font-sans text-xs text-[#8A847C] leading-relaxed mb-5">
+                  <p className="font-sans text-xs text-[#8A847C] leading-relaxed mb-5 text-justify">
                     {discipline.description}
                   </p>
 
@@ -211,7 +211,7 @@ export default function SystemsCapabilities({
                             </span>
                           )}
                         </div>
-                        <p className="font-sans text-xs text-[#8A847C] leading-relaxed mb-3">
+                        <p className="font-sans text-xs text-[#8A847C] leading-relaxed mb-3 text-justify">
                           {item.scope}
                         </p>
                         <div className="flex flex-wrap gap-1.5 items-center">
@@ -287,7 +287,7 @@ export default function SystemsCapabilities({
                     <span className="font-mono text-[11px] font-semibold text-ochre uppercase block mb-1">
                       Problem Context
                     </span>
-                    <p className="text-[#8A847C] leading-relaxed">
+                    <p className="text-[#8A847C] leading-relaxed text-justify">
                       {pattern.problemAddressed}
                     </p>
                   </div>
@@ -295,7 +295,7 @@ export default function SystemsCapabilities({
                     <span className="font-mono text-[11px] font-semibold text-cream uppercase block mb-1">
                       Architectural Solution
                     </span>
-                    <p className="text-cream/80 leading-relaxed">
+                    <p className="text-cream/80 leading-relaxed text-justify">
                       {pattern.architecturalSolution}
                     </p>
                   </div>
@@ -312,19 +312,19 @@ export default function SystemsCapabilities({
                       <span className="font-mono text-[10px] text-cream/90 uppercase block mb-0.5">
                         + Benefit
                       </span>
-                      <p className="text-[#8A847C]">{pattern.tradeOffs.benefit}</p>
+                      <p className="text-[#8A847C] text-justify">{pattern.tradeOffs.benefit}</p>
                     </div>
                     <div>
                       <span className="font-mono text-[10px] text-cream/60 uppercase block mb-0.5">
                         - Liability / Cost
                       </span>
-                      <p className="text-[#8A847C]">{pattern.tradeOffs.liability}</p>
+                      <p className="text-[#8A847C] text-justify">{pattern.tradeOffs.liability}</p>
                     </div>
                     <div>
                       <span className="font-mono text-[10px] text-ochre uppercase block mb-0.5">
                         &bull; Mitigation Strategy
                       </span>
-                      <p className="text-cream/80">{pattern.tradeOffs.mitigation}</p>
+                      <p className="text-cream/80 text-justify">{pattern.tradeOffs.mitigation}</p>
                     </div>
                   </div>
                 </div>
