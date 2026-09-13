@@ -5,6 +5,7 @@ import type { EngineeringHighlightsRollup } from '@/types/duality';
 import { ENGINEERING_HIGHLIGHTS } from '@/data';
 import { ShieldCheck, ArrowUpRight } from 'lucide-react';
 import { useSmoothScrollContext } from '@/motion';
+import { TechLogoBadge } from '@/components/common/TechLogoBadge';
 
 interface EngineeringHighlightsProps {
   highlights?: EngineeringHighlightsRollup;
@@ -145,7 +146,7 @@ export default function EngineeringHighlights({
 
               {/* Metric Context */}
               <div className="pt-3.5 border-t border-cream/5 flex items-center justify-between gap-2 text-[11px] font-mono text-cream/50 min-h-[44px]">
-                <div className="flex items-start gap-2 min-w-0">
+                <div className="flex items-center gap-2 min-w-0">
                   <span
                     className={`text-ochre transition-transform duration-200 ${
                       isActive ? 'translate-x-1 font-bold' : 'text-ochre/60 group-hover:translate-x-0.5'
@@ -153,22 +154,36 @@ export default function EngineeringHighlights({
                   >
                     &gt;
                   </span>
-                  <span className={`leading-snug ${isActive ? 'text-cream/80' : ''}`}>
+                  <span className={`leading-snug truncate ${isActive ? 'text-cream/80' : ''}`}>
                     {card.context}
                   </span>
                 </div>
-                {card.linkUrl && (
-                  <a
-                    href={card.linkUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={(e) => e.stopPropagation()}
-                    className="inline-flex items-center gap-1 text-ochre hover:text-cream transition-colors shrink-0 ml-1 py-1 px-2 rounded bg-ochre/10 border border-ochre/25 text-[10px] tracking-wider uppercase font-medium"
-                  >
-                    <span>{card.linkText || 'Verify'}</span>
-                    <ArrowUpRight className="w-3 h-3 text-ochre" />
-                  </a>
-                )}
+                <div className="flex items-center gap-1.5 shrink-0">
+                  {card.techBadges && card.techBadges.length > 0 && (
+                    <div className="flex items-center gap-1">
+                      {card.techBadges.map((badge, bIdx) => (
+                        <TechLogoBadge
+                          key={bIdx}
+                          tech={badge}
+                          size="sm"
+                          tooltipSide="top"
+                        />
+                      ))}
+                    </div>
+                  )}
+                  {card.linkUrl && (
+                    <a
+                      href={card.linkUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="inline-flex items-center gap-1 text-ochre hover:text-cream transition-colors shrink-0 ml-1 py-1 px-2 rounded bg-ochre/10 border border-ochre/25 text-[10px] tracking-wider uppercase font-medium"
+                    >
+                      <span>{card.linkText || 'Verify'}</span>
+                      <ArrowUpRight className="w-3 h-3 text-ochre" />
+                    </a>
+                  )}
+                </div>
               </div>
             </div>
           );

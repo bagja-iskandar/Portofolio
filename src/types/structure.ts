@@ -109,6 +109,7 @@ export interface EngineeringBenchmarkCard {
   readonly verifiedStandard: string;
   readonly linkUrl?: string;
   readonly linkText?: string;
+  readonly techBadges?: ReadonlyArray<string>;
 }
 
 export interface EngineeringPrinciple {

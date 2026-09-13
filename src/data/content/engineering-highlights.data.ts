@@ -42,8 +42,9 @@ export const ENGINEERING_HIGHLIGHTS: EngineeringHighlightsRollup = {
       unit: 'Countries (ID ↔ JP)',
       description:
         'Engineered responsive wallet, FX rate, and recipient transfer flows for ID ↔ JP remittance with AI-assisted Codex acceleration.',
-      context: 'Swap-On cross-border fintech application',
+      context: 'Swap-On ID ↔ JP Fintech',
       verifiedStandard: 'AI-Assisted Codex',
+      techBadges: ['OpenAI Codex'],
     },
     {
       id: 'metric-monorepo-stack',
@@ -52,20 +53,22 @@ export const ENGINEERING_HIGHLIGHTS: EngineeringHighlightsRollup = {
       unit: 'SRS Use Cases (100%)',
       description:
         'Transformed college SRS into production cold-chain WMS via Next.js 15, NestJS 10 & live IoT telemetry with Antigravity AI orchestration.',
-      context: 'WMS Nusantara live production on Vercel',
+      context: 'WMS Nusantara Monorepo',
       verifiedStandard: 'AI-Assisted Antigravity',
       linkUrl: 'https://wms-porto.vercel.app',
       linkText: 'Live App',
+      techBadges: ['Antigravity'],
     },
     {
       id: 'metric-cms-refactor',
-      label: 'Public Sector Refactoring',
+      label: 'AI-Assisted Codebase Refactoring',
       value: '100%',
-      unit: 'Resolved (CMS)',
+      unit: 'Resolved (AI-CMS)',
       description:
-        'Refactored legacy UI modules, resolved layout regressions, and elevated municipal CMS maintainability with AI-assisted engineering.',
-      context: 'Diskominfo Kota Cimahi (08/2025 – 09/2025)',
+        'Accelerated legacy UI refactoring, automated regression diagnostics, and elevated municipal CMS maintainability leveraging Antigravity and OpenAI Codex workflows.',
+      context: 'AI-Assisted Refactoring Suite',
       verifiedStandard: 'AI-Assisted',
+      techBadges: ['Antigravity', 'OpenAI Codex'],
     },
     {
       id: 'metric-ta-ai',

@@ -161,11 +161,11 @@ export const SELECTED_PROJECTS: ReadonlyArray<Project> = [
         { id: 'tech-nextjs' as TechnologyId, name: 'Next.js 15 (React 19)', category: 'frontend', isCore: true },
         { id: 'tech-nestjs' as TechnologyId, name: 'NestJS 10.4', category: 'systems', isCore: true },
         { id: 'tech-postgres' as TechnologyId, name: 'Supabase PostgreSQL 16', category: 'systems', isCore: true },
+        { id: 'tech-antigravity' as TechnologyId, name: 'Antigravity (AI-Assisted)', category: 'architecture', isCore: true },
         { id: 'tech-prisma' as TechnologyId, name: 'Prisma ORM v6', category: 'architecture', isCore: true },
         { id: 'tech-tanstack-query' as TechnologyId, name: 'TanStack React Query v5', category: 'frontend', isCore: false },
         { id: 'tech-typescript' as TechnologyId, name: 'TypeScript', category: 'architecture', isCore: true },
         { id: 'tech-docker' as TechnologyId, name: 'Docker & MinIO S3', category: 'systems', isCore: false },
-        { id: 'tech-antigravity' as TechnologyId, name: 'Antigravity (AI-Assisted)', category: 'architecture', isCore: false },
       ],
       architecturalDecisions: [
         {
@@ -281,9 +281,9 @@ export const SELECTED_PROJECTS: ReadonlyArray<Project> = [
         { id: 'tech-nuxt' as TechnologyId, name: 'Nuxt 4', category: 'frontend', isCore: true },
         { id: 'tech-vue' as TechnologyId, name: 'Vue.js', category: 'frontend', isCore: true },
         { id: 'tech-nitro' as TechnologyId, name: 'Nitro API Engine', category: 'systems', isCore: true },
+        { id: 'tech-antigravity' as TechnologyId, name: 'Antigravity (AI-Assisted)', category: 'architecture', isCore: true },
         { id: 'tech-tailwind' as TechnologyId, name: 'Tailwind CSS', category: 'frontend', isCore: true },
         { id: 'tech-typescript' as TechnologyId, name: 'TypeScript', category: 'architecture', isCore: true },
-        { id: 'tech-antigravity' as TechnologyId, name: 'Antigravity (AI-Assisted)', category: 'architecture', isCore: false },
       ],
       architecturalDecisions: [
         {
