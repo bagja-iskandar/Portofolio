@@ -55,8 +55,8 @@ export const WORK_EXPERIENCE_DATA: ReadonlyArray<WorkExperienceItem> = [
       'Swift / SwiftUI (iOS)',
       'Stripe Android SDK',
       'Gradle Kotlin DSL (AGP 9.2)',
-      'AI-Assisted Codex',
     ],
+    assistedTech: ['OpenAI Codex'],
   },
   {
     id: 'exp-diskominfo',
@@ -107,8 +107,6 @@ export const WORK_EXPERIENCE_DATA: ReadonlyArray<WorkExperienceItem> = [
       'Vite',
       'Docker',
       'Git',
-      'Antigravity',
-      'OpenAI Codex',
     ],
     credentialLabel: 'INTERNSHIP PROFILE',
     credentialUrl: 'https://linkedin.com/in/bagja-iskandar-jamil',

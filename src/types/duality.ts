@@ -154,6 +154,7 @@ export interface EngineeringBenchmark {
 
 export interface ProjectTechnicalArchitecture {
   readonly stack: ReadonlyArray<TechTag>;
+  readonly assisted?: ReadonlyArray<string>;
   readonly architecturalDecisions: ReadonlyArray<ArchitecturalDecision>;
   readonly benchmarks?: ReadonlyArray<EngineeringBenchmark>;
   readonly engineeringHighlight: string;

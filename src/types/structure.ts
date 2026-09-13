@@ -190,6 +190,7 @@ export interface WorkExperienceItem {
     readonly context: string;
   }>;
   readonly technologies: ReadonlyArray<string>;
+  readonly assistedTech?: ReadonlyArray<string>;
   readonly credentialUrl?: string;
   readonly credentialLabel?: string;
 }

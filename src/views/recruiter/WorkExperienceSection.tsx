@@ -190,22 +190,48 @@ export default function WorkExperienceSection({
               </div>
             )}
 
-            {/* TECHNOLOGIES USED - MONOCHROME LOGO BADGES (§9 & User Directive) */}
-            {exp.technologies && exp.technologies.length > 0 && (
-              <div className="mt-6 pt-5 border-t border-cream/5 flex flex-wrap items-center gap-2.5">
-                <span className="font-mono text-xs text-cream/40 uppercase tracking-wider mr-1 select-none">
-                  Stack:
-                </span>
-                <div className="flex flex-wrap items-center gap-1.5">
-                  {exp.technologies.map((tech, tIdx) => (
-                    <TechLogoBadge
-                      key={tIdx}
-                      tech={tech}
-                      size="md"
-                      tooltipSide="top"
-                    />
-                  ))}
-                </div>
+            {/* TECHNOLOGIES USED & AI-ASSISTED BADGES (§9 & User Directive) */}
+            {((exp.technologies && exp.technologies.length > 0) || (exp.assistedTech && exp.assistedTech.length > 0)) && (
+              <div className="mt-6 pt-5 border-t border-cream/5 flex flex-wrap items-center justify-between gap-4">
+                {/* Left: Regular Technology Stack */}
+                {exp.technologies && exp.technologies.length > 0 && (
+                  <div className="flex flex-wrap items-center gap-2.5">
+                    <span className="font-mono text-xs text-cream/40 uppercase tracking-wider mr-1 select-none">
+                      Stack:
+                    </span>
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      {exp.technologies.map((tech, tIdx) => (
+                        <TechLogoBadge
+                          key={tIdx}
+                          tech={tech}
+                          size="md"
+                          tooltipSide="top"
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Right: AI-Assisted Tooling */}
+                {exp.assistedTech && exp.assistedTech.length > 0 && (
+                  <div className="flex items-center gap-2.5">
+                    <span className="font-mono text-xs text-ochre/80 uppercase tracking-wider mr-1 select-none flex items-center gap-1.5 font-semibold">
+                      <span className="w-1.5 h-1.5 rounded-full bg-ochre animate-pulse" />
+                      Assisted:
+                    </span>
+                    <div className="flex items-center gap-1.5">
+                      {exp.assistedTech.map((tech, aIdx) => (
+                        <TechLogoBadge
+                          key={aIdx}
+                          tech={tech}
+                          size="md"
+                          tooltipSide="top"
+                          isCore={true}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </article>

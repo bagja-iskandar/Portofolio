@@ -68,8 +68,8 @@ export const SELECTED_PROJECTS: ReadonlyArray<Project> = [
         { id: 'tech-swift' as TechnologyId, name: 'Swift / SwiftUI (iOS)', category: 'frontend', isCore: false },
         { id: 'tech-stripe' as TechnologyId, name: 'Stripe Android SDK', category: 'architecture', isCore: false },
         { id: 'tech-gradle' as TechnologyId, name: 'Gradle Kotlin DSL', category: 'systems', isCore: false },
-        { id: 'tech-codex' as TechnologyId, name: 'OpenAI Codex (AI-Assisted)', category: 'architecture', isCore: false },
       ],
+      assisted: ['OpenAI Codex'],
       architecturalDecisions: [
         {
           decision: 'Shared Logic & UI via Kotlin Multiplatform (KMP) and Compose Multiplatform',
@@ -161,12 +161,12 @@ export const SELECTED_PROJECTS: ReadonlyArray<Project> = [
         { id: 'tech-nextjs' as TechnologyId, name: 'Next.js 15 (React 19)', category: 'frontend', isCore: true },
         { id: 'tech-nestjs' as TechnologyId, name: 'NestJS 10.4', category: 'systems', isCore: true },
         { id: 'tech-postgres' as TechnologyId, name: 'Supabase PostgreSQL 16', category: 'systems', isCore: true },
-        { id: 'tech-antigravity' as TechnologyId, name: 'Antigravity (AI-Assisted)', category: 'architecture', isCore: true },
         { id: 'tech-prisma' as TechnologyId, name: 'Prisma ORM v6', category: 'architecture', isCore: true },
         { id: 'tech-tanstack-query' as TechnologyId, name: 'TanStack React Query v5', category: 'frontend', isCore: false },
         { id: 'tech-typescript' as TechnologyId, name: 'TypeScript', category: 'architecture', isCore: true },
         { id: 'tech-docker' as TechnologyId, name: 'Docker & MinIO S3', category: 'systems', isCore: false },
       ],
+      assisted: ['Antigravity'],
       architecturalDecisions: [
         {
           decision: 'Supabase Transaction Pooler via PgBouncer (Port 6543)',
@@ -281,10 +281,10 @@ export const SELECTED_PROJECTS: ReadonlyArray<Project> = [
         { id: 'tech-nuxt' as TechnologyId, name: 'Nuxt 4', category: 'frontend', isCore: true },
         { id: 'tech-vue' as TechnologyId, name: 'Vue.js', category: 'frontend', isCore: true },
         { id: 'tech-nitro' as TechnologyId, name: 'Nitro API Engine', category: 'systems', isCore: true },
-        { id: 'tech-antigravity' as TechnologyId, name: 'Antigravity (AI-Assisted)', category: 'architecture', isCore: true },
         { id: 'tech-tailwind' as TechnologyId, name: 'Tailwind CSS', category: 'frontend', isCore: true },
         { id: 'tech-typescript' as TechnologyId, name: 'TypeScript', category: 'architecture', isCore: true },
       ],
+      assisted: ['Antigravity'],
       architecturalDecisions: [
         {
           decision: 'Nuxt 4 Composition API with Scalable Reusable Components',

@@ -370,6 +370,19 @@ export default function TechnicalProjectsTable({
                             +{project.technical.stack.length - 4}
                           </span>
                         )}
+                        {project.technical.assisted && project.technical.assisted.length > 0 && (
+                          <div className="ml-1 pl-1.5 border-l border-cream/15 flex items-center gap-1">
+                            {project.technical.assisted.map((tech, aIdx) => (
+                              <TechLogoBadge
+                                key={aIdx}
+                                tech={tech}
+                                size="sm"
+                                tooltipSide="top"
+                                isCore={true}
+                              />
+                            ))}
+                          </div>
+                        )}
                       </div>
                     </div>
 
@@ -533,23 +546,45 @@ export default function TechnicalProjectsTable({
                           </div>
                         )}
 
-                        {/* Full Stack Inventory */}
-                        <div>
-                          <div className="font-mono text-xs text-cream/60 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                            <Code2 className="w-3.5 h-3.5 text-ochre" />
-                            <span>Technology Stack</span>
+                        {/* Full Stack Inventory & AI-Assisted Section */}
+                        <div className="flex flex-wrap items-end justify-between gap-4">
+                          <div>
+                            <div className="font-mono text-xs text-cream/60 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                              <Code2 className="w-3.5 h-3.5 text-ochre" />
+                              <span>Technology Stack</span>
+                            </div>
+                            <div className="flex flex-wrap gap-2 items-center">
+                              {project.technical.stack.map((tech) => (
+                                <TechLogoBadge
+                                  key={tech.id}
+                                  tech={tech.name}
+                                  size="md"
+                                  tooltipSide="top"
+                                  isCore={tech.isCore}
+                                />
+                              ))}
+                            </div>
                           </div>
-                          <div className="flex flex-wrap gap-2 items-center">
-                            {project.technical.stack.map((tech) => (
-                              <TechLogoBadge
-                                key={tech.id}
-                                tech={tech.name}
-                                size="md"
-                                tooltipSide="top"
-                                isCore={tech.isCore}
-                              />
-                            ))}
-                          </div>
+
+                          {project.technical.assisted && project.technical.assisted.length > 0 && (
+                            <div className="flex flex-col items-start lg:items-end">
+                              <div className="font-mono text-xs text-ochre/90 uppercase tracking-wider mb-2 flex items-center gap-1.5 font-semibold">
+                                <span className="w-1.5 h-1.5 rounded-full bg-ochre animate-pulse" />
+                                <span>Assisted</span>
+                              </div>
+                              <div className="flex flex-wrap gap-2 items-center">
+                                {project.technical.assisted.map((tech, aIdx) => (
+                                  <TechLogoBadge
+                                    key={aIdx}
+                                    tech={tech}
+                                    size="md"
+                                    tooltipSide="top"
+                                    isCore={true}
+                                  />
+                                ))}
+                              </div>
+                            </div>
+                          )}
                         </div>
 
                         {/* External Verification Links */}
