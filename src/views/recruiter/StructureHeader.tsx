@@ -82,8 +82,8 @@ export default function StructureHeader({ onBackToThreshold }: StructureHeaderPr
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-ochre opacity-75 motion-reduce:animate-none" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-ochre" />
               </span>
-              <span className="hidden sm:inline">SYSTEM STATUS: AVAILABLE FOR HIRE [WEST JAVA / REMOTE READY]</span>
-              <span className="sm:hidden">STATUS: AVAILABLE FOR HIRE [REMOTE READY]</span>
+              <span className="hidden sm:inline">SYSTEM STATUS: AVAILABLE FOR HIRE [WEST JAVA]</span>
+              <span className="sm:hidden">STATUS: AVAILABLE FOR HIRE [WEST JAVA]</span>
             </div>
 
             {/* Executive Bio Narrative with Editorial Hierarchy */}
