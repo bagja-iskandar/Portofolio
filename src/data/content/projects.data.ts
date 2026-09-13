@@ -101,14 +101,7 @@ export const SELECTED_PROJECTS: ReadonlyArray<Project> = [
         caption: 'Figure 1.1: Multi-currency transfer workflow and wallet management interface.',
       },
     },
-    links: [
-      {
-        type: 'case_study',
-        label: 'Project Overview',
-        url: 'https://github.com/bagja-iskandar',
-        isExternal: true,
-      },
-    ],
+    links: [],
   },
   {
     id: 'proj-wms' as ProjectId,

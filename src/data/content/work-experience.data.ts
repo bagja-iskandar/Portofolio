@@ -56,8 +56,6 @@ export const WORK_EXPERIENCE_DATA: ReadonlyArray<WorkExperienceItem> = [
       'Stripe Android SDK',
       'Gradle Kotlin DSL (AGP 9.2)',
     ],
-    credentialLabel: 'PROJECT OVERVIEW',
-    credentialUrl: 'https://swap-on.com',
   },
   {
     id: 'exp-diskominfo',
