@@ -45,7 +45,6 @@ import {
   SiCanvas,
   SiAndroidstudio,
   SiRedis,
-  SiGithubcopilot,
   SiGooglechrome,
 } from 'react-icons/si';
 import { Code2, Cpu, Layers, Network, Activity, GitBranch } from 'lucide-react';
@@ -86,13 +85,13 @@ function getTechVisual(rawTech: string): TechVisual {
   if (t.includes('sdlc') || t.includes('life cycle') || t.includes('lifecycle')) return { type: 'text', text: 'SDLC' };
   if (t.includes('rest')) return { type: 'text', text: 'REST' };
   if (t.includes('antigravity')) return { type: 'text', text: 'AG' };
+  if (t.includes('codex')) return { type: 'text', text: 'CDX' };
   if (t.includes('pedagogy') || (t.includes('artificial intelligence') && !t.includes('python'))) return { type: 'text', text: 'AI' };
   if (t.includes('gcn') || (t.includes('graph') && t.includes('convolutional'))) return { type: 'text', text: 'GCN' };
   if (t.includes('ssm') || (t.includes('state space') && t.includes('mamba'))) return { type: 'text', text: 'SSM' };
 
   // 2. High-Specificity External SDKs, Tools & Frameworks (Checked before generic language / substring matchers)
   if (t.includes('bootstrap')) return { type: 'icon', Icon: SiBootstrap };
-  if (t.includes('copilot')) return { type: 'icon', Icon: SiGithubcopilot };
   if (t.includes('devtools') || t.includes('chrome')) return { type: 'icon', Icon: SiGooglechrome };
   if (t.includes('stripe')) return { type: 'icon', Icon: SiStripe };
   if (t.includes('gradle')) return { type: 'icon', Icon: SiGradle };

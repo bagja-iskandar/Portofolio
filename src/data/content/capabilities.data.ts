@@ -188,8 +188,8 @@ export const CAPABILITIES_TAXONOMY: CapabilitiesTaxonomy = {
           id: 'cap-ai-pedagogy-tools' as CapabilityId,
           name: 'AI Laboratory Instruction & AI-Assisted Development',
           scope:
-            'Guiding students through fundamental AI programming workflows and actively leveraging AI-assisted development tools (Antigravity, Copilot, Codex) for rapid problem solving.',
-          technologies: ['Artificial Intelligence Pedagogy', 'Python 3', 'Antigravity', 'GitHub Copilot'],
+            'Guiding students through fundamental AI programming workflows and actively leveraging AI-assisted development tools (Antigravity, OpenAI Codex) for rapid problem solving.',
+          technologies: ['Artificial Intelligence Pedagogy', 'Python 3', 'Antigravity', 'OpenAI Codex'],
           evidencedInProjects: ['proj-bci-research' as ProjectId],
           standardsCompliance: ['Academic Laboratory Curriculum Standards'],
         },

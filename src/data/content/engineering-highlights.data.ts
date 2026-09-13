@@ -41,9 +41,9 @@ export const ENGINEERING_HIGHLIGHTS: EngineeringHighlightsRollup = {
       value: '2',
       unit: 'Countries (ID ↔ JP)',
       description:
-        'Engineered responsive wallet, FX rate, and recipient transfer flows for ID ↔ JP remittance.',
+        'Engineered responsive wallet, FX rate, and recipient transfer flows for ID ↔ JP remittance with AI-assisted Codex acceleration.',
       context: 'Swap-On cross-border fintech application',
-      verifiedStandard: 'Production Delivery',
+      verifiedStandard: 'AI-Assisted Codex',
     },
     {
       id: 'metric-monorepo-stack',
@@ -51,9 +51,9 @@ export const ENGINEERING_HIGHLIGHTS: EngineeringHighlightsRollup = {
       value: '16 / 16',
       unit: 'SRS Use Cases (100%)',
       description:
-        'Transformed college SRS into production cold-chain WMS via Next.js 15, NestJS 10 & live IoT telemetry.',
+        'Transformed college SRS into production cold-chain WMS via Next.js 15, NestJS 10 & live IoT telemetry with Antigravity AI orchestration.',
       context: 'WMS Nusantara live production on Vercel',
-      verifiedStandard: 'SRS Traceability & Vercel Live',
+      verifiedStandard: 'AI-Assisted Antigravity',
       linkUrl: 'https://wms-porto.vercel.app',
       linkText: 'Live App',
     },
@@ -63,9 +63,9 @@ export const ENGINEERING_HIGHLIGHTS: EngineeringHighlightsRollup = {
       value: '100%',
       unit: 'Resolved (CMS)',
       description:
-        'Refactored legacy UI modules, resolved layout regressions, and elevated municipal CMS maintainability.',
+        'Refactored legacy UI modules, resolved layout regressions, and elevated municipal CMS maintainability with AI-assisted engineering.',
       context: 'Diskominfo Kota Cimahi (08/2025 – 09/2025)',
-      verifiedStandard: 'Municipal IT Sign-Off',
+      verifiedStandard: 'AI-Assisted',
     },
     {
       id: 'metric-ta-ai',
@@ -98,7 +98,7 @@ export const ENGINEERING_HIGHLIGHTS: EngineeringHighlightsRollup = {
       premise:
         'Modern software engineering thrives at the intersection of robust web runtimes and applied machine learning tools.',
       enforcement:
-        'Combine deep theoretical understanding of algorithms (GNN, Mamba) with practical mastery of AI-assisted engineering tools (Antigravity, Copilot, Codex).',
+        'Combine deep theoretical understanding of algorithms (GNN, Mamba) with practical mastery of AI-assisted engineering tools (Antigravity, Codex).',
     },
   ],
 };

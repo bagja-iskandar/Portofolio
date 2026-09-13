@@ -21,7 +21,7 @@ export const WORK_EXPERIENCE_DATA: ReadonlyArray<WorkExperienceItem> = [
     problemStatement:
       'International money transfers demand zero-error user journeys, real-time currency exchange feedback, clear fee disclosures, and strict input validation for foreign recipient bank accounts across mobile operating systems.',
     engineeringSolution:
-      'Architected a cross-platform mobile client using Kotlin Multiplatform (KMP) and Compose Multiplatform alongside Android Native (XML / Material Components) and iOS (Swift/SwiftUI); developed core application modules including multi-currency wallet management, exchange rate calculators, recipient directories, transfer execution workflows, and Stripe payment integration.',
+      'Architected a cross-platform mobile client using Kotlin Multiplatform (KMP) and Compose Multiplatform alongside Android Native (XML / Material Components) and iOS (Swift/SwiftUI), accelerated via AI-assisted engineering with OpenAI Codex; developed core application modules including multi-currency wallet management, exchange rate calculators, recipient directories, transfer execution workflows, and Stripe payment integration.',
     keyDeliverables: [
       'End-to-end multi-currency wallet & exchange pipeline with responsive UI feedback on Compose Multiplatform',
       'Cross-platform shared business logic and UI architecture using Kotlin Multiplatform (KMP) across Android and iOS',
@@ -55,6 +55,7 @@ export const WORK_EXPERIENCE_DATA: ReadonlyArray<WorkExperienceItem> = [
       'Swift / SwiftUI (iOS)',
       'Stripe Android SDK',
       'Gradle Kotlin DSL (AGP 9.2)',
+      'AI-Assisted Codex',
     ],
   },
   {
@@ -106,6 +107,7 @@ export const WORK_EXPERIENCE_DATA: ReadonlyArray<WorkExperienceItem> = [
       'Vite',
       'Docker',
       'Git',
+      'AI-Assisted Refactoring',
     ],
     credentialLabel: 'INTERNSHIP PROFILE',
     credentialUrl: 'https://linkedin.com/in/bagja-iskandar-jamil',

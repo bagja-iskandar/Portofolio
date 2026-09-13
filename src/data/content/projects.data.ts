@@ -26,7 +26,7 @@ export const SELECTED_PROJECTS: ReadonlyArray<Project> = [
       problemStatement:
         'International money transfers demand zero-error user journeys, real-time currency exchange feedback, clear fee disclosures, and strict input validation for foreign recipient bank accounts across mobile operating systems.',
       engineeringSolution:
-        'Architected a cross-platform mobile client using Kotlin Multiplatform (KMP) and Compose Multiplatform alongside Android Native (XML / Material Components) and iOS (Swift/SwiftUI); developed core application modules including multi-currency wallet management, exchange rate calculators, recipient directories, transfer execution workflows, and Stripe payment integration.',
+        'Architected a cross-platform mobile client using Kotlin Multiplatform (KMP) and Compose Multiplatform alongside Android Native (XML / Material Components) and iOS (Swift/SwiftUI), accelerated via AI-assisted engineering with OpenAI Codex; developed core application modules including multi-currency wallet management, exchange rate calculators, recipient directories, transfer execution workflows, and Stripe payment integration.',
       impactMetrics: [
         'Cross-platform shared business logic and UI architecture using Kotlin Multiplatform (KMP) across Android and iOS',
         'Dual Android UI implementation integrating Compose Multiplatform with legacy Android View System (XML / Material Components)',
@@ -49,9 +49,9 @@ export const SELECTED_PROJECTS: ReadonlyArray<Project> = [
       ],
     },
     expressionRead: {
-      editorialHeadline: 'Clarity and Precision in Cross-Border Financial Interaction',
+      editorialHeadline: 'Frictionless Remittance Across Sovereign Currencies',
       narrativeStory:
-        'Handling money across international borders requires an interface that communicates absolute clarity at every step. Every input, conversion rate, and fee breakdown was structured to give users complete confidence in their transactions.',
+        'Cross-border financial transfers demand unyielding clarity. Built across Kotlin Multiplatform and Jetpack Compose, the Swap-On interface simplifies cross-currency transactions between Indonesia and Japan through rigorous input validation and tactile user feedback.',
       craftReflection:
         'In financial applications, component consistency is not merely aesthetic—it is the direct foundation of user trust and operational security.',
       pullQuote: {
@@ -68,6 +68,7 @@ export const SELECTED_PROJECTS: ReadonlyArray<Project> = [
         { id: 'tech-swift' as TechnologyId, name: 'Swift / SwiftUI (iOS)', category: 'frontend', isCore: false },
         { id: 'tech-stripe' as TechnologyId, name: 'Stripe Android SDK', category: 'architecture', isCore: false },
         { id: 'tech-gradle' as TechnologyId, name: 'Gradle Kotlin DSL', category: 'systems', isCore: false },
+        { id: 'tech-codex' as TechnologyId, name: 'OpenAI Codex (AI-Assisted)', category: 'architecture', isCore: false },
       ],
       architecturalDecisions: [
         {
@@ -121,7 +122,7 @@ export const SELECTED_PROJECTS: ReadonlyArray<Project> = [
       problemStatement:
         'Cold-chain logistics operations demand strict temperature compliance (-20°C to 4°C), zero inventory discrepancies across multi-tier warehouse racks, synchronized driver dispatch with digital POD, and resilient database connection pooling under serverless execution.',
       engineeringSolution:
-        'Architected a full-stack monorepo pairing Next.js 15 App Router (React 19) with a 10-module NestJS Clean Architecture backend; implemented Supabase PostgreSQL 16 with PgBouncer transaction pooling (port 6543, syd1 region), Prisma v6 ORM, TanStack Query v5, role-based access control (Admin, Driver, Customer), and real-time sub-zero telemetry monitoring.',
+        'Architected a full-stack monorepo pairing Next.js 15 App Router (React 19) with a 10-module NestJS Clean Architecture backend, engineered with Antigravity AI orchestration; implemented Supabase PostgreSQL 16 with PgBouncer transaction pooling (port 6543, syd1 region), Prisma v6 ORM, TanStack Query v5, role-based access control (Admin, Driver, Customer), and real-time sub-zero telemetry monitoring.',
       impactMetrics: [
         '100% SRS functional compliance (16/16 use cases verified E2E from academic blueprint to live production)',
         'Production serverless cloud deployment on Vercel Edge with Sydney (syd1) microservices & Supabase PostgreSQL pooling',
@@ -164,6 +165,7 @@ export const SELECTED_PROJECTS: ReadonlyArray<Project> = [
         { id: 'tech-tanstack-query' as TechnologyId, name: 'TanStack React Query v5', category: 'frontend', isCore: false },
         { id: 'tech-typescript' as TechnologyId, name: 'TypeScript', category: 'architecture', isCore: true },
         { id: 'tech-docker' as TechnologyId, name: 'Docker & MinIO S3', category: 'systems', isCore: false },
+        { id: 'tech-antigravity' as TechnologyId, name: 'Antigravity (AI-Assisted)', category: 'architecture', isCore: false },
       ],
       architecturalDecisions: [
         {
@@ -241,7 +243,7 @@ export const SELECTED_PROJECTS: ReadonlyArray<Project> = [
       problemStatement:
         'Productivity dashboards frequently suffer from sluggish reactivity, cumbersome filtering across multi-tier entities (projects, tasks, milestones), and state synchronization issues.',
       engineeringSolution:
-        'Engineered modular component architecture utilizing Nuxt 4, Vue.js Composition API, and Nitro API services; built dynamic filtering, status tracking, interactive modals, and persistent data storage integration.',
+        'Engineered modular component architecture utilizing Nuxt 4, Vue.js Composition API, and Nitro API services, accelerated with Antigravity AI orchestration; built dynamic filtering, status tracking, interactive modals, and persistent data storage integration.',
       impactMetrics: [
         'Comprehensive project, task, milestone, and activity tracking dashboard',
         'Sub-100ms multi-parameter filtering across extensive task datasets',
@@ -281,6 +283,7 @@ export const SELECTED_PROJECTS: ReadonlyArray<Project> = [
         { id: 'tech-nitro' as TechnologyId, name: 'Nitro API Engine', category: 'systems', isCore: true },
         { id: 'tech-tailwind' as TechnologyId, name: 'Tailwind CSS', category: 'frontend', isCore: true },
         { id: 'tech-typescript' as TechnologyId, name: 'TypeScript', category: 'architecture', isCore: true },
+        { id: 'tech-antigravity' as TechnologyId, name: 'Antigravity (AI-Assisted)', category: 'architecture', isCore: false },
       ],
       architecturalDecisions: [
         {
