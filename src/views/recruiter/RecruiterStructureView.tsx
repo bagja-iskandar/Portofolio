@@ -195,7 +195,7 @@ export default function RecruiterStructureView({
         {/* Main Structural Layout Content */}
         <main
           ref={mainRef}
-          className="relative z-10 max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 flex flex-col will-change-[transform,opacity]"
+          className="relative z-10 max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 flex flex-col will-change-[transform,opacity]"
         >
           {/* Technical Header & Telemetry */}
           <div className="gsap-header">
