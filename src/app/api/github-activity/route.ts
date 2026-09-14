@@ -67,7 +67,7 @@ function formatTelemetry(isoDate: string): {
   }
 
   const shortTelemetry = `${shortUnit} AGO`;
-  const relativeTelemetry = `COMMIT: ${shortUnit} AGO`;
+  const relativeTelemetry = `UPDATED: ${shortUnit} AGO`;
   const isRecent = diffDays <= 2;
 
   const dateObj = new Date(isoDate);

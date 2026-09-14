@@ -33,38 +33,39 @@ export function GitHubActivityBadge({
     );
   }
 
-  const tooltipText = `GitHub Telemetry // ${activity.repoName} [${activity.defaultBranch}] • Pushed on ${activity.formattedDate}`;
+  const tooltipText = `GitHub Telemetry // ${activity.repoName} [${activity.defaultBranch}] • Last updated on ${activity.formattedDate}`;
 
   if (variant === 'telemetry-pill' || variant === 'drawer') {
     return (
       <span
         title={tooltipText}
-        className={`inline-flex items-center gap-1.5 px-2 py-1 rounded border border-cream/10 bg-[#141210] font-mono text-[9px] md:text-[10px] tracking-wider text-[#8A847C] uppercase select-none transition-colors hover:border-ochre/30 hover:text-cream/80 ${className}`}
+        className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded border border-emerald-500/20 bg-[#0D1511] font-mono text-[9px] md:text-[10px] tracking-wider uppercase select-none transition-colors hover:border-emerald-500/40 ${className}`}
       >
-        <span
-          className={`w-1.5 h-1.5 rounded-full shrink-0 ${
-            activity.isRecent ? 'bg-ochre animate-pulse' : 'bg-ochre/80'
-          }`}
-        />
-        <span className="text-ochre font-medium">REPO TELEMETRY:</span>
-        <span className="text-cream/70">PUSHED {activity.shortTelemetry}</span>
+        <div className="relative flex h-1.5 w-1.5 shrink-0">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-40 motion-reduce:animate-none" />
+          <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500 shadow-[0_0_4px_rgba(16,185,129,0.3)]" />
+        </div>
+        <span className="text-emerald-500/90 font-medium">REPO TELEMETRY:</span>
+        <span className="text-cream/90 font-medium">UPDATED {activity.shortTelemetry}</span>
       </span>
     );
   }
 
-  // Compact badge for table summary rows (analytical machine telemetry)
+  // Compact badge for table summary rows (harmonic emerald telemetry)
   return (
     <span
       title={tooltipText}
-      className={`inline-flex items-center gap-1.5 font-mono text-[9px] md:text-[10px] tracking-wider text-[#8A847C] uppercase select-none ${className}`}
+      className={`inline-flex items-center gap-1.5 font-mono text-[9px] md:text-[10px] tracking-wider uppercase select-none ${className}`}
     >
-      <span
-        className={`w-1.5 h-1.5 rounded-full shrink-0 ${
-          activity.isRecent ? 'bg-ochre animate-pulse' : 'bg-ochre/80'
-        }`}
-      />
-      <span className="hover:text-cream/70 transition-colors">
-        {activity.relativeTelemetry}
+      <div className="relative flex h-1.5 w-1.5 shrink-0">
+        {activity.isRecent && (
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-40 motion-reduce:animate-none" />
+        )}
+        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500 shadow-[0_0_4px_rgba(16,185,129,0.3)]" />
+      </div>
+      <span className="text-emerald-500/90 font-medium">UPDATED:</span>
+      <span className="text-cream/90 font-medium hover:text-cream transition-colors">
+        {activity.shortTelemetry}
       </span>
     </span>
   );
