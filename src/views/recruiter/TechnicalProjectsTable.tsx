@@ -16,6 +16,7 @@ import {
   Target,
 } from 'lucide-react';
 import { TechLogoBadge } from '@/components/common/TechLogoBadge';
+import { GitHubActivityBadge } from '@/components/common/GitHubActivityBadge';
 
 interface TechnicalProjectsTableProps {
   projects?: ReadonlyArray<Project>;
@@ -182,6 +183,8 @@ export default function TechnicalProjectsTable({
                             <span className="text-ochre/90 font-medium">{project.role}</span>
                             <span>&bull;</span>
                             <span>{project.year}</span>
+                            <span>&bull;</span>
+                            <GitHubActivityBadge projectId={project.id} variant="compact" />
                           </div>
                         </div>
                       </div>
@@ -289,10 +292,12 @@ export default function TechnicalProjectsTable({
                         <p className="font-sans text-xs text-[#8A847C] line-clamp-1 mt-0.5">
                           {project.subtitle}
                         </p>
-                        <div className="flex items-center gap-2 font-mono text-[11px] text-cream/50 mt-1.5">
+                        <div className="flex flex-wrap items-center gap-2 font-mono text-[11px] text-cream/50 mt-1.5">
                           <span>{project.role}</span>
                           <span>&bull;</span>
                           <span>{project.year}</span>
+                          <span>&bull;</span>
+                          <GitHubActivityBadge projectId={project.id} variant="compact" />
                         </div>
                       </div>
                     </div>
@@ -587,13 +592,14 @@ export default function TechnicalProjectsTable({
                           )}
                         </div>
 
-                        {/* External Verification Links */}
+                        {/* External Verification Links & Live Repository Activity */}
                         {project.links && project.links.length > 0 && (
                           <div className="pt-2">
-                            <div className="font-mono text-xs text-cream/60 uppercase tracking-wider mb-2.5">
-                              Verification & Artifacts
+                            <div className="font-mono text-xs text-cream/60 uppercase tracking-wider mb-2.5 flex flex-wrap items-center justify-between gap-2">
+                              <span>Verification &amp; Artifacts</span>
+                              <GitHubActivityBadge projectId={project.id} variant="drawer" />
                             </div>
-                            <div className="flex flex-wrap gap-2">
+                            <div className="flex flex-wrap items-center gap-2">
                               {project.links.map((link, lIdx) => (
                                 <a
                                   key={lIdx}
