@@ -25,6 +25,33 @@ function getInkClipPolygon(k: number): string {
   }
 }
 
+/**
+ * Generates a Path2D polygon for the Ink region at split parameter kVal for Canvas 2D clipping.
+ */
+function createInkPolygonPath(kVal: number, w: number, h: number): Path2D {
+  const path = new Path2D();
+  path.moveTo(0, 0);
+  if (kVal >= 2.0) {
+    path.lineTo(w, 0);
+    path.lineTo(w, h);
+    path.lineTo(0, h);
+  } else if (kVal >= 1.0) {
+    const pX = Math.min(w, (kVal - 1) * w);
+    const pY = Math.min(h, (kVal - 1) * h);
+    path.lineTo(w, 0);
+    path.lineTo(w, pY);
+    path.lineTo(pX, h);
+    path.lineTo(0, h);
+  } else if (kVal > 0) {
+    const pX = Math.min(w, kVal * w);
+    const pY = Math.min(h, kVal * h);
+    path.lineTo(pX, 0);
+    path.lineTo(0, pY);
+  }
+  path.closePath();
+  return path;
+}
+
 interface CachedRect {
   left: number;
   right: number;
@@ -425,6 +452,11 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
             }
           }
 
+          // Pass 1: STRUCTURE CORE GRID (Ochre Gold #C98A4B strictly clipped to Structure side)
+          ctx.save();
+          const structureClip = createInkPolygonPath(k.current, width, height);
+          ctx.clip(structureClip);
+
           // 1. Draw Base Grid Lines (Ochre Gold #C98A4B at baseOpacity)
           ctx.strokeStyle = `rgba(201, 138, 75, ${BASE_OPACITY})`;
           ctx.lineWidth = 1;
@@ -459,10 +491,52 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
               ctx.fill();
             }
           }
+          ctx.restore();
+
+          // Pass 2: PERMEABLE GRID BLEED INTO EXPRESSION (Raw Charcoal #141210 at 2–5% opacity fading over 80px)
+          const diagLen = Math.hypot(width, height);
+          const deltaKBleed = (80 * diagLen) / (width * height);
+          const kBleed = k.current + deltaKBleed;
+
+          ctx.save();
+          const bleedClip = createInkPolygonPath(kBleed, width, height);
+          ctx.clip(bleedClip);
+
+          // Normal vector pointing from Structure into Expression
+          const nx = height / diagLen;
+          const ny = width / diagLen;
+          const invN = (width * height) / diagLen;
+          const seamDist = k.current * invN;
+          const seamX = seamDist * nx;
+          const seamY = seamDist * ny;
+          const bleedEndX = seamX + 80 * nx;
+          const bleedEndY = seamY + 80 * ny;
+
+          const bleedGrad = ctx.createLinearGradient(
+            seamX - 2 * nx,
+            seamY - 2 * ny,
+            bleedEndX,
+            bleedEndY
+          );
+          // Before seam (Structure side): transparent
+          bleedGrad.addColorStop(0, 'rgba(20, 18, 16, 0)');
+          // At seam: delicate raw charcoal drafting indentation mark (4.5% opacity)
+          bleedGrad.addColorStop(0.05, 'rgba(20, 18, 16, 0.045)');
+          bleedGrad.addColorStop(0.40, 'rgba(20, 18, 16, 0.022)');
+          // At 80px: completely feathered to 0
+          bleedGrad.addColorStop(1.0, 'rgba(20, 18, 16, 0)');
+
+          ctx.strokeStyle = bleedGrad;
+          ctx.lineWidth = 1;
+          ctx.stroke(baseGridPath);
+          if (curIntensity > 0.001) {
+            ctx.stroke(interactivePath);
+          }
+          ctx.restore();
         }
       }
 
-      // --- B. EXPRESSION: Organic Dark Brown Dust Field (Ultra-fast 3-tier batch rendering) ---
+      // --- B. EXPRESSION & PERMEABLE SEAM: Organic Dark Brown & Glowing Ochre Gold Dust Field ---
       if (dustCanvasRef.current) {
         const ctx = dustCanvasRef.current.getContext('2d');
         if (ctx) {
@@ -472,10 +546,15 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
           const time = dustTimeRef.current;
           const particles = dustParticlesRef.current;
 
-          // Batched paths for tiers 0, 1, 2 for maximum Canvas 2D performance
-          const tier0: DustParticle[] = [];
-          const tier1: DustParticle[] = [];
-          const tier2: DustParticle[] = [];
+          const diagLen = Math.hypot(width, height);
+          const invN = (width * height) / diagLen;
+          const D_PENETRATION = 140; // 140px bleed zone into Structure
+
+          // Batched buckets for 60-120fps zero-allocation rendering
+          const exprTier0: { cx: number; y: number; r: number }[] = [];
+          const exprTier1: { cx: number; y: number; r: number }[] = [];
+          const exprTier2: { cx: number; y: number; r: number }[] = [];
+          const goldBleed: { cx: number; y: number; r: number; alpha: number }[] = [];
 
           for (let i = 0; i < particles.length; i++) {
             const p = particles[i];
@@ -485,43 +564,84 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
               p.x = Math.random() * width;
             }
 
-            if (p.tier === 0) tier0.push(p);
-            else if (p.tier === 1) tier1.push(p);
-            else tier2.push(p);
+            const cx = p.x + p.swayAmp * Math.sin(time * p.swayFreq + p.swayOffset);
+
+            // Signed perpendicular distance to dynamic diagonal seam:
+            // dSigned > 0: Expression (Ivory)
+            // dSigned <= 0: Structure (Ink)
+            const dSigned = (cx / width + p.y / height - k.current) * invN;
+
+            if (dSigned >= 0) {
+              // Inside Expression: Native Organic Dark Brown
+              if (p.tier === 0) exprTier0.push({ cx, y: p.y, r: p.radius });
+              else if (p.tier === 1) exprTier1.push({ cx, y: p.y, r: p.radius });
+              else exprTier2.push({ cx, y: p.y, r: p.radius });
+            } else {
+              // Crossed the seam into Structure! Transmute to Ochre Gold
+              const penetration = -dSigned;
+              if (penetration <= D_PENETRATION) {
+                const t = 1.0 - penetration / D_PENETRATION;
+                const smoothFade = t * t * (3 - 2 * t); // Hermite smoothstep
+                const baseAlpha = p.tier === 0 ? 0.35 : p.tier === 1 ? 0.60 : 0.85;
+                const alpha = baseAlpha * smoothFade;
+                if (alpha > 0.01) {
+                  goldBleed.push({ cx, y: p.y, r: p.radius, alpha });
+                }
+              }
+            }
           }
 
-          // Tier 0: Far, softer dark brown (1 batch draw call)
-          ctx.fillStyle = 'rgba(75, 52, 38, 0.22)';
-          ctx.beginPath();
-          for (let i = 0; i < tier0.length; i++) {
-            const p = tier0[i];
-            const cx = p.x + p.swayAmp * Math.sin(time * p.swayFreq + p.swayOffset);
-            ctx.moveTo(cx + p.radius, p.y);
-            ctx.arc(cx, p.y, p.radius, 0, Math.PI * 2);
+          // 1. Render Expression Native Particles (3 fast batch calls)
+          if (exprTier0.length > 0) {
+            ctx.fillStyle = 'rgba(75, 52, 38, 0.22)';
+            ctx.beginPath();
+            for (let i = 0; i < exprTier0.length; i++) {
+              const p = exprTier0[i];
+              ctx.moveTo(p.cx + p.r, p.y);
+              ctx.arc(p.cx, p.y, p.r, 0, Math.PI * 2);
+            }
+            ctx.fill();
           }
-          ctx.fill();
 
-          // Tier 1: Mid, rich espresso brown (1 batch draw call)
-          ctx.fillStyle = 'rgba(58, 38, 26, 0.35)';
-          ctx.beginPath();
-          for (let i = 0; i < tier1.length; i++) {
-            const p = tier1[i];
-            const cx = p.x + p.swayAmp * Math.sin(time * p.swayFreq + p.swayOffset);
-            ctx.moveTo(cx + p.radius, p.y);
-            ctx.arc(cx, p.y, p.radius, 0, Math.PI * 2);
+          if (exprTier1.length > 0) {
+            ctx.fillStyle = 'rgba(58, 38, 26, 0.35)';
+            ctx.beginPath();
+            for (let i = 0; i < exprTier1.length; i++) {
+              const p = exprTier1[i];
+              ctx.moveTo(p.cx + p.r, p.y);
+              ctx.arc(p.cx, p.y, p.r, 0, Math.PI * 2);
+            }
+            ctx.fill();
           }
-          ctx.fill();
 
-          // Tier 2: Near, deep dark brown (1 batch draw call)
-          ctx.fillStyle = 'rgba(42, 26, 16, 0.52)';
-          ctx.beginPath();
-          for (let i = 0; i < tier2.length; i++) {
-            const p = tier2[i];
-            const cx = p.x + p.swayAmp * Math.sin(time * p.swayFreq + p.swayOffset);
-            ctx.moveTo(cx + p.radius, p.y);
-            ctx.arc(cx, p.y, p.radius, 0, Math.PI * 2);
+          if (exprTier2.length > 0) {
+            ctx.fillStyle = 'rgba(42, 26, 16, 0.52)';
+            ctx.beginPath();
+            for (let i = 0; i < exprTier2.length; i++) {
+              const p = exprTier2[i];
+              ctx.moveTo(p.cx + p.r, p.y);
+              ctx.arc(p.cx, p.y, p.r, 0, Math.PI * 2);
+            }
+            ctx.fill();
           }
-          ctx.fill();
+
+          // 2. Render Permeable Gold Dust in Structure (Ochre Gold #C98A4B with warm halo)
+          for (let i = 0; i < goldBleed.length; i++) {
+            const p = goldBleed[i];
+            // Core luminous ember dot
+            ctx.fillStyle = `rgba(201, 138, 75, ${p.alpha.toFixed(3)})`;
+            ctx.beginPath();
+            ctx.arc(p.cx, p.y, p.r, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Subtle warm halo for near/brighter particles
+            if (p.alpha > 0.25) {
+              ctx.fillStyle = `rgba(245, 206, 150, ${(p.alpha * 0.25).toFixed(3)})`;
+              ctx.beginPath();
+              ctx.arc(p.cx, p.y, p.r * 2.2, 0, Math.PI * 2);
+              ctx.fill();
+            }
+          }
         }
       }
     }
@@ -950,11 +1070,6 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
             backgroundImage: 'radial-gradient(ellipse at 75% 75%, transparent 50%, rgba(20, 18, 16, 0.4) 100%)',
           }}
         />
-        {/* Organic Ambient Dust Field in Rich Dark Brown (Canvas 2D) */}
-        <canvas
-          ref={dustCanvasRef}
-          className="absolute inset-0 pointer-events-none"
-        />
       </div>
 
       {/* TOP-LEFT INK CANVAS (Dynamic Straight Diagonal Clip-Path) */}
@@ -963,13 +1078,21 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
         className="absolute inset-0 bg-ink will-change-[clip-path] transform-gpu overflow-hidden"
         style={{ clipPath: 'polygon(0% 0%, 100% 0%, 0% 100%)' }}
         aria-hidden="true"
-      >
-        {/* Interactive Grid Magnetic Field & Architectural Drafting Grid (Canvas 2D) */}
-        <canvas
-          ref={goldCanvasRef}
-          className="absolute inset-0 pointer-events-none"
-        />
-      </div>
+      />
+
+      {/* PERMEABLE ARCHITECTURAL DRAFTING GRID (Canvas 2D - Fullscreen Permeable Seam) */}
+      <canvas
+        ref={goldCanvasRef}
+        className="absolute inset-0 pointer-events-none z-[2]"
+        aria-hidden="true"
+      />
+
+      {/* PERMEABLE ORGANIC DUST PARTICLES FIELD (Canvas 2D - Fullscreen Permeable Seam) */}
+      <canvas
+        ref={dustCanvasRef}
+        className="absolute inset-0 pointer-events-none z-[3]"
+        aria-hidden="true"
+      />
 
       {/* ================= TOP-LEFT REGION: STRUCTURE (INK CANVAS) ================= */}
       <section
