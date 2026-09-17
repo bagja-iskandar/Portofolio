@@ -87,6 +87,8 @@ interface DustParticle {
   swayFreq: number;
   swayOffset: number;
   tier: 0 | 1 | 2; // 0 = Far (soft brown), 1 = Mid (rich dark brown), 2 = Near (deep espresso)
+  dispX: number; // Dynamic displacement offset from cursor wake (X)
+  dispY: number; // Dynamic displacement offset from cursor wake (Y)
 }
 
 export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps = {}) {
@@ -553,6 +555,17 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
           const invN = (width * height) / diagLen;
           const D_PENETRATION = 220; // 220px gold transmutation bleed into Structure
 
+          // Pointer position for organic aerodynamic wake (fine pointer & normal motion only)
+          const isFine = isFinePointerRef.current;
+          const isReduced = prefersReducedMotionRef.current;
+          const mx = isFine && !isReduced ? mousePosRef.current.x - bounds.left : -9999;
+          const my = isFine && !isReduced ? mousePosRef.current.y - bounds.top : -9999;
+          const hasPointer = mx >= -20 && mx <= width + 20 && my >= -20 && my <= height + 20;
+
+          const WAKE_RADIUS = 110;
+          const WAKE_RADIUS_SQ = WAKE_RADIUS * WAKE_RADIUS;
+          const MAX_DISP = 22;
+
           // Batched buckets for 60-120fps zero-allocation rendering
           const exprTier0: { cx: number; y: number; r: number }[] = [];
           const exprTier1: { cx: number; y: number; r: number }[] = [];
@@ -563,24 +576,57 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
             const p = particles[i];
             p.y += p.speedY;
 
-            const cx = p.x + p.swayAmp * Math.sin(time * p.swayFreq + p.swayOffset);
+            // Fluid aerodynamic damping (viscous decay: 0.94 / frame => ~2.5s recovery)
+            p.dispX *= 0.94;
+            p.dispY *= 0.94;
+
+            const baseX = p.x + p.swayAmp * Math.sin(time * p.swayFreq + p.swayOffset);
+            const curX = baseX + p.dispX;
+            const curY = p.y + p.dispY;
+
+            if (hasPointer) {
+              const dx = curX - mx;
+              const dy = curY - my;
+              const distSq = dx * dx + dy * dy;
+
+              if (distSq < WAKE_RADIUS_SQ && distSq > 1) {
+                const dist = Math.sqrt(distSq);
+                const u = 1.0 - dist / WAKE_RADIUS;
+                const factor = u * u * (3 - 2 * u); // Hermite smoothstep
+                const push = factor * 1.6; // Gentle human hand parting force
+                p.dispX += (dx / dist) * push;
+                p.dispY += (dy / dist) * push;
+
+                // Clamp displacement to prevent abrupt jumps
+                const dispLen = Math.hypot(p.dispX, p.dispY);
+                if (dispLen > MAX_DISP) {
+                  p.dispX = (p.dispX / dispLen) * MAX_DISP;
+                  p.dispY = (p.dispY / dispLen) * MAX_DISP;
+                }
+              }
+            }
+
+            const drawX = baseX + p.dispX;
+            const drawY = p.y + p.dispY;
 
             // Signed perpendicular distance to dynamic diagonal seam:
             // dSigned > 0: Expression (Ivory)
             // dSigned <= 0: Structure (Ink)
-            const dSigned = (cx / width + p.y / height - k.current) * invN;
+            const dSigned = (drawX / width + drawY / height - k.current) * invN;
 
             // Respawn if drifted above top or deep beyond transmutation zone into Structure
             if (p.y < -14 || dSigned < -D_PENETRATION - 80) {
               p.y = height + 14;
               p.x = Math.random() * width;
+              p.dispX = 0;
+              p.dispY = 0;
             }
 
             if (dSigned >= 0) {
               // Inside Expression: Native Organic Dark Brown
-              if (p.tier === 0) exprTier0.push({ cx, y: p.y, r: p.radius });
-              else if (p.tier === 1) exprTier1.push({ cx, y: p.y, r: p.radius });
-              else exprTier2.push({ cx, y: p.y, r: p.radius });
+              if (p.tier === 0) exprTier0.push({ cx: drawX, y: drawY, r: p.radius });
+              else if (p.tier === 1) exprTier1.push({ cx: drawX, y: drawY, r: p.radius });
+              else exprTier2.push({ cx: drawX, y: drawY, r: p.radius });
             } else {
               // Crossed the seam into Structure! Transmute to Ochre Gold
               const penetration = -dSigned;
@@ -588,9 +634,14 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
                 const t = 1.0 - penetration / D_PENETRATION;
                 const smoothFade = t * t * (3 - 2 * t); // Hermite smoothstep
                 const baseAlpha = p.tier === 0 ? 0.40 : p.tier === 1 ? 0.70 : 0.92;
-                const alpha = baseAlpha * smoothFade;
+
+                // Subtle luminescence boost (+15%) when parted by cursor wake in Structure
+                const isParted = Math.hypot(p.dispX, p.dispY) > 2.0;
+                const alphaMultiplier = isParted ? 1.15 : 1.0;
+                const alpha = Math.min(1.0, baseAlpha * smoothFade * alphaMultiplier);
+
                 if (alpha > 0.01) {
-                  goldBleed.push({ cx, y: p.y, r: p.radius, alpha });
+                  goldBleed.push({ cx: drawX, y: drawY, r: p.radius, alpha });
                 }
               }
             }
@@ -955,6 +1006,8 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
         swayFreq: 0.005 + Math.random() * 0.009,
         swayOffset: Math.random() * Math.PI * 2,
         tier,
+        dispX: 0,
+        dispY: 0,
       });
     }
     dustParticlesRef.current = initialParticles;
