@@ -47,3 +47,19 @@
   clip-path: polygon(100% 0, 100% 100%, 0 100%);
   color: #141210;
 }
+
+/* ================= DUALITY MINIMALIST CIRCULAR CURSOR (§43 Desktop Fine Pointer Only) ================= */
+@media (hover: hover) and (pointer: fine) {
+  body.has-custom-cursor,
+  body.has-custom-cursor * {
+    cursor: none !important;
+  }
+
+  body.has-custom-cursor input[type="text"],
+  body.has-custom-cursor input[type="email"],
+  body.has-custom-cursor input[type="search"],
+  body.has-custom-cursor textarea {
+    cursor: text !important;
+  }
+}
+

@@ -7,6 +7,7 @@ import { ArrowLeft, ArrowRight, Compass, Layers } from 'lucide-react';
 import gsap from 'gsap';
 import { VariableFontCursorProximity } from '@/components/ui/variable-font-cursor-proximity';
 import { setDynamicFavicon } from '@/lib/favicon';
+import DualTerritoryCursor from '@/components/cursor/DualTerritoryCursor';
 
 interface ExpressionViewProps {
   onBackToThreshold?: () => void;
@@ -289,6 +290,9 @@ export default function ExpressionView({
       className="relative min-h-screen w-full bg-ivory text-charcoal flex flex-col justify-between p-6 sm:p-10 md:p-16 lg:p-20 selection:bg-[#B85A3A]/20 selection:text-charcoal overflow-hidden select-none"
       aria-label="Expression Lens — Currently Under Development"
     >
+      {/* Bespoke Circular Duality Cursor Engine */}
+      <DualTerritoryCursor mode="expression" />
+
       {/* ================= EDITORIAL PAPER CANVAS BACKGROUNDS ================= */}
 
       {/* Subtle Contemporary Editorial Paper Feel (Fine Grain Noise) */}

@@ -15,6 +15,7 @@ import DirectActionFooter from './DirectActionFooter';
 import type { StructureViewData } from '@/types/duality';
 import { STRUCTURE_VIEW_DATA } from '@/data';
 import { setDynamicFavicon } from '@/lib/favicon';
+import DualTerritoryCursor from '@/components/cursor/DualTerritoryCursor';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -189,6 +190,9 @@ export default function RecruiterStructureView({
         ref={containerRef}
         className="fixed inset-0 overflow-y-auto overflow-x-hidden overscroll-y-contain select-text bg-[#0E0D0C] text-[#EDE8DF] selection:bg-ochre selection:text-charcoal z-20"
       >
+        {/* Bespoke Circular Duality Cursor Engine */}
+        <DualTerritoryCursor mode="structure" />
+
         {/* Background Architectural Atmosphere Canvas with Animated Gold Traces */}
         <StructureAtmosphere />
 
