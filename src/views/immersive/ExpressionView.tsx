@@ -23,6 +23,10 @@ interface DustParticle {
   swayFreq: number;
   swayOffset: number;
   tier: 0 | 1 | 2;
+  dispX: number;
+  dispY: number;
+  drawX: number;
+  drawY: number;
 }
 
 export default function ExpressionView({
@@ -36,6 +40,9 @@ export default function ExpressionView({
   const rafIdRef = useRef<number | null>(null);
   const dustParticlesRef = useRef<DustParticle[]>([]);
   const isExitingRef = useRef(false);
+  const mousePosRef = useRef({ x: -9999, y: -9999 });
+  const isFinePointerRef = useRef(false);
+  const prefersReducedMotionRef = useRef(false);
 
   // Return handler to Threshold Gateway (Esc or Click)
   const handleReturn = useCallback(() => {
@@ -96,11 +103,14 @@ export default function ExpressionView({
     if (!canvas || !container) return;
 
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    let isReduced = mediaQuery.matches;
+    prefersReducedMotionRef.current = mediaQuery.matches;
+
+    const finePointerQuery = window.matchMedia('(pointer: fine)');
+    isFinePointerRef.current = finePointerQuery.matches;
 
     const handleReducedChange = (e: MediaQueryListEvent) => {
-      isReduced = e.matches;
-      if (isReduced) {
+      prefersReducedMotionRef.current = e.matches;
+      if (e.matches) {
         if (rafIdRef.current) {
           cancelAnimationFrame(rafIdRef.current);
           rafIdRef.current = null;
@@ -115,6 +125,25 @@ export default function ExpressionView({
       }
     };
     mediaQuery.addEventListener('change', handleReducedChange);
+
+    const handleFinePointerChange = (e: MediaQueryListEvent) => {
+      isFinePointerRef.current = e.matches;
+    };
+    finePointerQuery.addEventListener('change', handleFinePointerChange);
+
+    // Pointer position tracking for organic aerodynamic wake
+    const handlePointerMove = (e: PointerEvent) => {
+      if (e.pointerType === 'touch') return;
+      mousePosRef.current = { x: e.clientX, y: e.clientY };
+    };
+
+    const handlePointerLeave = () => {
+      mousePosRef.current = { x: -9999, y: -9999 };
+    };
+
+    window.addEventListener('pointermove', handlePointerMove, { passive: true });
+    window.addEventListener('pointerleave', handlePointerLeave);
+    document.addEventListener('mouseleave', handlePointerLeave);
 
     // 1. Initialize 40 organic dark brown dust particles (strictly capped at §40 max limit: 40 particles)
     const initialParticles: DustParticle[] = [];
@@ -134,6 +163,10 @@ export default function ExpressionView({
         swayFreq: 0.005 + Math.random() * 0.009,
         swayOffset: Math.random() * Math.PI * 2,
         tier,
+        dispX: 0,
+        dispY: 0,
+        drawX: 0,
+        drawY: 0,
       });
     }
     dustParticlesRef.current = initialParticles;
@@ -158,10 +191,10 @@ export default function ExpressionView({
     handleResize();
     window.addEventListener('resize', handleResize);
 
-    // 3. Batched Animation RAF Loop (3 draw calls per frame per §44)
+    // 3. Batched Animation RAF Loop (3 draw calls per frame per §44, zero heap allocations, aerodynamic wake)
     let time = 0;
     const tick = () => {
-      if (isReduced) return;
+      if (prefersReducedMotionRef.current) return;
 
       time++;
       const ctx = canvas.getContext('2d');
@@ -171,54 +204,101 @@ export default function ExpressionView({
         const height = bounds.height;
         ctx.clearRect(0, 0, width, height);
 
-        const particles = dustParticlesRef.current;
-        const tier0: DustParticle[] = [];
-        const tier1: DustParticle[] = [];
-        const tier2: DustParticle[] = [];
+        // Pointer position for organic aerodynamic wake (fine pointer & normal motion only)
+        const isFine = isFinePointerRef.current;
+        const mx = isFine ? mousePosRef.current.x - bounds.left : -9999;
+        const my = isFine ? mousePosRef.current.y - bounds.top : -9999;
+        const hasPointer = mx >= -20 && mx <= width + 20 && my >= -20 && my <= height + 20;
 
+        const WAKE_RADIUS = 110;
+        const WAKE_RADIUS_SQ = WAKE_RADIUS * WAKE_RADIUS;
+        const MAX_DISP = 22;
+
+        const particles = dustParticlesRef.current;
+
+        // Update physics & compute coordinates
         for (let i = 0; i < particles.length; i++) {
           const p = particles[i];
           p.y += p.speedY;
-          if (p.y < -10) {
-            p.y = height + 10;
-            p.x = Math.random() * width;
+
+          // Fluid aerodynamic damping (viscous decay: 0.94 / frame => ~2.5s recovery)
+          p.dispX *= 0.94;
+          p.dispY *= 0.94;
+
+          const baseX = p.x + Math.sin(time * p.swayFreq + p.swayOffset) * p.swayAmp;
+          const curX = baseX + p.dispX;
+          const curY = p.y + p.dispY;
+
+          if (hasPointer) {
+            const dx = curX - mx;
+            const dy = curY - my;
+            const distSq = dx * dx + dy * dy;
+
+            if (distSq < WAKE_RADIUS_SQ && distSq > 1) {
+              const dist = Math.sqrt(distSq);
+              const u = 1.0 - dist / WAKE_RADIUS;
+              const factor = u * u * (3 - 2 * u); // Hermite smoothstep
+              const push = factor * 1.6; // Gentle parting force
+              p.dispX += (dx / dist) * push;
+              p.dispY += (dy / dist) * push;
+
+              // Clamp displacement to prevent abrupt jumps
+              const dispLen = Math.hypot(p.dispX, p.dispY);
+              if (dispLen > MAX_DISP) {
+                p.dispX = (p.dispX / dispLen) * MAX_DISP;
+                p.dispY = (p.dispY / dispLen) * MAX_DISP;
+              }
+            }
           }
 
-          if (p.tier === 0) tier0.push(p);
-          else if (p.tier === 1) tier1.push(p);
-          else tier2.push(p);
+          p.drawX = baseX + p.dispX;
+          p.drawY = p.y + p.dispY;
+
+          // Respawn if drifted above top
+          if (p.y < -14) {
+            p.y = height + 14;
+            p.x = Math.random() * width;
+            p.dispX = 0;
+            p.dispY = 0;
+            p.drawX = p.x;
+            p.drawY = p.y;
+          }
         }
 
-        // Tier 0: Far (batch 1)
-        ctx.fillStyle = 'rgba(40, 32, 26, 0.12)';
+        // Draw in 3 batches: Tier 0, Tier 1, Tier 2 (Zero memory allocations!)
+        // Tier 0: Far (batch 1) - High contrast organic dark brown
+        ctx.fillStyle = 'rgba(75, 52, 38, 0.28)';
         ctx.beginPath();
-        for (let i = 0; i < tier0.length; i++) {
-          const p = tier0[i];
-          const cx = p.x + Math.sin(time * p.swayFreq + p.swayOffset) * p.swayAmp;
-          ctx.moveTo(cx + p.radius, p.y);
-          ctx.arc(cx, p.y, p.radius, 0, Math.PI * 2);
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
+          if (p.tier === 0) {
+            ctx.moveTo(p.drawX + p.radius, p.drawY);
+            ctx.arc(p.drawX, p.drawY, p.radius, 0, Math.PI * 2);
+          }
         }
         ctx.fill();
 
-        // Tier 1: Mid (batch 2)
-        ctx.fillStyle = 'rgba(32, 26, 22, 0.18)';
+        // Tier 1: Mid (batch 2) - High contrast organic dark brown
+        ctx.fillStyle = 'rgba(58, 38, 26, 0.42)';
         ctx.beginPath();
-        for (let i = 0; i < tier1.length; i++) {
-          const p = tier1[i];
-          const cx = p.x + Math.sin(time * p.swayFreq + p.swayOffset) * p.swayAmp;
-          ctx.moveTo(cx + p.radius, p.y);
-          ctx.arc(cx, p.y, p.radius, 0, Math.PI * 2);
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
+          if (p.tier === 1) {
+            ctx.moveTo(p.drawX + p.radius, p.drawY);
+            ctx.arc(p.drawX, p.drawY, p.radius, 0, Math.PI * 2);
+          }
         }
         ctx.fill();
 
-        // Tier 2: Near (batch 3)
-        ctx.fillStyle = 'rgba(24, 20, 16, 0.25)';
+        // Tier 2: Near (batch 3) - High contrast organic dark brown
+        ctx.fillStyle = 'rgba(42, 26, 16, 0.58)';
         ctx.beginPath();
-        for (let i = 0; i < tier2.length; i++) {
-          const p = tier2[i];
-          const cx = p.x + Math.sin(time * p.swayFreq + p.swayOffset) * p.swayAmp;
-          ctx.moveTo(cx + p.radius, p.y);
-          ctx.arc(cx, p.y, p.radius, 0, Math.PI * 2);
+        for (let i = 0; i < particles.length; i++) {
+          const p = particles[i];
+          if (p.tier === 2) {
+            ctx.moveTo(p.drawX + p.radius, p.drawY);
+            ctx.arc(p.drawX, p.drawY, p.radius, 0, Math.PI * 2);
+          }
         }
         ctx.fill();
       }
@@ -226,7 +306,7 @@ export default function ExpressionView({
       rafIdRef.current = requestAnimationFrame(tick);
     };
 
-    if (!isReduced) {
+    if (!prefersReducedMotionRef.current) {
       rafIdRef.current = requestAnimationFrame(tick);
     }
 
@@ -238,7 +318,7 @@ export default function ExpressionView({
           rafIdRef.current = null;
         }
       } else {
-        if (!rafIdRef.current && !isReduced) {
+        if (!rafIdRef.current && !prefersReducedMotionRef.current) {
           rafIdRef.current = requestAnimationFrame(tick);
         }
       }
@@ -247,6 +327,10 @@ export default function ExpressionView({
 
     return () => {
       mediaQuery.removeEventListener('change', handleReducedChange);
+      finePointerQuery.removeEventListener('change', handleFinePointerChange);
+      window.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener('pointerleave', handlePointerLeave);
+      document.removeEventListener('mouseleave', handlePointerLeave);
       window.removeEventListener('resize', handleResize);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       if (rafIdRef.current) {
