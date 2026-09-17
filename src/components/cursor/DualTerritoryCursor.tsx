@@ -46,13 +46,8 @@ export default function DualTerritoryCursor({ mode, kRef }: DualTerritoryCursorP
     let isClicked = false;
     let isTextInput = false;
 
-    let targetCentroidX = 0;
-    let targetCentroidY = 0;
-
     let scale = 1.0;
     let targetScale = 1.0;
-    let restTimer = 0;
-    let lastTime = performance.now();
 
     let rafId: number | null = null;
 
@@ -104,14 +99,7 @@ export default function DualTerritoryCursor({ mode, kRef }: DualTerritoryCursorP
         isTextInput = false;
       }
 
-      if (interactive) {
-        isHovered = true;
-        const rect = interactive.getBoundingClientRect();
-        targetCentroidX = rect.left + rect.width / 2;
-        targetCentroidY = rect.top + rect.height / 2;
-      } else {
-        isHovered = false;
-      }
+      isHovered = !!interactive;
     };
 
     const onPointerOut = (e: PointerEvent) => {
@@ -134,9 +122,6 @@ export default function DualTerritoryCursor({ mode, kRef }: DualTerritoryCursorP
 
     // 4. Master 120 FPS Tick Loop
     const tick = (now: number) => {
-      const dt = Math.min((now - lastTime) / 1000, 0.1);
-      lastTime = now;
-
       if (ringRef.current && dotRef.current) {
         if (!isVisible || mouse.x < -100 || isTextInput) {
           ringRef.current.style.opacity = '0';
@@ -163,91 +148,64 @@ export default function DualTerritoryCursor({ mode, kRef }: DualTerritoryCursorP
             tau = xi * xi * (3 - 2 * xi); // Hermite smoothstep
           }
 
-          // A. Physics LERP factor (Snappy in Structure: 0.28, Viscous in Expression: 0.095)
-          const lambda = isReducedMotion
-            ? 1.0
-            : (0.28 * (1 - tau) + 0.095 * tau);
-
-          // B. Target Position with Structure Magnetic Snap
-          let targetX = mouse.x;
-          let targetY = mouse.y;
-
-          if (isHovered && tau < 0.5 && !isReducedMotion) {
-            // Magnetic attraction toward element center on Structure side
-            const alphaMagnetic = 0.22;
-            targetX = targetCentroidX + (mouse.x - targetCentroidX) * alphaMagnetic;
-            targetY = targetCentroidY + (mouse.y - targetCentroidY) * alphaMagnetic;
-          }
-
-          // Update Ring Position
-          ring.x += (targetX - ring.x) * lambda;
-          ring.y += (targetY - ring.y) * lambda;
-
-          // Update Focal Dot Position (0ms lag)
+          // A. Direct Synchronous Tracking (0ms Hardware Latency, No Trailing/Mengekor)
+          ring.x = mouse.x;
+          ring.y = mouse.y;
           dot.x = mouse.x;
           dot.y = mouse.y;
 
-          // C. Velocity & Squish-Stretch (Expression territory only)
-          const vx = mouse.x - ring.x;
-          const vy = mouse.y - ring.y;
-          const speed = Math.hypot(vx, vy);
-          const angle = Math.atan2(vy, vx);
-
-          const deformWeight = isReducedMotion || isHovered ? 0 : tau;
-          const rawStretch = Math.min(speed / 130, 0.48) * deformWeight;
-          let scaleX = 1.0 + rawStretch;
-          let scaleY = 1.0 / (1.0 + rawStretch * 0.85); // Area conservation
-
-          // D. Organic Breathing Pulse when resting in Expression
-          if (speed < 0.6 && !isHovered && tau > 0.3 && !isReducedMotion) {
-            restTimer += dt;
-            if (restTimer > 0.25) {
-              const breath = Math.sin(now * 0.00175) * 0.065 * tau;
-              scaleX += breath;
-              scaleY += breath;
-            }
-          } else {
-            restTimer = 0;
+          // B. Organic Respiration Breathing (Expression Territory)
+          let breath = 0;
+          if (!isReducedMotion && tau > 0.15 && !isHovered) {
+            breath = Math.sin(now * 0.0022) * (0.055 * tau);
           }
 
-          // E. Scale state (Hover expansion & Click implosion)
+          // C. Scale State (Hover Expansion & Click Implosion)
           if (isClicked) {
             targetScale = 0.72; // Tactile click implosion
           } else if (isHovered) {
-            // Expansion: 1.35x in Structure, 1.8x soft bloom in Expression
-            targetScale = 1.35 * (1 - tau) + 1.80 * tau;
+            // Expansion: 1.35x in Structure (48px), 1.45x bloom in Expression (55px)
+            targetScale = 1.35 * (1 - tau) + 1.45 * tau;
           } else {
             targetScale = 1.0;
           }
 
-          const scaleLerp = isClicked ? 0.35 : 0.16;
+          const scaleLerp = isClicked ? 0.35 : 0.18;
           scale += (targetScale - scale) * scaleLerp;
+          const currentScale = scale + breath;
 
-          // F. Color & Style Interpolation
+          // D. Color & Style Interpolation
           // Structure: Ochre Gold (#C98A4B -> 201, 138, 75)
           // Expression: Dark Charcoal (#241C16 -> 36, 28, 22)
           const r = Math.round(201 * (1 - tau) + 36 * tau);
           const g = Math.round(138 * (1 - tau) + 28 * tau);
           const b = Math.round(75 * (1 - tau) + 22 * tau);
-          const strokeAlpha = (0.92 * (1 - tau) + 0.82 * tau).toFixed(2);
+          const strokeAlpha = (0.92 * (1 - tau) + 0.85 * tau).toFixed(2);
           const fillAlpha = isHovered
-            ? (0.08 * (1 - tau) + 0.18 * tau).toFixed(3)
-            : (0.0 * (1 - tau) + 0.05 * tau).toFixed(3);
+            ? (0.08 * (1 - tau) + 0.16 * tau).toFixed(3)
+            : (0.0 * (1 - tau) + 0.06 * tau).toFixed(3);
 
-          const baseDiameter = 24 * (1 - tau) + 28 * tau;
-          const ringRadius = (baseDiameter * scale) / 2;
+          // Outer Ring: 36px in Structure, 38px in Expression
+          const baseDiameter = 36 * (1 - tau) + 38 * tau;
+          const ringRadius = (baseDiameter * currentScale) / 2;
 
-          // G. Direct GPU Composited Transforms (0ms Layout, 0ms Repaint)
-          ringRef.current.style.transform = `translate3d(${(ring.x - ringRadius).toFixed(2)}px, ${(ring.y - ringRadius).toFixed(2)}px, 0) rotate(${angle.toFixed(3)}rad) scale(${scaleX.toFixed(3)}, ${scaleY.toFixed(3)})`;
-          ringRef.current.style.width = `${(baseDiameter * scale).toFixed(1)}px`;
-          ringRef.current.style.height = `${(baseDiameter * scale).toFixed(1)}px`;
+          // E. Direct GPU Composited Transforms (Concentric, 0ms Lag, No Mengekor)
+          ringRef.current.style.transform = `translate3d(${(ring.x - ringRadius).toFixed(2)}px, ${(ring.y - ringRadius).toFixed(2)}px, 0)`;
+          ringRef.current.style.width = `${(baseDiameter * currentScale).toFixed(1)}px`;
+          ringRef.current.style.height = `${(baseDiameter * currentScale).toFixed(1)}px`;
           ringRef.current.style.borderColor = `rgba(${r}, ${g}, ${b}, ${strokeAlpha})`;
           ringRef.current.style.backgroundColor = `rgba(${r}, ${g}, ${b}, ${fillAlpha})`;
           ringRef.current.style.opacity = '1';
 
-          // Inner Focal Dot: Crisp 4px dot in center with 0ms lag
-          const dotRadius = isHovered ? 1.5 : (2 * (1 - tau) + 2.5 * tau);
-          const dotOpacity = isHovered ? (0.25 * (1 - tau) + 0.15 * tau).toFixed(2) : '1';
+          // F. Enlarge Center Part: Distinct 10px Diameter Focal Dot
+          const baseDotRadius = 5.0; // 10px diameter default
+          const dotRadius = isHovered
+            ? (4.0 * (1 - tau) + 6.0 * tau)
+            : baseDotRadius;
+          const dotOpacity = isHovered
+            ? (0.75 * (1 - tau) + 0.65 * tau).toFixed(2)
+            : '0.95';
+
           dotRef.current.style.transform = `translate3d(${(dot.x - dotRadius).toFixed(2)}px, ${(dot.y - dotRadius).toFixed(2)}px, 0)`;
           dotRef.current.style.width = `${(dotRadius * 2).toFixed(1)}px`;
           dotRef.current.style.height = `${(dotRadius * 2).toFixed(1)}px`;
