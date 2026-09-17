@@ -91,6 +91,16 @@ interface DustParticle {
   dispY: number; // Dynamic displacement offset from cursor wake (Y)
 }
 
+interface TensionSeamState {
+  active: boolean;
+  startTime: number;
+  s0: number; // longitudinal pluck coordinate along seam
+  amplitude: number;
+  prevCursorDist: number;
+  prevCursorX: number;
+  prevCursorY: number;
+}
+
 export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps = {}) {
   const router = useRouter();
 
@@ -149,6 +159,17 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
   });
   const dustParticlesRef = useRef<DustParticle[]>([]);
   const dustTimeRef = useRef(0);
+
+  // Material motion engine state: RESONANT TENSION SPINE (Dawai Ukur Arsitektural)
+  const tensionSeamRef = useRef<TensionSeamState>({
+    active: false,
+    startTime: 0,
+    s0: 0,
+    amplitude: 0,
+    prevCursorDist: 9999,
+    prevCursorX: -9999,
+    prevCursorY: -9999,
+  });
 
   // Navigation transition in-flight state
   const [transitioningLens, setTransitioningLens] = useState<'structure' | 'expression' | null>(null);
@@ -538,6 +559,167 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
             ctx.stroke(interactivePath);
           }
           ctx.restore();
+
+          // Pass 3: THE CALIBRATED TENSION SPINE (Vernier Scale & Plucked Monochord Seam)
+          let pAx = 0;
+          let pAy = 0;
+          let pBx = 0;
+          let pBy = 0;
+
+          if (k.current >= 1.0) {
+            const p = k.current - 1.0;
+            pAx = width;
+            pAy = p * height;
+            pBx = p * width;
+            pBy = height;
+          } else {
+            pAx = k.current * width;
+            pAy = 0;
+            pBx = 0;
+            pBy = k.current * height;
+          }
+
+          const seamDx = pBx - pAx;
+          const seamDy = pBy - pAy;
+          const seamLen = Math.hypot(seamDx, seamDy);
+
+          if (seamLen > 10) {
+            const tx = seamDx / seamLen;
+            const ty = seamDy / seamLen;
+
+            // Cursor pluck detection
+            const ts = tensionSeamRef.current;
+            const curMouseX = isFine && !isReduced ? mousePosRef.current.x - bounds.left : -9999;
+            const curMouseY = isFine && !isReduced ? mousePosRef.current.y - bounds.top : -9999;
+
+            if (curMouseX > -10 && curMouseX < width + 10 && curMouseY > -10 && curMouseY < height + 10) {
+              const curDist = (curMouseX / width + curMouseY / height - k.current) * invN;
+              if (ts.prevCursorX > -100 && Math.abs(curDist) < 32 && Math.abs(ts.prevCursorDist) < 60) {
+                if (Math.sign(curDist) !== Math.sign(ts.prevCursorDist) && Math.sign(ts.prevCursorDist) !== 0) {
+                  // Pluck event!
+                  const vx = curMouseX - ts.prevCursorX;
+                  const vy = curMouseY - ts.prevCursorY;
+                  const speed = Math.hypot(vx, vy);
+                  const proj = (curMouseX - pAx) * tx + (curMouseY - pAy) * ty;
+                  ts.active = true;
+                  ts.startTime = now;
+                  ts.s0 = Math.max(0, Math.min(seamLen, proj));
+                  ts.amplitude = Math.min(6.5, Math.max(3.2, speed * 0.12));
+                  startLoop();
+                }
+              }
+              ts.prevCursorDist = curDist;
+              ts.prevCursorX = curMouseX;
+              ts.prevCursorY = curMouseY;
+            } else {
+              ts.prevCursorDist = 9999;
+              ts.prevCursorX = -9999;
+              ts.prevCursorY = -9999;
+            }
+
+            let isVibrating = false;
+            let pluckElapsed = 0;
+            let pluckEnv = 0;
+            if (ts.active) {
+              pluckElapsed = (now - ts.startTime) / 1000;
+              if (pluckElapsed < 0.35) {
+                const gamma = 14.5;
+                pluckEnv = ts.amplitude * Math.exp(-gamma * pluckElapsed);
+                if (pluckEnv > 0.03) {
+                  isVibrating = true;
+                } else {
+                  ts.active = false;
+                }
+              } else {
+                ts.active = false;
+              }
+            }
+
+            const getSeamPoint = (s: number) => {
+              let disp = 0;
+              if (isVibrating) {
+                const omega = 52.0; // rad/s (tight steel piano wire)
+                const sigma = 190.0; // localized deflection radius
+                const ds = s - ts.s0;
+                const spatial = Math.exp(-(ds * ds) / (2 * sigma * sigma)) * Math.sin((Math.PI * s) / seamLen);
+                disp = pluckEnv * Math.cos(omega * pluckElapsed) * spatial;
+              }
+              return {
+                x: pAx + s * tx + disp * nx,
+                y: pAy + s * ty + disp * ny,
+                disp,
+              };
+            };
+
+            // 1. Core Golden Hairline & Pluck Glow
+            ctx.save();
+            const spinePath = new Path2D();
+            const NUM_SEGS = isVibrating ? 36 : 2;
+            const pStart = getSeamPoint(0);
+            spinePath.moveTo(pStart.x, pStart.y);
+            for (let step = 1; step <= NUM_SEGS; step++) {
+              const s = (step / NUM_SEGS) * seamLen;
+              const pt = getSeamPoint(s);
+              spinePath.lineTo(pt.x, pt.y);
+            }
+
+            // Core Ochre Gold Seam (#C98A4B)
+            ctx.strokeStyle = 'rgba(201, 138, 75, 0.55)';
+            ctx.lineWidth = 1.25;
+            ctx.stroke(spinePath);
+
+            // Subtle Expression side warm glow line (warm luster)
+            ctx.strokeStyle = 'rgba(245, 206, 150, 0.22)';
+            ctx.lineWidth = 1.0;
+            ctx.stroke(spinePath);
+
+            // Kinetic Pluck Energy Flare
+            if (isVibrating) {
+              const flareAlpha = Math.min(0.9, (pluckEnv / ts.amplitude) * 0.95);
+              const flareGrad = ctx.createLinearGradient(
+                pAx + Math.max(0, ts.s0 - 260) * tx,
+                pAy + Math.max(0, ts.s0 - 260) * ty,
+                pAx + Math.min(seamLen, ts.s0 + 260) * tx,
+                pAy + Math.min(seamLen, ts.s0 + 260) * ty
+              );
+              flareGrad.addColorStop(0, 'rgba(245, 206, 150, 0)');
+              flareGrad.addColorStop(0.5, `rgba(245, 206, 150, ${flareAlpha.toFixed(3)})`);
+              flareGrad.addColorStop(1, 'rgba(245, 206, 150, 0)');
+
+              ctx.strokeStyle = flareGrad;
+              ctx.lineWidth = 2.2;
+              ctx.stroke(spinePath);
+            }
+
+            // 2. Architectural Calibration Ticks (Vernier Scale pointing into Structure)
+            const TICK_STEP = 28;
+            const numTicks = Math.floor(seamLen / TICK_STEP);
+            ctx.beginPath();
+            for (let i = 1; i < numTicks; i++) {
+              const s = i * TICK_STEP;
+              const pt = getSeamPoint(s);
+              const isMajor = i % 4 === 0;
+              const tickLen = isMajor ? 6.5 : 3.5;
+
+              ctx.moveTo(pt.x, pt.y);
+              ctx.lineTo(pt.x - nx * tickLen, pt.y - ny * tickLen);
+            }
+            ctx.strokeStyle = 'rgba(201, 138, 75, 0.38)';
+            ctx.lineWidth = 1.0;
+            ctx.stroke();
+
+            // 3. Major Calibration Micro-Nodes
+            for (let i = 4; i < numTicks; i += 4) {
+              const s = i * TICK_STEP;
+              const pt = getSeamPoint(s);
+              ctx.fillStyle = 'rgba(245, 206, 150, 0.60)';
+              ctx.beginPath();
+              ctx.arc(pt.x - nx * 7.5, pt.y - ny * 7.5, 0.9, 0, Math.PI * 2);
+              ctx.fill();
+            }
+
+            ctx.restore();
+          }
         }
       }
 
@@ -703,7 +885,7 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
     }
 
     // Continue loop unless reduced motion and split is completely settled
-    if (!isReduced || !isSplitSettled) {
+    if (!isReduced || !isSplitSettled || tensionSeamRef.current.active) {
       rafIdRef.current = requestAnimationFrame(tick);
     } else {
       rafIdRef.current = null;
@@ -821,6 +1003,8 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
     if (transitioningLens) return;
     mousePosRef.current = { x: -9999, y: -9999 };
     magneticGridRef.current.targetIntensity = 0.0;
+    tensionSeamRef.current.prevCursorX = -9999;
+    tensionSeamRef.current.prevCursorDist = 9999;
     setLensTarget(null);
     startLoop();
   }, [setLensTarget, startLoop, transitioningLens]);
