@@ -171,6 +171,9 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
     prevCursorY: -9999,
   });
 
+  // Current cursor zone ref to prevent DOM thrashing during duality cursor transitions
+  const currentCursorZoneRef = useRef<'structure' | 'expression' | null>(null);
+
   // Navigation transition in-flight state
   const [transitioningLens, setTransitioningLens] = useState<'structure' | 'expression' | null>(null);
 
@@ -973,6 +976,24 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
         mg.targetIntensity = 0.0;
       }
 
+      // Contextual Duality Inversion cursor switching (§43 Desktop Fine Pointer Only)
+      // Structure Territory (Dark Ink): sum <= kRef.current.current -> uses Expression Cursor (Ivory Pen Nib)
+      // Expression Territory (Light Ivory): sum > kRef.current.current -> uses Structure Cursor (Black CAD Arrow)
+      if (isFine && containerRef.current) {
+        const nextCursorZone: 'structure' | 'expression' =
+          sum <= kRef.current.current ? 'structure' : 'expression';
+        if (currentCursorZoneRef.current !== nextCursorZone) {
+          currentCursorZoneRef.current = nextCursorZone;
+          if (nextCursorZone === 'structure') {
+            containerRef.current.classList.add('cursor-duality-expression');
+            containerRef.current.classList.remove('cursor-duality-structure');
+          } else {
+            containerRef.current.classList.add('cursor-duality-structure');
+            containerRef.current.classList.remove('cursor-duality-expression');
+          }
+        }
+      }
+
       startLoop();
 
       const HYSTERESIS = 0.08; // Deadband margin
@@ -1005,6 +1026,10 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
     magneticGridRef.current.targetIntensity = 0.0;
     tensionSeamRef.current.prevCursorX = -9999;
     tensionSeamRef.current.prevCursorDist = 9999;
+    currentCursorZoneRef.current = null;
+    if (containerRef.current) {
+      containerRef.current.classList.remove('cursor-duality-expression', 'cursor-duality-structure');
+    }
     setLensTarget(null);
     startLoop();
   }, [setLensTarget, startLoop, transitioningLens]);
@@ -1290,7 +1315,7 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
       ref={containerRef}
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
-      className="relative w-screen h-screen overflow-hidden select-none cursor-default"
+      className="relative w-screen h-screen overflow-hidden select-none"
       aria-label="Duality Threshold — Choose your narrative lens: Structure or Expression"
     >
       {/* ================= CANVAS BACKGROUNDS ================= */}

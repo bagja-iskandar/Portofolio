@@ -286,7 +286,7 @@ export default function ExpressionView({
   return (
     <main
       ref={containerRef}
-      className="relative min-h-screen w-full bg-ivory text-charcoal flex flex-col justify-between p-6 sm:p-10 md:p-16 lg:p-20 selection:bg-[#B85A3A]/20 selection:text-charcoal overflow-hidden select-none"
+      className="relative min-h-screen w-full bg-ivory text-charcoal flex flex-col justify-between p-6 sm:p-10 md:p-16 lg:p-20 selection:bg-[#B85A3A]/20 selection:text-charcoal overflow-hidden select-none cursor-duality-structure"
       aria-label="Expression Lens — Currently Under Development"
     >
       {/* ================= EDITORIAL PAPER CANVAS BACKGROUNDS ================= */}

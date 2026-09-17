@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+  <!-- Subtle white outer halo for maximum contrast on light paper -->
+  <path d="M7 2 C5.8 2 5 2.8 5 4 L5 13 C4.2 12.5 3 13 2.2 14.2 C1.5 15.6 1.8 17.5 3.2 18.8 L4.8 22.5 C5.5 24.2 7.2 25.5 10.2 25.5 C14 25.5 17.5 24.2 19 21.8 C20.2 19.8 20.5 17.2 20.5 15.5 L20.5 13.5 C20.5 12.2 19.2 11.8 18.2 12.5 C17.8 11.2 16.5 10.8 15.5 11.5 C15 10.2 13.8 9.8 12.8 10.5 L12.8 4 C12.8 2.8 12 2 10.8 2 C9.5 2 8.2 2 7 2 Z" 
+        fill="none" 
+        stroke="rgba(255,255,255,0.9)" 
+        stroke-width="2.5" 
+        stroke-linejoin="round" />
+
+  <!-- Full Solid Black (#0E0D0C) Architectural Hand Pointer -->
+  <path d="M7 2 C5.8 2 5 2.8 5 4 L5 13 C4.2 12.5 3 13 2.2 14.2 C1.5 15.6 1.8 17.5 3.2 18.8 L4.8 22.5 C5.5 24.2 7.2 25.5 10.2 25.5 C14 25.5 17.5 24.2 19 21.8 C20.2 19.8 20.5 17.2 20.5 15.5 L20.5 13.5 C20.5 12.2 19.2 11.8 18.2 12.5 C17.8 11.2 16.5 10.8 15.5 11.5 C15 10.2 13.8 9.8 12.8 10.5 L12.8 4 C12.8 2.8 12 2 10.8 2 C9.5 2 8.2 2 7 2 Z" 
+        fill="#0E0D0C" 
+        stroke="#0E0D0C" 
+        stroke-width="1.2" 
+        stroke-linejoin="round" 
+        stroke-linecap="round" />
+
+  <!-- Precision Fingertip Micro-Dot (Ochre Gold #C98A4B) -->
+  <circle cx="8.9" cy="5.2" r="1.1" fill="#C98A4B" />
+</svg>
