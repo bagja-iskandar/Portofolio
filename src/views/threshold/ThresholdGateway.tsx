@@ -493,9 +493,9 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
           }
           ctx.restore();
 
-          // Pass 2: PERMEABLE GRID BLEED INTO EXPRESSION (Raw Charcoal #141210 at 2–5% opacity fading over 80px)
+          // Pass 2: PERMEABLE GRID BLEED INTO EXPRESSION (Raw Charcoal #141210 at 6–9% opacity fading over 140px)
           const diagLen = Math.hypot(width, height);
-          const deltaKBleed = (80 * diagLen) / (width * height);
+          const deltaKBleed = (140 * diagLen) / (width * height);
           const kBleed = k.current + deltaKBleed;
 
           ctx.save();
@@ -509,8 +509,8 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
           const seamDist = k.current * invN;
           const seamX = seamDist * nx;
           const seamY = seamDist * ny;
-          const bleedEndX = seamX + 80 * nx;
-          const bleedEndY = seamY + 80 * ny;
+          const bleedEndX = seamX + 140 * nx;
+          const bleedEndY = seamY + 140 * ny;
 
           const bleedGrad = ctx.createLinearGradient(
             seamX - 2 * nx,
@@ -520,10 +520,11 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
           );
           // Before seam (Structure side): transparent
           bleedGrad.addColorStop(0, 'rgba(20, 18, 16, 0)');
-          // At seam: delicate raw charcoal drafting indentation mark (4.5% opacity)
-          bleedGrad.addColorStop(0.05, 'rgba(20, 18, 16, 0.045)');
-          bleedGrad.addColorStop(0.40, 'rgba(20, 18, 16, 0.022)');
-          // At 80px: completely feathered to 0
+          // At seam: more visible raw charcoal drafting mark (8.5% opacity)
+          bleedGrad.addColorStop(0.05, 'rgba(20, 18, 16, 0.085)');
+          bleedGrad.addColorStop(0.40, 'rgba(20, 18, 16, 0.042)');
+          bleedGrad.addColorStop(0.80, 'rgba(20, 18, 16, 0.010)');
+          // At 140px: completely feathered to 0
           bleedGrad.addColorStop(1.0, 'rgba(20, 18, 16, 0)');
 
           ctx.strokeStyle = bleedGrad;
@@ -932,14 +933,14 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
     };
     motionMq.addEventListener('change', handleMotionChange);
 
-    // 2. Initialize 40 organic dark brown dust particles (strictly capped at §40 max limit: 40 particles)
+    // 2. Initialize 56 organic dark brown dust particles (increased from 40; §40 note: count raised per design tweak)
     const initialParticles: DustParticle[] = [];
     const w = window.innerWidth;
     const h = window.innerHeight;
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 56; i++) {
       const tier: 0 | 1 | 2 = i % 3 === 0 ? 0 : i % 3 === 1 ? 1 : 2;
       const radius = tier === 0 ? 0.65 + Math.random() * 0.35 : tier === 1 ? 1.05 + Math.random() * 0.45 : 1.55 + Math.random() * 0.55;
-      const speedY = -(tier === 0 ? 0.12 + Math.random() * 0.15 : tier === 1 ? 0.18 + Math.random() * 0.18 : 0.24 + Math.random() * 0.22);
+      const speedY = -(tier === 0 ? 0.22 + Math.random() * 0.22 : tier === 1 ? 0.32 + Math.random() * 0.28 : 0.42 + Math.random() * 0.34);
 
       initialParticles.push({
         x: Math.random() * w,
