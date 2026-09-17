@@ -168,18 +168,16 @@ export default function DualTerritoryCursor({ mode, kRef }: DualTerritoryCursorP
           // B. Base Outer Radius: 19px in Structure (38px dia), 21px in Expression (42px dia)
           const baseRadius = (19 * structWeight + 21 * tau) * scale;
 
-          // C. Sisi Expression: Wavy Undulating Outer Edge (Bergelombang)
-          // Mathematical multi-harmonic ripple around circle circumference
+          // C. Sisi Expression: Subtle Organic Liquid Meniscus (Gelombang Halus & Tenang)
+          // Gentle micro-undulation (max ~1.5px) with low harmonic frequencies for an elegant liquid surface
           for (let i = 0; i < N; i++) {
             const phi = (i * 2 * Math.PI) / N;
             let wave = 0;
             if (tau > 0.01 && !isReducedMotion) {
-              const hoverBoost = isHovered ? 1.35 : 1.0;
               wave = (
-                Math.sin(4 * phi + now * 0.0034) * 2.8 +
-                Math.cos(6 * phi - now * 0.0026) * 1.8 +
-                Math.sin(2 * phi + now * 0.0018) * 1.4
-              ) * tau * hoverBoost;
+                Math.sin(3 * phi + now * 0.0014) * 0.95 +
+                Math.cos(2 * phi - now * 0.0010) * 0.65
+              ) * tau;
             }
             const r = Math.max(4, baseRadius + wave);
             pts[i].x = r * Math.cos(phi);
