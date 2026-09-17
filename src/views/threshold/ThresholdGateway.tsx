@@ -493,9 +493,10 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
           }
           ctx.restore();
 
-          // Pass 2: PERMEABLE GRID BLEED INTO EXPRESSION (Raw Charcoal #141210 at 6–9% opacity fading over 140px)
+          // Pass 2: PERMEABLE GRID BLEED INTO EXPRESSION (Raw Charcoal #141210 at 12–18% visible drafting opacity over 220px)
           const diagLen = Math.hypot(width, height);
-          const deltaKBleed = (140 * diagLen) / (width * height);
+          const BLEED_DISTANCE = 220; // Extended permeable reach into Expression
+          const deltaKBleed = (BLEED_DISTANCE * diagLen) / (width * height);
           const kBleed = k.current + deltaKBleed;
 
           ctx.save();
@@ -509,8 +510,8 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
           const seamDist = k.current * invN;
           const seamX = seamDist * nx;
           const seamY = seamDist * ny;
-          const bleedEndX = seamX + 140 * nx;
-          const bleedEndY = seamY + 140 * ny;
+          const bleedEndX = seamX + BLEED_DISTANCE * nx;
+          const bleedEndY = seamY + BLEED_DISTANCE * ny;
 
           const bleedGrad = ctx.createLinearGradient(
             seamX - 2 * nx,
@@ -520,15 +521,16 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
           );
           // Before seam (Structure side): transparent
           bleedGrad.addColorStop(0, 'rgba(20, 18, 16, 0)');
-          // At seam: more visible raw charcoal drafting mark (8.5% opacity)
-          bleedGrad.addColorStop(0.05, 'rgba(20, 18, 16, 0.085)');
-          bleedGrad.addColorStop(0.40, 'rgba(20, 18, 16, 0.042)');
-          bleedGrad.addColorStop(0.80, 'rgba(20, 18, 16, 0.010)');
-          // At 140px: completely feathered to 0
+          // At seam: distinct, clear raw charcoal architectural drafting stroke (18% opacity)
+          bleedGrad.addColorStop(0.04, 'rgba(20, 18, 16, 0.18)');
+          bleedGrad.addColorStop(0.35, 'rgba(20, 18, 16, 0.11)');
+          bleedGrad.addColorStop(0.65, 'rgba(20, 18, 16, 0.05)');
+          bleedGrad.addColorStop(0.88, 'rgba(20, 18, 16, 0.015)');
+          // At 220px: completely feathered to 0
           bleedGrad.addColorStop(1.0, 'rgba(20, 18, 16, 0)');
 
           ctx.strokeStyle = bleedGrad;
-          ctx.lineWidth = 1;
+          ctx.lineWidth = 1.15;
           ctx.stroke(baseGridPath);
           if (curIntensity > 0.001) {
             ctx.stroke(interactivePath);
@@ -549,7 +551,7 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
 
           const diagLen = Math.hypot(width, height);
           const invN = (width * height) / diagLen;
-          const D_PENETRATION = 140; // 140px bleed zone into Structure
+          const D_PENETRATION = 220; // 220px gold transmutation bleed into Structure
 
           // Batched buckets for 60-120fps zero-allocation rendering
           const exprTier0: { cx: number; y: number; r: number }[] = [];
@@ -560,10 +562,6 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
           for (let i = 0; i < particles.length; i++) {
             const p = particles[i];
             p.y += p.speedY;
-            if (p.y < -12) {
-              p.y = height + 12;
-              p.x = Math.random() * width;
-            }
 
             const cx = p.x + p.swayAmp * Math.sin(time * p.swayFreq + p.swayOffset);
 
@@ -571,6 +569,12 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
             // dSigned > 0: Expression (Ivory)
             // dSigned <= 0: Structure (Ink)
             const dSigned = (cx / width + p.y / height - k.current) * invN;
+
+            // Respawn if drifted above top or deep beyond transmutation zone into Structure
+            if (p.y < -14 || dSigned < -D_PENETRATION - 80) {
+              p.y = height + 14;
+              p.x = Math.random() * width;
+            }
 
             if (dSigned >= 0) {
               // Inside Expression: Native Organic Dark Brown
@@ -583,7 +587,7 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
               if (penetration <= D_PENETRATION) {
                 const t = 1.0 - penetration / D_PENETRATION;
                 const smoothFade = t * t * (3 - 2 * t); // Hermite smoothstep
-                const baseAlpha = p.tier === 0 ? 0.35 : p.tier === 1 ? 0.60 : 0.85;
+                const baseAlpha = p.tier === 0 ? 0.40 : p.tier === 1 ? 0.70 : 0.92;
                 const alpha = baseAlpha * smoothFade;
                 if (alpha > 0.01) {
                   goldBleed.push({ cx, y: p.y, r: p.radius, alpha });
@@ -594,7 +598,7 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
 
           // 1. Render Expression Native Particles (3 fast batch calls)
           if (exprTier0.length > 0) {
-            ctx.fillStyle = 'rgba(75, 52, 38, 0.22)';
+            ctx.fillStyle = 'rgba(75, 52, 38, 0.28)';
             ctx.beginPath();
             for (let i = 0; i < exprTier0.length; i++) {
               const p = exprTier0[i];
@@ -605,7 +609,7 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
           }
 
           if (exprTier1.length > 0) {
-            ctx.fillStyle = 'rgba(58, 38, 26, 0.35)';
+            ctx.fillStyle = 'rgba(58, 38, 26, 0.42)';
             ctx.beginPath();
             for (let i = 0; i < exprTier1.length; i++) {
               const p = exprTier1[i];
@@ -616,7 +620,7 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
           }
 
           if (exprTier2.length > 0) {
-            ctx.fillStyle = 'rgba(42, 26, 16, 0.52)';
+            ctx.fillStyle = 'rgba(42, 26, 16, 0.58)';
             ctx.beginPath();
             for (let i = 0; i < exprTier2.length; i++) {
               const p = exprTier2[i];
@@ -635,11 +639,11 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
             ctx.arc(p.cx, p.y, p.r, 0, Math.PI * 2);
             ctx.fill();
 
-            // Subtle warm halo for near/brighter particles
-            if (p.alpha > 0.25) {
-              ctx.fillStyle = `rgba(245, 206, 150, ${(p.alpha * 0.25).toFixed(3)})`;
+            // Warm halo for near/brighter particles
+            if (p.alpha > 0.20) {
+              ctx.fillStyle = `rgba(245, 206, 150, ${(p.alpha * 0.30).toFixed(3)})`;
               ctx.beginPath();
-              ctx.arc(p.cx, p.y, p.r * 2.2, 0, Math.PI * 2);
+              ctx.arc(p.cx, p.y, p.r * 2.4, 0, Math.PI * 2);
               ctx.fill();
             }
           }
@@ -933,14 +937,14 @@ export default function ThresholdGateway({ onSelectLens }: ThresholdGatewayProps
     };
     motionMq.addEventListener('change', handleMotionChange);
 
-    // 2. Initialize 56 organic dark brown dust particles (increased from 40; §40 note: count raised per design tweak)
+    // 2. Initialize 76 organic dark brown dust particles (increased count & speed per user request)
     const initialParticles: DustParticle[] = [];
     const w = window.innerWidth;
     const h = window.innerHeight;
-    for (let i = 0; i < 56; i++) {
+    for (let i = 0; i < 76; i++) {
       const tier: 0 | 1 | 2 = i % 3 === 0 ? 0 : i % 3 === 1 ? 1 : 2;
       const radius = tier === 0 ? 0.65 + Math.random() * 0.35 : tier === 1 ? 1.05 + Math.random() * 0.45 : 1.55 + Math.random() * 0.55;
-      const speedY = -(tier === 0 ? 0.22 + Math.random() * 0.22 : tier === 1 ? 0.32 + Math.random() * 0.28 : 0.42 + Math.random() * 0.34);
+      const speedY = -(tier === 0 ? 0.38 + Math.random() * 0.32 : tier === 1 ? 0.58 + Math.random() * 0.42 : 0.85 + Math.random() * 0.52);
 
       initialParticles.push({
         x: Math.random() * w,
