@@ -187,7 +187,7 @@ export default function RecruiterStructureView({
     <SmoothScrollProvider value={smoothScroll}>
       <div
         ref={containerRef}
-        className="fixed inset-0 overflow-y-auto overflow-x-hidden overscroll-y-contain select-text bg-[#0E0D0C] text-[#EDE8DF] selection:bg-ochre selection:text-charcoal z-20 cursor-duality-expression"
+        className="fixed inset-0 overflow-y-auto overflow-x-hidden overscroll-y-contain select-text bg-[#0E0D0C] text-[#EDE8DF] selection:bg-ochre selection:text-charcoal z-20"
       >
         {/* Background Architectural Atmosphere Canvas with Animated Gold Traces */}
         <StructureAtmosphere />
