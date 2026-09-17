@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>/ — graphify tree viewer</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f9f9f9;
+      color: #333;
+    }
+    h1 {
+      margin: 20px 0 0 24px;
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: #1e3a56;
+    }
+    .controls {
+      margin: 20px 0 15px 24px;
+    }
+    button {
+      margin-right: 10px;
+      padding: 8px 18px;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background 0.2s ease-in-out;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    button:active {
+      background: #004085;
+    }
+    #tree-container {
+      width: calc(100vw - 48px); /* Adjust for body margin/padding */
+      height: 85vh;
+      overflow: auto;
+      border-radius: 8px;
+      background: #fff;
+      margin-left: 24px;
+      margin-right: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      border: 1px solid #ddd;
+    }
+    svg {
+      background: #fff;
+      border-radius: 8px;
+      display: block; /* Important for D3 */
+    }
+    .node circle {
+      stroke-width: 2.5px;
+    }
+    .node text { /* Base style for the <text> container */
+      font: 13px 'Segoe UI', sans-serif;
+      paint-order: stroke fill; /* Ensures text is readable over lines */
+      stroke: #fff; /* White halo */
+      stroke-width: 3px; /* Halo thickness */
+      stroke-linejoin: round;
+      stroke-opacity: 0.85; /* Halo opacity */
+    }
+    .link {
+      fill: none;
+      stroke-opacity: 0.7;
+      stroke-width: 2px;
+    }
+  </style>
+</head>
+<body>
+  <h1>/ — Knowledge Graph</h1>
+  <div class="controls">
+    <button onclick="expandAll()">Expand All</button>
+    <button onclick="collapseAll()">Collapse All</button>
+    <button onclick="resetView()">Reset View</button>
+  </div>
+  <div id="tree-container">
+    <svg id="tree-svg" width="6000" height="8000"></svg>
+  </div>
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script>
+    const initialJsonData = {"name":"/","total_count":276,"children":[{"name":"components.json","total_count":16,"children":[{"name":"$schema","total_count":1,"children":[]},{"name":"aliases","total_count":1,"children":[]},{"name":"baseColor","total_count":1,"children":[]},{"name":"components","total_count":1,"children":[]},{"name":"config","total_count":1,"children":[]},{"name":"css","total_count":1,"children":[]},{"name":"cssVariables","total_count":1,"children":[]},{"name":"hooks","total_count":1,"children":[]},{"name":"lib","total_count":1,"children":[]},{"name":"prefix","total_count":1,"children":[]},{"name":"rsc","total_count":1,"children":[]},{"name":"style","total_count":1,"children":[]},{"name":"tailwind","total_count":1,"children":[]},{"name":"tsx","total_count":1,"children":[]},{"name":"ui","total_count":1,"children":[]},{"name":"utils","total_count":1,"children":[]}]},{"name":"next-env.d.ts","total_count":1,"children":[{"name":"NOTE: This file should not be edited","total_count":1,"children":[]}]},{"name":"next.config.ts","total_count":1,"children":[{"name":"nextConfig","total_count":1,"children":[]}]},{"name":"package.json","total_count":46,"children":[{"name":"@gsap/react","total_count":1,"children":[]},{"name":"@gsap/react","total_count":1,"children":[]},{"name":"@types/node","total_count":1,"children":[]},{"name":"@types/node","total_count":1,"children":[]},{"name":"@types/react","total_count":1,"children":[]},{"name":"@types/react","total_count":1,"children":[]},{"name":"@types/react-dom","total_count":1,"children":[]},{"name":"@types/react-dom","total_count":1,"children":[]},{"name":"autoprefixer","total_count":1,"children":[]},{"name":"autoprefixer","total_count":1,"children":[]},{"name":"build","total_count":1,"children":[]},{"name":"clsx","total_count":1,"children":[]},{"name":"clsx","total_count":1,"children":[]},{"name":"dependencies","total_count":1,"children":[]},{"name":"dev","total_count":1,"children":[]},{"name":"devDependencies","total_count":1,"children":[]},{"name":"gsap","total_count":1,"children":[]},{"name":"gsap","total_count":1,"children":[]},{"name":"lenis","total_count":1,"children":[]},{"name":"lenis","total_count":1,"children":[]},{"name":"lint","total_count":1,"children":[]},{"name":"lucide-react","total_count":1,"children":[]},{"name":"lucide-react","total_count":1,"children":[]},{"name":"motion","total_count":1,"children":[]},{"name":"motion","total_count":1,"children":[]},{"name":"name","total_count":1,"children":[]},{"name":"next","total_count":1,"children":[]},{"name":"next","total_count":1,"children":[]},{"name":"postcss","total_count":1,"children":[]},{"name":"postcss","total_count":1,"children":[]},{"name":"private","total_count":1,"children":[]},{"name":"react","total_count":1,"children":[]},{"name":"react","total_count":1,"children":[]},{"name":"react-dom","total_count":1,"children":[]},{"name":"react-dom","total_count":1,"children":[]},{"name":"react-icons","total_count":1,"children":[]},{"name":"react-icons","total_count":1,"children":[]},{"name":"scripts","total_count":1,"children":[]},{"name":"start","total_count":1,"children":[]},{"name":"tailwind-merge","total_count":1,"children":[]},{"name":"tailwind-merge","total_count":1,"children":[]},{"name":"tailwindcss","total_count":1,"children":[]},{"name":"tailwindcss","total_count":1,"children":[]},{"name":"typescript","total_count":1,"children":[]},{"name":"typescript","total_count":1,"children":[]},{"name":"version","total_count":1,"children":[]}]},{"name":"src","total_count":192,"children":[{"name":"app","total_count":17,"children":[{"name":"api","total_count":5,"children":[{"name":"github-activity","total_count":5,"children":[{"name":"route.ts","total_count":5,"children":[{"name":"formatTelemetry()","total_count":1,"children":[]},{"name":"GET()","total_count":1,"children":[]},{"name":"RepoConfig","total_count":1,"children":[]},{"name":"revalidate","total_count":1,"children":[]},{"name":"TRACKED_REPOS","total_count":1,"children":[]}]}]}]},{"name":"expression","total_count":2,"children":[{"name":"page.tsx","total_count":2,"children":[{"name":"ExpressionPage()","total_count":1,"children":[]},{"name":"metadata","total_count":1,"children":[]}]}]},{"name":"layout.tsx","total_count":5,"children":[{"name":"cormorant","total_count":1,"children":[]},{"name":"geistMono","total_count":1,"children":[]},{"name":"metadata","total_count":1,"children":[]},{"name":"plusJakarta","total_count":1,"children":[]},{"name":"RootLayout()","total_count":1,"children":[]}]},{"name":"not-found.tsx","total_count":1,"children":[{"name":"NotFound()","total_count":1,"children":[]}]},{"name":"page.tsx","total_count":2,"children":[{"name":"HomeContent()","total_count":1,"children":[]},{"name":"HomePage()","total_count":1,"children":[]}]},{"name":"recruiter","total_count":2,"children":[{"name":"page.tsx","total_count":2,"children":[{"name":"metadata","total_count":1,"children":[]},{"name":"RecruiterPage()","total_count":1,"children":[]}]}]}]},{"name":"atmosphere","total_count":4,"children":[{"name":"StructureAtmosphere.tsx","total_count":3,"children":[{"name":"MagneticGridState","total_count":1,"children":[]},{"name":"StructureAtmosphere()","total_count":1,"children":[]},{"name":"StructureAtmosphereProps","total_count":1,"children":[]}]},{"name":"index.ts","total_count":1,"children":[]}]},{"name":"components","total_count":26,"children":[{"name":"brand","total_count":5,"children":[{"name":"BijLogo.tsx","total_count":5,"children":[{"name":"BijLogo()","total_count":1,"children":[]},{"name":"BijLogoProps","total_count":1,"children":[]},{"name":"BijLogoSize","total_count":1,"children":[]},{"name":"BijLogoVariant","total_count":1,"children":[]},{"name":"SIZE_MAP","total_count":1,"children":[]}]}]},{"name":"common","total_count":9,"children":[{"name":"GitHubActivityBadge.tsx","total_count":2,"children":[{"name":"GitHubActivityBadge()","total_count":1,"children":[]},{"name":"GitHubActivityBadgeProps","total_count":1,"children":[]}]},{"name":"TechLogoBadge.tsx","total_count":7,"children":[{"name":"AntigravityIcon()","total_count":1,"children":[]},{"name":"CodexIcon()","total_count":1,"children":[]},{"name":"getTechVisual()","total_count":1,"children":[]},{"name":"TechItem","total_count":1,"children":[]},{"name":"TechLogoBadge()","total_count":1,"children":[]},{"name":"TechLogoBadgeProps","total_count":1,"children":[]},{"name":"TechVisual","total_count":1,"children":[]}]}]},{"name":"cursor","total_count":8,"children":[{"name":"DualTerritoryCursor.tsx","total_count":8,"children":[{"name":"COS_2PHI","total_count":1,"children":[]},{"name":"COS_3PHI","total_count":1,"children":[]},{"name":"COS_PHI","total_count":1,"children":[]},{"name":"DualTerritoryCursor()","total_count":1,"children":[]},{"name":"DualTerritoryCursorProps","total_count":1,"children":[]},{"name":"SIN_2PHI","total_count":1,"children":[]},{"name":"SIN_3PHI","total_count":1,"children":[]},{"name":"SIN_PHI","total_count":1,"children":[]}]}]},{"name":"ui","total_count":4,"children":[{"name":"demo.tsx","total_count":1,"children":[{"name":"Default()","total_count":1,"children":[]}]},{"name":"m-variable-font-cursor-proximity-1.tsx","total_count":1,"children":[{"name":"VariableFontCursorProximityHero()","total_count":1,"children":[]}]},{"name":"variable-font-cursor-proximity.tsx","total_count":2,"children":[{"name":"TextProps","total_count":1,"children":[]},{"name":"VariableFontCursorProximity","total_count":1,"children":[]}]}]}]},{"name":"data","total_count":25,"children":[{"name":"content","total_count":12,"children":[{"name":"capabilities.data.ts","total_count":2,"children":[{"name":"CAPABILITIES_DATA","total_count":1,"children":[]},{"name":"CAPABILITIES_TAXONOMY","total_count":1,"children":[]}]},{"name":"chapters.data.ts","total_count":1,"children":[{"name":"NARRATIVE_CHAPTERS","total_count":1,"children":[]}]},{"name":"direct-contact.data.ts","total_count":1,"children":[{"name":"DIRECT_CONTACT_META","total_count":1,"children":[]}]},{"name":"engineering-highlights.data.ts","total_count":1,"children":[{"name":"ENGINEERING_HIGHLIGHTS","total_count":1,"children":[]}]},{"name":"projects.data.ts","total_count":2,"children":[{"name":"PROJECTS_DATA","total_count":1,"children":[]},{"name":"SELECTED_PROJECTS","total_count":1,"children":[]}]},{"name":"structure-view.data.ts","total_count":1,"children":[{"name":"STRUCTURE_VIEW_DATA","total_count":1,"children":[]}]},{"name":"systems-matrix.data.ts","total_count":2,"children":[{"name":"SYSTEMS_ARCHITECTURE_MATRIX","total_count":1,"children":[]},{"name":"SYSTEMS_DECISION_MATRIX","total_count":1,"children":[]}]},{"name":"threshold.data.ts","total_count":1,"children":[{"name":"THRESHOLD_DATA","total_count":1,"children":[]}]},{"name":"work-experience.data.ts","total_count":1,"children":[{"name":"WORK_EXPERIENCE_DATA","total_count":1,"children":[]}]}]},{"name":"repositories","total_count":12,"children":[{"name":"project.repository.ts","total_count":5,"children":[{"name":".getAllProjects()","total_count":1,"children":[]},{"name":".getFeaturedProjects()","total_count":1,"children":[]},{"name":".getProjectBySlug()","total_count":1,"children":[]},{"name":".getProjectsByCanvas()","total_count":1,"children":[]},{"name":"ProjectRepository","total_count":1,"children":[]}]},{"name":"structure.repository.ts","total_count":7,"children":[{"name":".getCapabilitiesTaxonomy()","total_count":1,"children":[]},{"name":".getDirectContactMeta()","total_count":1,"children":[]},{"name":".getEngineeringHighlights()","total_count":1,"children":[]},{"name":".getProjectsSummary()","total_count":1,"children":[]},{"name":".getStructureViewData()","total_count":1,"children":[]},{"name":".getSystemsArchitectureMatrix()","total_count":1,"children":[]},{"name":"StructureRepository","total_count":1,"children":[]}]}]},{"name":"index.ts","total_count":1,"children":[]}]},{"name":"hooks","total_count":3,"children":[{"name":"use-mouse-position-ref.ts","total_count":1,"children":[{"name":"useMousePositionRef()","total_count":1,"children":[]}]},{"name":"useGitHubActivity.ts","total_count":2,"children":[{"name":"formatRelativeTime()","total_count":1,"children":[]},{"name":"useGitHubActivity()","total_count":1,"children":[]}]}]},{"name":"lib","total_count":3,"children":[{"name":"favicon.ts","total_count":2,"children":[{"name":"LensVariant","total_count":1,"children":[]},{"name":"setDynamicFavicon()","total_count":1,"children":[]}]},{"name":"utils.ts","total_count":1,"children":[{"name":"cn()","total_count":1,"children":[]}]}]},{"name":"motion","total_count":11,"children":[{"name":"config","total_count":3,"children":[{"name":"scrollTiers.config.ts","total_count":3,"children":[{"name":"LENIS_DEFAULT_CONFIG","total_count":1,"children":[]},{"name":"LenisConfigOptions","total_count":1,"children":[]},{"name":"SCROLL_TIERS","total_count":1,"children":[]}]}]},{"name":"hooks","total_count":3,"children":[{"name":"useSmoothScroll.ts","total_count":3,"children":[{"name":"useSmoothScroll()","total_count":1,"children":[]},{"name":"UseSmoothScrollProps","total_count":1,"children":[]},{"name":"UseSmoothScrollReturn","total_count":1,"children":[]}]}]},{"name":"providers","total_count":4,"children":[{"name":"SmoothScrollProvider.tsx","total_count":4,"children":[{"name":"SmoothScrollContext","total_count":1,"children":[]},{"name":"SmoothScrollProvider()","total_count":1,"children":[]},{"name":"SmoothScrollProviderProps","total_count":1,"children":[]},{"name":"useSmoothScrollContext()","total_count":1,"children":[]}]}]},{"name":"index.ts","total_count":1,"children":[]}]},{"name":"types","total_count":72,"children":[{"name":"duality.ts","total_count":45,"children":[{"name":".getAllChapters()","total_count":1,"children":[]},{"name":".getAllProjects()","total_count":1,"children":[]},{"name":".getAllStudies()","total_count":1,"children":[]},{"name":".getChapterById()","total_count":1,"children":[]},{"name":".getChapterBySequence()","total_count":1,"children":[]},{"name":".getFeaturedProjects()","total_count":1,"children":[]},{"name":".getLensConfig()","total_count":1,"children":[]},{"name":".getProjectBySlug()","total_count":1,"children":[]},{"name":".getProjectsByCanvas()","total_count":1,"children":[]},{"name":".getStudyBySlug()","total_count":1,"children":[]},{"name":".getThresholdConfig()","total_count":1,"children":[]},{"name":"AccentColorToken","total_count":1,"children":[]},{"name":"ArchitecturalDecision","total_count":1,"children":[]},{"name":"ArtifactKeyframe","total_count":1,"children":[]},{"name":"Brand","total_count":1,"children":[]},{"name":"CanvasEnvironment","total_count":1,"children":[]},{"name":"ChapterId","total_count":1,"children":[]},{"name":"ChapterSequenceDisplay","total_count":1,"children":[]},{"name":"ChapterSequenceNumber","total_count":1,"children":[]},{"name":"DualityPair","total_count":1,"children":[]},{"name":"EmotionalProgression","total_count":1,"children":[]},{"name":"EngineeringBenchmark","total_count":1,"children":[]},{"name":"ExperienceLens","total_count":1,"children":[]},{"name":"IChapterRepository","total_count":1,"children":[]},{"name":"IProjectRepository","total_count":1,"children":[]},{"name":"IStudyRepository","total_count":1,"children":[]},{"name":"IThresholdRepository","total_count":1,"children":[]},{"name":"MediaAsset","total_count":1,"children":[]},{"name":"NarrativeChapter","total_count":1,"children":[]},{"name":"PersonalProfile","total_count":1,"children":[]},{"name":"PhilosophyPrinciple","total_count":1,"children":[]},{"name":"Project","total_count":1,"children":[]},{"name":"ProjectExhibitMedia","total_count":1,"children":[]},{"name":"ProjectExpressionRead","total_count":1,"children":[]},{"name":"ProjectExternalLink","total_count":1,"children":[]},{"name":"ProjectId","total_count":1,"children":[]},{"name":"ProjectStructureRead","total_count":1,"children":[]},{"name":"ProjectTechnicalArchitecture","total_count":1,"children":[]},{"name":"StudioStudy","total_count":1,"children":[]},{"name":"StudyId","total_count":1,"children":[]},{"name":"TechnologyId","total_count":1,"children":[]},{"name":"TechTag","total_count":1,"children":[]},{"name":"ThresholdConfig","total_count":1,"children":[]},{"name":"ThresholdLensConfig","total_count":1,"children":[]},{"name":"TypographyVoice","total_count":1,"children":[]}]},{"name":"github.ts","total_count":2,"children":[{"name":"GitHubActivityApiResponse","total_count":1,"children":[]},{"name":"GitHubRepoActivity","total_count":1,"children":[]}]},{"name":"structure.ts","total_count":25,"children":[{"name":".getCapabilitiesTaxonomy()","total_count":1,"children":[]},{"name":".getDirectContactMeta()","total_count":1,"children":[]},{"name":".getEngineeringHighlights()","total_count":1,"children":[]},{"name":".getProjectsSummary()","total_count":1,"children":[]},{"name":".getStructureViewData()","total_count":1,"children":[]},{"name":".getSystemsArchitectureMatrix()","total_count":1,"children":[]},{"name":"ArchitecturePatternCategory","total_count":1,"children":[]},{"name":"AvailabilityStatus","total_count":1,"children":[]},{"name":"CapabilitiesTaxonomy","total_count":1,"children":[]},{"name":"CapabilityDiscipline","total_count":1,"children":[]},{"name":"CapabilityDomain","total_count":1,"children":[]},{"name":"CapabilityId","total_count":1,"children":[]},{"name":"CapabilityItem","total_count":1,"children":[]},{"name":"DirectContactMeta","total_count":1,"children":[]},{"name":"DirectContactProfile","total_count":1,"children":[]},{"name":"EngineeringBenchmarkCard","total_count":1,"children":[]},{"name":"EngineeringHighlightsRollup","total_count":1,"children":[]},{"name":"EngineeringPrinciple","total_count":1,"children":[]},{"name":"IStructureRepository","total_count":1,"children":[]},{"name":"PatternId","total_count":1,"children":[]},{"name":"StructureViewData","total_count":1,"children":[]},{"name":"StructureViewHeaderMeta","total_count":1,"children":[]},{"name":"SystemsArchitectureMatrix","total_count":1,"children":[]},{"name":"SystemsArchitectureMatrixItem","total_count":1,"children":[]},{"name":"WorkExperienceItem","total_count":1,"children":[]}]}]},{"name":"views","total_count":31,"children":[{"name":"immersive","total_count":4,"children":[{"name":"ExpressionView.tsx","total_count":3,"children":[{"name":"DustParticle","total_count":1,"children":[]},{"name":"ExpressionView()","total_count":1,"children":[]},{"name":"ExpressionViewProps","total_count":1,"children":[]}]},{"name":"index.ts","total_count":1,"children":[]}]},{"name":"recruiter","total_count":18,"children":[{"name":"DirectActionFooter.tsx","total_count":2,"children":[{"name":"DirectActionFooter()","total_count":1,"children":[]},{"name":"DirectActionFooterProps","total_count":1,"children":[]}]},{"name":"EngineeringHighlights.tsx","total_count":2,"children":[{"name":"EngineeringHighlights()","total_count":1,"children":[]},{"name":"EngineeringHighlightsProps","total_count":1,"children":[]}]},{"name":"ExpressionPreviewCard.tsx","total_count":3,"children":[{"name":"DustParticle","total_count":1,"children":[]},{"name":"ExpressionPreviewCard","total_count":1,"children":[]},{"name":"ExpressionPreviewCardProps","total_count":1,"children":[]}]},{"name":"RecruiterStructureView.tsx","total_count":2,"children":[{"name":"RecruiterStructureView()","total_count":1,"children":[]},{"name":"RecruiterStructureViewProps","total_count":1,"children":[]}]},{"name":"StructureHeader.tsx","total_count":2,"children":[{"name":"StructureHeader()","total_count":1,"children":[]},{"name":"StructureHeaderProps","total_count":1,"children":[]}]},{"name":"SystemsCapabilities.tsx","total_count":2,"children":[{"name":"SystemsCapabilities()","total_count":1,"children":[]},{"name":"SystemsCapabilitiesProps","total_count":1,"children":[]}]},{"name":"TechnicalProjectsTable.tsx","total_count":3,"children":[{"name":"PREFERRED_PROJECT_ORDER","total_count":1,"children":[]},{"name":"TechnicalProjectsTable()","total_count":1,"children":[]},{"name":"TechnicalProjectsTableProps","total_count":1,"children":[]}]},{"name":"WorkExperienceSection.tsx","total_count":2,"children":[{"name":"WorkExperienceSection()","total_count":1,"children":[]},{"name":"WorkExperienceSectionProps","total_count":1,"children":[]}]}]},{"name":"threshold","total_count":9,"children":[{"name":"ThresholdGateway.tsx","total_count":9,"children":[{"name":"CachedRect","total_count":1,"children":[]},{"name":"createInkPolygonPath()","total_count":1,"children":[]},{"name":"DustParticle","total_count":1,"children":[]},{"name":"getDistanceToRect()","total_count":1,"children":[]},{"name":"getInkClipPolygon()","total_count":1,"children":[]},{"name":"MagneticGridState","total_count":1,"children":[]},{"name":"TensionSeamState","total_count":1,"children":[]},{"name":"ThresholdGateway()","total_count":1,"children":[]},{"name":"ThresholdGatewayProps","total_count":1,"children":[]}]}]}]}]},{"name":"tailwind.config.ts","total_count":1,"children":[{"name":"config","total_count":1,"children":[]}]},{"name":"tsconfig.json","total_count":18,"children":[{"name":"allowJs","total_count":1,"children":[]},{"name":"compilerOptions","total_count":1,"children":[]},{"name":"esModuleInterop","total_count":1,"children":[]},{"name":"exclude","total_count":1,"children":[]},{"name":"include","total_count":1,"children":[]},{"name":"incremental","total_count":1,"children":[]},{"name":"isolatedModules","total_count":1,"children":[]},{"name":"jsx","total_count":1,"children":[]},{"name":"lib","total_count":1,"children":[]},{"name":"module","total_count":1,"children":[]},{"name":"moduleResolution","total_count":1,"children":[]},{"name":"noEmit","total_count":1,"children":[]},{"name":"paths","total_count":1,"children":[]},{"name":"plugins","total_count":1,"children":[]},{"name":"resolveJsonModule","total_count":1,"children":[]},{"name":"skipLibCheck","total_count":1,"children":[]},{"name":"strict","total_count":1,"children":[]},{"name":"target","total_count":1,"children":[]}]},{"name":"postcss.config.js","total_count":1,"children":[]}]};
+
+    function transformData(jsonData) {
+        // Helper function to recursively build the children structure
+        function processNode(node, parentL1StageName) {
+            let displayName = node.name;
+            // Append total_count if it exists and is not already in the name
+            if (node.total_count !== undefined) {
+                if (!/\(Total Count: \d+\)$/.test(displayName)) {
+                    displayName += ` (Total Count: ${node.total_count})`;
+                }
+            }
+
+            const newNode = { name: displayName };
+
+            if (parentL1StageName === "Root") {
+                 newNode.originalStageName = node.name;
+            } else {
+                newNode.originalStageName = parentL1StageName;
+            }
+
+            if (node.children && node.children.length > 0) {
+                const stageNameToPass = (parentL1StageName === "Root") ? node.name : parentL1StageName;
+                newNode.children = node.children.map(child => processNode(child, stageNameToPass));
+            }
+
+            return newNode;
+        }
+
+        let rootDisplayName = jsonData.name;
+        if (jsonData.total_count !== undefined && !/\(Total Count: \d+\)$/.test(rootDisplayName)) {
+            rootDisplayName += ` (Total Count: ${jsonData.total_count})`;
+        }
+
+        return {
+            name: rootDisplayName,
+            originalStageName: "Root",
+            children: (jsonData.children || []).map(child => processNode(child, "Root"))
+        };
+    }
+
+    const treeData = transformData(initialJsonData);
+
+    // Auto-populated phaseColors: every depth-1 child of the root gets
+    // a stable colour from a bigger palette so all top-level dirs are
+    // distinguishable.
+    const PALETTE = [
+      ["#3498DB","#2980B9","#AED6F1"], ["#2ECC71","#27AE60","#A9DFBF"],
+      ["#E74C3C","#C0392B","#F5B7B1"], ["#9B59B6","#8E44AD","#D7BDE2"],
+      ["#F39C12","#D68910","#FAD7A0"], ["#1ABC9C","#117864","#A2D9CE"],
+      ["#34495E","#1B2631","#ABB2B9"], ["#E67E22","#BA4A00","#F5CBA7"],
+      ["#16A085","#0E6655","#A2D9CE"], ["#D35400","#A04000","#EDBB99"],
+      ["#7F8C8D","#566573","#D5DBDB"], ["#C0392B","#7B241C","#F5B7B1"],
+      ["#2E86C1","#1B4F72","#A9CCE3"], ["#28B463","#196F3D","#A9DFBF"],
+      ["#AF7AC5","#6C3483","#D2B4DE"],
+    ];
+    const phaseColors = { "Root": { fill: "#4A4A4A", stroke: "#333333", collapsedFill: "#6C757D" },
+                          "Default": { fill: "#BDC3C7", stroke: "#95A5A6", collapsedFill: "#ECF0F1" } };
+    (initialJsonData.children || []).forEach((c, i) => {
+      const pal = PALETTE[i % PALETTE.length];
+      phaseColors[c.name] = { fill: pal[0], stroke: pal[1], collapsedFill: pal[2] };
+    });
+
+    const levelSpecificPalettes = {
+      0: { fill: "#4A4A4A", stroke: "#333333", collapsedFill: "#6C757D" },
+      2: { fill: "#6ab04c", stroke: "#508a38", collapsedFill: "#a3d391" },
+      3: { fill: "#f0932b", stroke: "#d0730f", collapsedFill: "#f6c07e" },
+      4: { fill: "#be2edd", stroke: "#a01cb3", collapsedFill: "#e08bf2" },
+      5: { fill: "#00a8ff", stroke: "#007ac1", collapsedFill: "#74d2ff" },
+      6: { fill: "#e55039", stroke: "#c23620", collapsedFill: "#f09a8d" },
+      default: { fill: "#747d8c", stroke: "#57606f", collapsedFill: "#a4b0be" }
+    };
+
+    const svgElement = d3.select("#tree-svg");
+    const initialSvgWidth = +svgElement.attr("width");
+    const initialSvgHeight = +svgElement.attr("height");
+    const margin = { top: 40, right: 120, bottom: 80, left: 450 };
+    let width = initialSvgWidth - margin.left - margin.right;
+    let height = initialSvgHeight - margin.top - margin.bottom;
+    const duration = 500;
+    let nodeCounter = 0;
+    const g = svgElement.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+    const treemap = d3.tree().nodeSize([40, 0]);
+    let rootNode = d3.hierarchy(treeData, d => d.children);
+    rootNode.x0 = 0;
+    rootNode.y0 = 0;
+
+    if (rootNode.children) {
+      rootNode.children.forEach(d_child => {
+        if (d_child.children) { collapseBranch(d_child); }
+      });
+    }
+    updateTree(rootNode);
+
+    function collapseBranch(d) { if (d.children) { d._children = d.children; d._children.forEach(collapseBranch); d.children = null; } }
+    function expandBranch(d) { if (d._children) { d.children = d._children; d._children = null; } if (d.children) { d.children.forEach(expandBranch); } }
+    window.expandAll = () => { expandBranch(rootNode); updateTree(rootNode); };
+    window.collapseAll = () => { if (rootNode.children) { rootNode.children.forEach(collapseBranch); } updateTree(rootNode); };
+    window.resetView = () => { if (rootNode.children) { rootNode.children.forEach(d_child => { if (d_child.children || d_child._children) { collapseBranch(d_child); } }); } if (rootNode._children && !rootNode.children) { rootNode.children = rootNode._children; rootNode._children = null; } updateTree(rootNode); };
+
+    function updateTree(source) {
+      const treeLayoutData = treemap(rootNode);
+      let nodes = treeLayoutData.descendants();
+      let links = treeLayoutData.descendants().slice(1);
+
+      let minX = 0;
+      let maxX = 0;
+      if (nodes.length > 0) {
+        minX = d3.min(nodes, d => d.x);
+        maxX = d3.max(nodes, d => d.x);
+      }
+
+      let neededHeight = Math.max(initialSvgHeight, maxX - minX + margin.top + margin.bottom + 100);
+      svgElement.transition().duration(duration / 2).attr("height", neededHeight);
+      g.transition().duration(duration / 2).attr("transform", `translate(${margin.left},${margin.top - minX + 40})`);
+
+      nodes.forEach(d => { d.y = d.depth * 400; }); // Adjust horizontal separation if needed
+
+      const node = g.selectAll('g.node').data(nodes, d => d.id || (d.id = ++nodeCounter));
+      const nodeEnter = node.enter().append('g')
+        .attr('class', d => "node" + (d.children || d._children ? " node--internal" : " node--leaf") + (d._children ? " _children" : ""))
+        .attr('transform', d => `translate(${source.y0},${source.x0})`)
+        .on('click', (event, d) => { if (d.children) { d._children = d.children; d.children = null; } else if (d._children) { d.children = d._children; d._children = null; } updateTree(d); })
+        .style('cursor', d => (d.children || d._children) ? 'pointer' : 'default');
+
+      nodeEnter.append('circle').attr('r', 1e-6);
+
+      nodeEnter.append('text')
+        .attr('dy', '.35em')
+        .attr('x', d => d.children || d._children ? -14 : 14)
+        .attr('text-anchor', d => d.children || d._children ? 'end' : 'start')
+        .style("fill-opacity", 1e-6)
+        .call(wrapText, 380);
+
+      const nodeUpdate = nodeEnter.merge(node);
+      nodeUpdate.transition().duration(duration)
+        .attr('transform', d => `translate(${d.y},${d.x})`)
+        .attr('class', d => "node" + (d.children ? " node--internal" : " node--leaf") + (d._children ? " node--internal _children" : ""));
+
+      nodeUpdate.select('circle').attr('r', 8.5)
+        .style('fill', d => {
+            let palette;
+            if (d.depth === 0) {
+                palette = levelSpecificPalettes[0];
+            } else if (d.depth === 1) {
+                palette = phaseColors[d.data.originalStageName] || phaseColors.Default;
+            } else {
+                palette = levelSpecificPalettes[d.depth] || levelSpecificPalettes.default;
+            }
+            if (d._children) return palette.collapsedFill;
+            if (d.children) return palette.fill;
+            return "#fff";
+        })
+        .style('stroke', d => {
+            let palette;
+            if (d.depth === 0) {
+                palette = levelSpecificPalettes[0];
+            } else if (d.depth === 1) {
+                palette = phaseColors[d.data.originalStageName] || phaseColors.Default;
+            } else {
+                palette = levelSpecificPalettes[d.depth] || levelSpecificPalettes.default;
+            }
+            return palette.stroke;
+        });
+      nodeUpdate.select('text').style("fill-opacity", 1).call(wrapText, 380);
+
+      const nodeExit = node.exit().transition().duration(duration).attr('transform', d => `translate(${source.y},${source.x})`).remove();
+      nodeExit.select('circle').attr('r', 1e-6);
+      nodeExit.select('text').style('fill-opacity', 1e-6);
+
+      const link = g.selectAll('path.link').data(links, d => d.id);
+      const linkEnter = link.enter().insert('path', "g").attr('class', 'link').attr('d', d => { const o = { x: source.x0, y: source.y0 }; return diagonal(o, o); });
+
+      linkEnter.merge(link).transition().duration(duration).attr('d', d => diagonal(d, d.parent))
+        .style('stroke', d => {
+            const sourceNode = d.parent;
+            if (!sourceNode) return phaseColors.Default.stroke;
+            const l1AncestorName = sourceNode.data.originalStageName;
+            const colorPalette = phaseColors[l1AncestorName] || phaseColors.Default;
+            return colorPalette.stroke;
+        });
+      link.exit().transition().duration(duration).attr('d', d => { const o = { x: source.x, y: source.y }; return diagonal(o, o); }).remove();
+      nodes.forEach(d => { d.x0 = d.x; d.y0 = d.y; });
+    }
+
+    function diagonal(s, d) { return `M ${s.y} ${s.x} C ${(s.y + d.y) / 2} ${s.x}, ${(s.y + d.y) / 2} ${d.x}, ${d.y} ${d.x}`; }
+
+    function wrapText(textElements, maxWidth) {
+        const textPartColors = {
+            name: '#343a40',
+            count: '#0056b3'
+        };
+        const countRegex = /(\s\(Total Count: \d+\))$/;
+
+        textElements.each(function () {
+            const textD3 = d3.select(this);
+            const originalNodeText = textD3.datum().data.name;
+            const x = parseFloat(textD3.attr("x") || 0);
+            const initialDy = textD3.attr("dy");
+            const textAnchor = textD3.attr("text-anchor");
+            const lineHeight = 1.1;
+
+            textD3.text(null);
+
+            let namePart = originalNodeText;
+            let countPartText = "";
+
+            const countMatch = originalNodeText.match(countRegex);
+            if (countMatch && originalNodeText.endsWith(countMatch[0])) {
+                namePart = originalNodeText.substring(0, originalNodeText.length - countMatch[0].length).trim();
+                countPartText = countMatch[0].trim();
+            }
+
+            const tokens = [];
+            namePart.split(/\s+/).filter(Boolean).forEach(word => {
+                tokens.push({ text: word, type: 'name' });
+            });
+            if (countPartText) {
+                tokens.push({ text: countPartText, type: 'count' });
+            }
+
+            if (tokens.length === 0 && originalNodeText) {
+                tokens.push({ text: originalNodeText, type: 'name' });
+            }
+
+            let currentTspan = textD3.append("tspan").attr("x", x).attr("dy", initialDy);
+            if (textAnchor === "end") currentTspan.attr("text-anchor", "end");
+
+            let lineTokens = [];
+
+            for (let i = 0; i < tokens.length; i++) {
+                const tokenObj = tokens[i];
+
+                lineTokens.push(tokenObj);
+                currentTspan.text(lineTokens.map(t => t.text).join(" "));
+
+                if (currentTspan.node().getComputedTextLength() > maxWidth && lineTokens.length > 1) {
+                    lineTokens.pop();
+
+                    currentTspan.text(null);
+                    lineTokens.forEach((prevToken, idx) => {
+                        currentTspan.append("tspan")
+                            .text((idx > 0 ? " " : "") + prevToken.text)
+                            .style("fill", textPartColors[prevToken.type] || textPartColors.name)
+                            .style("font-weight", prevToken.type === 'count' ? "bold" : "normal");
+                    });
+
+                    lineTokens = [tokenObj];
+                    currentTspan = textD3.append("tspan").attr("x", x).attr("dy", lineHeight + "em");
+                    if (textAnchor === "end") currentTspan.attr("text-anchor", "end");
+                }
+            }
+
+            currentTspan.text(null);
+            lineTokens.forEach((token, idx) => {
+                currentTspan.append("tspan")
+                    .text((idx > 0 ? " " : "") + token.text)
+                    .style("fill", textPartColors[token.type] || textPartColors.name)
+                    .style("font-weight", token.type === 'count' ? "bold" : "normal");
+            });
+
+            if (textD3.selectAll("tspan > tspan").empty() && textD3.select("tspan").text().length === 0 && originalNodeText) {
+                let t = textD3.select("tspan");
+                let displayText = originalNodeText;
+                t.text(displayText).style("fill", textPartColors.name);
+                if (t.node() && t.node().getComputedTextLength() > maxWidth && displayText.length > 20) {
+                    let estimatedChars = Math.floor(maxWidth / (t.node().getComputedTextLength()/displayText.length) );
+                    displayText = displayText.substring(0, Math.max(0, estimatedChars - 3)) + "...";
+                    t.text(displayText);
+                }
+            }
+        });
+    }
+  </script>
+</body>
+</html>
