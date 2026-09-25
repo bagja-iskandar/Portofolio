@@ -189,8 +189,15 @@ export interface ProjectExternalLink {
   readonly isExternal: boolean;
 }
 
+export interface ProjectCaseStudy {
+  readonly challenge: string;
+  readonly approach: string;
+  readonly result: string;
+  readonly tradeOffs: string;
+}
+
 /**
- * Single Structured Source of Truth for Project Entities (§39 Bible)
+ * Single Structured Source of Truth for Project Entities
  */
 export interface Project {
   readonly id: ProjectId;
@@ -201,6 +208,7 @@ export interface Project {
   readonly role: string;
   readonly timeline: string;
   readonly status: 'completed' | 'active' | 'archived';
+  readonly releaseStatus?: string;
   readonly displayOrder: number;
   readonly featured: boolean;
   readonly canvasEnvironment: CanvasEnvironment;
@@ -209,6 +217,8 @@ export interface Project {
   readonly technical: ProjectTechnicalArchitecture;
   readonly exhibit: ProjectExhibitMedia;
   readonly links: ReadonlyArray<ProjectExternalLink>;
+  readonly liveSandboxUrl?: string;
+  readonly caseStudy?: ProjectCaseStudy;
 }
 
 // ============================================================================

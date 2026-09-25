@@ -2,7 +2,7 @@
  * @file engineering-highlights.data.ts
  * @description Verifiable Engineering Highlights & Core Principles for Bagja Iskandar Jamil
  * Fast-scan technical accomplishments and academic distinctions for technical recruiters and hiring managers.
- * Conforms strictly to §47 (Zero Fabrication, 100% Authentic Data).
+ * Conforms strictly to 100% Authentic Data from the official resume.
  */
 
 import type { EngineeringHighlightsRollup } from '../../types/duality';
@@ -11,74 +11,64 @@ export const ENGINEERING_HIGHLIGHTS: EngineeringHighlightsRollup = {
   title: 'Engineering Highlights & Verifiable Milestones',
   subtitle: 'Quantifiable achievements, academic distinctions, and foundational engineering principles.',
   executiveSummary:
-    'A track record combining academic research excellence, full-stack systems analysis, and hands-on frontend delivery across fintech, enterprise dashboards, and municipal software.',
+    'A track record combining academic research excellence, full-stack systems analysis, and hands-on frontend delivery across fintech, logistics prototypes, and municipal software.',
   benchmarkCards: [
     {
       id: 'metric-ieee-publication',
       label: 'IEEE Academic Publication',
-      value: 'ICIC 2025',
-      unit: 'IEEE',
+      value: '82.05%',
+      unit: 'Mean Accuracy',
       description:
-        'First author on peer-reviewed BCI research with Hybrid GNN-Mamba networks (82.05% Acc, 84.50% F1).',
+        'First author on peer-reviewed EEG BCI research using Hybrid GNN-Mamba networks (+1.5 pts over baseline, 84.50% F1, 9 subjects).',
       context: 'IEEE ICIC 2025 Conference',
-      verifiedStandard: 'IEEE Publication Standards',
+      verifiedStandard: 'IEEE Xplore (#11309504)',
       linkUrl: 'https://ieeexplore.ieee.org/document/11309504',
-      linkText: 'IEEE Xplore',
+      linkText: 'IEEE Xplore Paper',
     },
     {
-      id: 'metric-gpa',
-      label: 'Academic Performance',
-      value: '3.37',
-      unit: '/ 4.00 GPA',
+      id: 'metric-wms-scope',
+      label: 'Cold-Chain WMS Prototype',
+      value: '56 Endpoints',
+      unit: '& 214 Automated Tests',
       description:
-        'Bachelor of Computer Science (Informatics) degree from Universitas Jenderal Achmad Yani (08/2022 – 12/2025).',
-      context: 'Software engineering & applied AI foundations',
-      verifiedStandard: 'Academic Transcript',
+        'Full-stack warehouse management prototype with 10 modules, 100% automated test pass rate, Swagger docs, and volume billing.',
+      context: 'WMS Nusantara Prototype',
+      verifiedStandard: 'Independent Prototype / Coursework SRS',
+      linkUrl: 'https://wms-porto.vercel.app',
+      linkText: 'Live Interactive App',
+      techBadges: ['Next.js 15', 'NestJS 10', 'Prisma', 'PostgreSQL'],
     },
     {
       id: 'metric-fintech-scope',
-      label: 'Fintech Remittance Scope',
-      value: '2',
-      unit: 'Countries (ID ↔ JP)',
+      label: 'Cross-Border Fintech Client',
+      value: '~20 Screens',
+      unit: 'Delivered (ID ↔ JP)',
       description:
-        'Engineered responsive wallet, FX rate, and recipient transfer flows for ID ↔ JP remittance with AI-assisted Codex acceleration.',
-      context: 'Swap-On ID ↔ JP Fintech',
-      verifiedStandard: 'AI-Assisted Codex',
-      techBadges: ['OpenAI Codex'],
+        'Delivered responsive web client for international remittance using Nuxt 4, Vue.js 3, and reusable atomic UI components (~85% of total UI).',
+      context: 'Swap-On Remittance Client',
+      verifiedStandard: 'Freelance Frontend Developer',
+      techBadges: ['Nuxt 4', 'Vue.js 3', 'Tailwind CSS', 'Pinia'],
     },
     {
-      id: 'metric-monorepo-stack',
-      label: 'Enterprise Logistics Platform',
-      value: '16 / 16',
-      unit: 'SRS Use Cases (100%)',
+      id: 'metric-team-diskominfo',
+      label: 'Municipal CMS Refactoring',
+      value: '3-Person Team',
+      unit: 'Engineering Pod',
       description:
-        'Transformed college SRS into production cold-chain WMS via Next.js 15, NestJS 10 & live IoT telemetry with Antigravity AI orchestration.',
-      context: 'WMS Nusantara Monorepo',
-      verifiedStandard: 'AI-Assisted Antigravity',
-      linkUrl: 'https://wms-porto.vercel.app',
-      linkText: 'Live App',
-      techBadges: ['Antigravity'],
+        'Audited and refactored legacy CMS frontend components, resolved rendering bugs, and integrated Pinia state stores with Docker workflows.',
+      context: 'Diskominfo Kota Cimahi Intern',
+      verifiedStandard: 'Frontend Developer Intern (08/2025 – 09/2025)',
+      techBadges: ['Nuxt.js', 'Vue.js', 'Bootstrap 5', 'Docker'],
     },
     {
-      id: 'metric-ai-assisted-software',
-      label: 'AI-Assisted Software Development',
-      value: '3+',
-      unit: 'Software Systems',
+      id: 'metric-academic-credentials',
+      label: 'Academic & Language Proficiency',
+      value: '3.37 GPA',
+      unit: '& 570 TOEFL ITP',
       description:
-        'Hands-on experience developing production-grade applications with AI-assisted engineering tools—leveraging Google Antigravity and OpenAI Codex across cross-platform mobile apps, cloud logistics, and management platforms.',
-      context: 'Antigravity & Codex Ecosystem',
-      verifiedStandard: 'AI-Assisted',
-      techBadges: ['Antigravity', 'OpenAI Codex'],
-    },
-    {
-      id: 'metric-ta-ai',
-      label: 'Academic Instruction',
-      value: '1',
-      unit: 'Semester (Teaching Asst.)',
-      description:
-        'Guided university students through AI lab practicums, Python workflows, and algorithm debugging.',
-      context: 'UNJANI CS Department (03/2025 – 07/2025)',
-      verifiedStandard: 'Faculty Appointment',
+        'Bachelor of Computer Science from Universitas Jenderal Achmad Yani (08/2022 – 12/2025) with verified English working proficiency.',
+      context: 'UNJANI Informatics Graduate',
+      verifiedStandard: 'S.Kom Degree & Official TOEFL',
     },
   ],
   corePrinciples: [
@@ -97,11 +87,11 @@ export const ENGINEERING_HIGHLIGHTS: EngineeringHighlightsRollup = {
         'Decompose complex views into focused reusable components, enforce strict TypeScript contracts, and eliminate redundant styling.',
     },
     {
-      title: 'Continuous Scientific Curiosity & AI Literacy',
+      title: 'Scientific Rigor & Continuous Learning',
       premise:
         'Modern software engineering thrives at the intersection of robust web runtimes and applied machine learning tools.',
       enforcement:
-        'Combine deep theoretical understanding of algorithms (GNN, Mamba) with practical mastery of AI-assisted engineering tools (Antigravity, Codex).',
+        'Combine theoretical understanding of machine learning algorithms (GNN, Mamba) with practical mastery of modern web frameworks and AI-assisted development tools.',
     },
   ],
 };

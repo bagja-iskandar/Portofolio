@@ -1,8 +1,8 @@
 /**
  * @file structure-view.data.ts
  * @description Consolidated Canonical Data Fixture for Structure View (Recruiter Fast-Track)
- * Single Source of Truth conforming strictly to §29, §38, §39, §46, and §47 of PROJECT_BIBLE.md.
- * 100% Authentic Data for Bagja Iskandar Jamil.
+ * Single Source of Truth for verified resume data.
+ * Authentic Data for Bagja Iskandar Jamil.
  */
 
 import type { StructureViewData } from '../../types/duality';

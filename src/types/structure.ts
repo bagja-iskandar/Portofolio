@@ -1,7 +1,7 @@
 /**
  * @file structure.ts
- * @description Type definitions for Portfolio Structure View (Portfolio 1 / Recruiter Fast-Track)
- * @specification Strictly adheres to §16, §22, §38, §39, §46, and §47 of PROJECT_BIBLE.md
+ * @description Type definitions for Portfolio Structure View (Recruiter Fast-Track)
+ * Single Structured Source of Truth with strict verified resume alignment.
  */
 
 import type {
@@ -21,10 +21,14 @@ export type CapabilityId = Brand<string, 'CapabilityId'>;
 export type PatternId = Brand<string, 'PatternId'>;
 
 // ============================================================================
-// 2. Capabilities Taxonomy (§22 & §46 Mandates: Zero Skill-Bars, Pure Metadata)
+// 2. Capabilities Taxonomy (Pure Structured Engineering Disciplines)
 // ============================================================================
 
 export type CapabilityDomain =
+  | 'requirements_to_system'
+  | 'frontend_delivery'
+  | 'backend_and_systems'
+  | 'machine_learning_and_research'
   | 'mobile_architecture'
   | 'frontend_architecture'
   | 'fullstack_systems'
@@ -127,13 +131,13 @@ export interface EngineeringHighlightsRollup {
 }
 
 // ============================================================================
-// 5. Direct Contact Meta (Fast-Track Recruiter & Hiring Manager SLA)
+// 5. Direct Contact Meta (Fast-Track Recruiter & Direct Inquiries)
 // ============================================================================
 
 export type AvailabilityStatus = 'available' | 'in_dialogue' | 'unavailable';
 
 export interface DirectContactProfile {
-  readonly platform: 'github' | 'linkedin' | 'readcv' | 'resume' | 'email';
+  readonly platform: 'github' | 'linkedin' | 'readcv' | 'resume' | 'email' | 'website' | 'phone';
   readonly label: string;
   readonly url: string;
   readonly handle?: string;
@@ -157,8 +161,12 @@ export interface DirectContactMeta {
   };
   readonly communicationChannels: {
     readonly directEmail: string;
+    readonly phone?: string;
+    readonly websiteUrl?: string;
+    readonly englishProficiency?: string;
     readonly defaultSubject: string;
     readonly responseSla: string;
+    readonly responseTime?: string;
     readonly profiles: ReadonlyArray<DirectContactProfile>;
   };
   readonly noteToHiringTeams: string;
@@ -176,6 +184,7 @@ export interface WorkExperienceItem {
   readonly employmentType: string;
   readonly period: string;
   readonly location: string;
+  readonly releaseStatus?: string;
   readonly executiveSummary: string;
   readonly problemStatement?: string;
   readonly engineeringSolution?: string;

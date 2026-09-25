@@ -2,7 +2,7 @@
  * @file systems-matrix.data.ts
  * @description Systems Architecture Matrix for Bagja Iskandar Jamil
  * Documents real-world architectural patterns, technical problems addressed, trade-off analyses, and benchmarks.
- * Adheres strictly to §47 (Zero Fabrication, 100% Authentic Projects).
+ * Single source of truth for architectural patterns and benchmarks.
  */
 
 import type { PatternId, ProjectId, SystemsArchitectureMatrix } from '../../types/duality';
@@ -17,7 +17,7 @@ export const SYSTEMS_ARCHITECTURE_MATRIX: SystemsArchitectureMatrix = {
       pattern: 'Full-Stack Monorepo Architecture with Shared Type Contracts',
       category: 'monorepo',
       problemAddressed:
-        'Desynchronization of validation schemas, DTOs, and API contract types between independent frontend and backend repositories in enterprise inventory systems.',
+        'Desynchronization of validation schemas, DTOs, and API contract types between independent frontend and backend repositories in warehouse inventory systems.',
       architecturalSolution:
         'Unified monorepo structure housing Next.js frontend applications and NestJS backend microservices, backed by Prisma ORM and PostgreSQL. Role-based interfaces separate Admin controls from Driver logistics workflows while sharing core data schemas.',
       tradeOffs: {
@@ -38,7 +38,7 @@ export const SYSTEMS_ARCHITECTURE_MATRIX: SystemsArchitectureMatrix = {
       problemAddressed:
         'Zero-error operational requirements for cross-border international remittances (Indonesia ↔ Japan) across Android and iOS, demanding synchronized multi-currency math, foreign recipient banking validation, and seamless payment execution without code duplication.',
       architecturalSolution:
-        'Architected a cross-platform mobile application using Kotlin Multiplatform (KMP) for shared business logic and currency conversion models, Compose Multiplatform for shared declarative UI, integrated alongside the Android View System (XML / Material 3), Swift/SwiftUI bridge on iOS, and Stripe Android SDK payment gateway.',
+        'Engineered a cross-platform mobile application using Kotlin Multiplatform (KMP) for shared business logic and currency conversion models, Compose Multiplatform for shared declarative UI, integrated alongside the Android View System (XML / Material 3), Swift/SwiftUI bridge on iOS, and Stripe Android SDK payment gateway.',
       tradeOffs: {
         benefit: '100% shared business logic and shared UI models between Android and iOS, eliminating domain model divergence.',
         liability: 'Requires managing dual platform toolchains (Gradle Kotlin DSL AGP 9.2 & Xcode) and Swift UIViewControllerRepresentable bridge.',
@@ -56,7 +56,7 @@ export const SYSTEMS_ARCHITECTURE_MATRIX: SystemsArchitectureMatrix = {
       pattern: 'Dynamic Multi-Parameter Client Filtering & Nitro Server Persistence',
       category: 'state',
       problemAddressed:
-        'Sluggish reactivity, complicated state logic, and UI desynchronization when filtering across multiple dimensions (projects, milestones, tasks, statuses) in enterprise dashboards.',
+        'Sluggish reactivity, complicated state logic, and UI desynchronization when filtering across multiple dimensions (projects, milestones, tasks, statuses) in team productivity dashboards.',
       architecturalSolution:
         'Leveraged Nuxt 4 Composition API coupled with Nitro API server routes, providing instantaneous client-side reactive filtering and persistent CRUD operations for task, project, and milestone tracking.',
       tradeOffs: {

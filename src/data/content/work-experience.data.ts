@@ -1,8 +1,8 @@
 /**
  * @file work-experience.data.ts
  * @description Canonical Work Experience Data for Bagja Iskandar Jamil
- * Conforms strictly to §16, §39, & §47 of PROJECT_BIBLE.md.
- * 100% Authentic Data derived from Official Resume (Zero Fabrication).
+ * 100% Authentic Data derived strictly from Official Resume (Zero Overclaiming).
+ * Single Source of Truth for Professional Career and Academic Instruction.
  */
 
 import type { WorkExperienceItem } from '../../types/structure';
@@ -11,104 +11,143 @@ export const WORK_EXPERIENCE_DATA: ReadonlyArray<WorkExperienceItem> = [
   {
     id: 'exp-swap-on',
     company: 'Swap-On',
-    projectName: 'Fintech Remittance Platform',
+    projectName: 'Cross-Border Remittance App',
     role: 'Frontend Developer (Freelance)',
-    employmentType: 'Freelance / Contract',
-    period: '2026',
-    location: 'Remote (Indonesia – Japan Fintech Remittance)',
+    employmentType: 'Freelance / Remote',
+    period: '04/2026 – 07/2026',
+    location: 'Remote (Indonesia – Japan Remittance)',
+    releaseStatus: 'Pre-release / Client NDA',
     executiveSummary:
-      'Engineered responsive, accessible mobile user interfaces for a cross-platform fintech remittance application facilitating international money transfers between Indonesia and Japan across Android and iOS.',
+      'Delivered approximately 20 screens for a cross-border money-transfer application alongside backend and QA engineers using AI-assisted development workflows.',
     problemStatement:
-      'International money transfers demand zero-error user journeys, real-time currency exchange feedback, clear fee disclosures, and strict input validation for foreign recipient bank accounts across mobile operating systems.',
+      'International remittance workflows require clear multi-currency feedback, transparent fee breakdowns, and strict validation on recipient account forms to prevent transaction errors.',
     engineeringSolution:
-      'Architected a cross-platform mobile client using Kotlin Multiplatform (KMP) and Compose Multiplatform alongside Android Native (XML / Material Components) and iOS (Swift/SwiftUI), accelerated via AI-assisted engineering with OpenAI Codex; developed core application modules including multi-currency wallet management, exchange rate calculators, recipient directories, transfer execution workflows, and Stripe payment integration.',
+      'Built modular, responsive frontend client views with reusable atomic components (~85% of interface) and integrated backend REST endpoints with AI-assisted acceleration.',
     keyDeliverables: [
-      'End-to-end multi-currency wallet & exchange pipeline with responsive UI feedback on Compose Multiplatform',
-      'Cross-platform shared business logic and UI architecture using Kotlin Multiplatform (KMP) across Android and iOS',
-      'Dual Android UI implementation integrating modern Compose Multiplatform with Android View System (XML / Material Components)',
-      'Secure international payment processing and card checkout flow integration using Stripe Android SDK',
-      'Thin iOS host application rendering shared Compose UI via UIViewControllerRepresentable and SwiftUI',
-      'Strict Kotlin domain validation models reducing user input errors during international recipient registration',
+      'Delivered ~20 screens (authentication, multi-currency dashboard, send money, top-up, recipient directory, transaction history, admin review) as the frontend developer alongside backend and QA.',
+      'Organized the UI into reusable atomic components (~85% of the interface), including CurrencyInputField, RecipientCard, FeeBreakdownSummary, and StatusBadge.',
+      'Implemented responsive client-side form validation and real-time exchange rate calculations to eliminate transfer input errors.',
     ],
     coreSubsystems: [
       {
-        name: 'Shared KMP Logic & Currency Core',
+        name: 'Atomic UI Component System',
         responsibility:
-          'Handles live conversion calculations, balance updates, and currency pair selections across platforms.',
+          'Constructed reusable input fields, cards, badges, and modal dialogs providing ~85% UI coverage.',
       },
       {
-        name: 'Recipient Directory & Validation Module',
+        name: 'Remittance & Transfer Workflows',
         responsibility:
-          'Manages international recipient accounts with banking code validation on Android and iOS.',
+          'Engineered multi-currency balances, rate calculators, and multi-step transfer confirmation screens.',
       },
       {
-        name: 'Stripe Gateway & Checkout Flow',
+        name: 'Recipient Directory & History',
         responsibility:
-          'Processes secure card remittances, fee disclosures, and payment lifecycle callbacks.',
+          'Implemented searchable recipient listings, banking code validation, and transaction logs.',
       },
     ],
     technologies: [
-      'Kotlin 2.4 (JVM 11)',
-      'Kotlin Multiplatform (KMP)',
-      'Compose Multiplatform 1.11',
-      'Android (XML / Material 3)',
-      'Swift / SwiftUI (iOS)',
-      'Stripe Android SDK',
-      'Gradle Kotlin DSL (AGP 9.2)',
+      'Vue.js',
+      'Nuxt.js',
+      'TypeScript',
+      'Tailwind CSS',
+      'Pinia',
+      'REST APIs',
     ],
     assistedTech: ['OpenAI Codex'],
   },
   {
     id: 'exp-diskominfo',
-    company: 'Dinas Komunikasi dan Informatika Kota Cimahi',
-    projectName: 'Puscimut CMS',
-    role: 'Frontend Developer Intern',
+    company: 'Dinas Komunikasi dan Informatika Pemerintahan Kota Cimahi',
+    projectName: 'Municipal CMS Refactoring',
+    role: 'Frontend Developer Intern – CMS Refactoring Project',
     employmentType: 'Government Internship',
-    period: 'Aug 2025 – Sep 2025',
+    period: '08/2025 – 09/2025',
     location: 'Cimahi, West Java, Indonesia',
+    releaseStatus: 'Government Internship (Completed)',
     executiveSummary:
-      'Refactored and modernized frontend modules of Puscimut CMS, an internal municipal Content Management System for Dinas Komunikasi dan Informatika Kota Cimahi, improving maintainability, UI responsiveness, and code readability.',
+      'Refactored frontend modules of an internal municipal Content Management System (CMS) in a 3-person team, extracting reusable components and applying clean-code conventions.',
     problemStatement:
-      'Legacy municipal CMS codebase exhibited tightly coupled UI templates, inconsistent design elements, layout rendering glitches, and undocumented frontend logic that slowed down departmental updates.',
+      'Legacy municipal CMS modules suffered from template duplication, inconsistent form styling, layout rendering defects, and tight coupling that hindered departmental maintenance.',
     engineeringSolution:
-      'Systematically audited and refactored frontend modules; resolved interface bugs; established modular UI structures; collaborated directly with government IT development team to implement code improvements.',
+      'Systematically refactored frontend views into modular components, resolved UI bugs across administrative panels, and standardized styling conventions alongside the IT team.',
     keyDeliverables: [
-      'Modernized core internal CMS modules used by municipal government operators across Diskominfo Kota Cimahi',
-      'Improved code readability and structural maintainability for long-term internal maintenance, onboarding, and scaling',
-      'Eliminated UI display glitches and layout inconsistencies across administration panels, responsive viewports, and custom theme layouts',
-      'Established standardized styling conventions and modular template blocks across departmental forms, inputs, and listings',
-      'Architected clean OOP service layer implementing ServiceInterface across all 20+ modules with automatic SSO token injection',
-      'Introduced robust schema validation with Zod and TypeScript, providing instant UI feedback and stopping invalid payloads before dispatch',
+      'Refactored frontend modules of a government CMS in a 3-person team (Nuxt.js, Pinia, TypeScript), extracting reusable components and applying clean-code conventions.',
+      'Resolved UI defects in existing features and contributed frontend improvements alongside the team.',
+      'Standardized form elements and data table layouts to improve consistency and maintainability across municipal departments.',
     ],
     coreSubsystems: [
       {
-        name: 'CMS Module Audit & Restructuring',
+        name: 'CMS Component Extraction',
         responsibility:
-          'Decomposing sprawling legacy views into clean component units and server-driven data grids.',
+          'Decomposed monolithic legacy views into focused, reusable component blocks.',
       },
       {
-        name: 'UI Optimization & Bug Remediation',
+        name: 'UI Defect Remediation',
         responsibility:
-          'Fixing layout regressions across custom themes, enhancing mobile responsiveness, and optimizing editor pipelines.',
+          'Audited administrative pages, resolved layout regressions, and improved responsive behavior.',
       },
       {
-        name: 'Team Code Standardization',
+        name: 'Clean Code Standardization',
         responsibility:
-          'Enforcing TypeScript interfaces, adopting Zod schema validation, and establishing team Git standards.',
+          'Applied consistent naming conventions, TypeScript interfaces, and shared state patterns.',
       },
     ],
     technologies: [
-      'Nuxt 3',
-      'Vue 3',
-      'TypeScript',
-      'Bootstrap 5',
+      'Nuxt.js',
       'Pinia',
-      'Zod',
-      'Vite',
-      'Docker',
+      'TypeScript',
+      'Vue.js',
+      'Tailwind CSS',
       'Git',
     ],
-    credentialLabel: 'INTERNSHIP PROFILE',
+    credentialLabel: 'INTERNSHIP RECORD',
+    credentialUrl: 'https://linkedin.com/in/bagja-iskandar-jamil',
+  },
+  {
+    id: 'exp-lab-assistant',
+    company: 'Universitas Jenderal Achmad Yani',
+    projectName: 'Artificial Intelligence Laboratory',
+    role: 'Lab Assistant, Artificial Intelligence',
+    employmentType: 'Teaching Assistant / Academic',
+    period: '03/2025 – 07/2025',
+    location: 'Cimahi, West Java, Indonesia',
+    releaseStatus: 'Academic Term Completed',
+    executiveSummary:
+      'Supported approximately 19 weekly practical sessions for undergraduate computer science students in Artificial Intelligence, guiding algorithm troubleshooting and grading student reports.',
+    problemStatement:
+      'Students required individual guidance to translate theoretical machine learning algorithms and heuristic search models into practical, working Python implementations.',
+    engineeringSolution:
+      'Conducted interactive weekly lab practicums, demonstrated Python scientific workflows, guided code debugging, and established objective grading criteria for all student lab reports.',
+    keyDeliverables: [
+      'Supported ~19 weekly practical sessions for one class, guiding students through core AI concepts and troubleshooting their code.',
+      'Graded nearly all student lab reports, evaluating algorithmic correctness, code quality, and analytical conclusions.',
+      'Provided hands-on debugging support for search algorithms, neural network baselines, and data preprocessing pipelines.',
+    ],
+    coreSubsystems: [
+      {
+        name: 'Lab Practicum Instruction',
+        responsibility:
+          'Guided students through hands-on Python exercises in search, heuristics, and introductory ML.',
+      },
+      {
+        name: 'Code Troubleshooting',
+        responsibility:
+          'Assisted students with debugging algorithmic edge cases and environment configuration.',
+      },
+      {
+        name: 'Lab Report Assessment',
+        responsibility:
+          'Evaluated and graded student laboratory assignments with detailed technical feedback.',
+      },
+    ],
+    technologies: [
+      'Python',
+      'PyTorch / ML Basics',
+      'Data Structures',
+      'Algorithm Debugging',
+      'Technical Mentorship',
+    ],
+    credentialLabel: 'ACADEMIC APPOINTMENT',
     credentialUrl: 'https://linkedin.com/in/bagja-iskandar-jamil',
   },
 ] as const;

@@ -1,223 +1,229 @@
 /**
  * @file capabilities.data.ts
  * @description Architectural Capabilities Taxonomy for Bagja Iskandar Jamil
- * Conforms strictly to §22 & §46 of PROJECT_BIBLE.md (Zero Skill-Bars, Zero Percentages, Zero Stars).
- * Pure structured metadata organized by verified engineering disciplines derived from official resume.
+ * Pure structured metadata organized into 4 core competency pillars derived from official resume:
+ * 1. Requirements Engineering & Systems Modeling
+ * 2. Modern Frontend Engineering & Design Systems
+ * 3. Backend Systems, REST APIs & Databases
+ * 4. Applied Machine Learning & Signal Processing
  */
 
 import type { CapabilitiesTaxonomy, CapabilityId, ProjectId } from '../../types/duality';
 
 export const CAPABILITIES_TAXONOMY: CapabilitiesTaxonomy = {
-  headline: 'Core Engineering Capabilities & Disciplines',
+  headline: 'Core Engineering Capabilities & Competency Pillars',
   philosophy:
-    'Technical capability is demonstrated through working software, architectural rigor, and verifiable deliverables — not through subjective skill bars, star ratings, or arbitrary percentages.',
+    'Technical capability is demonstrated through working software, verifiable test suites, and peer-reviewed research — not through subjective skill bars, arbitrary percentages, or vanity ratings.',
   disciplines: [
     {
-      domain: 'mobile_architecture',
-      title: 'Cross-Platform Mobile & Native Systems',
+      domain: 'requirements_to_system',
+      title: 'Requirements to System',
       description:
-        'Architecting resilient mobile client applications across Android and iOS with Kotlin Multiplatform (KMP), Compose Multiplatform, native Android SDK, and digital image processing.',
+        'Translating complex operational workflows into structured technical specifications, formal UML architecture diagrams, and role-based access models.',
       items: [
         {
-          id: 'cap-kmp-compose' as CapabilityId,
-          name: 'Kotlin Multiplatform (KMP) & Compose Architecture',
+          id: 'cap-uml-srs' as CapabilityId,
+          name: 'Software Requirements Specification (SRS) & UML Modeling',
           scope:
-            'Engineering cross-platform mobile clients with shared Kotlin domain logic, Compose Multiplatform declarative UI, Swift/SwiftUI host bridges, and Stripe payment gateway integration.',
+            'Formulating 16-use-case Software Requirements Specifications (SRS), use case diagrams, sequence diagrams, and activity flows derived from operational logistics requirements.',
           technologies: [
-            'Kotlin 2.4 (JVM 11)',
-            'Kotlin Multiplatform (KMP)',
-            'Compose Multiplatform 1.11',
-            'Android (XML / Material 3)',
-            'Swift / SwiftUI (iOS)',
-            'Stripe Android SDK',
-            'Gradle Kotlin DSL (AGP 9.2)',
+            'UML 2.5',
+            'SRS Documentation',
+            'Use Case Modeling',
+            'Sequence Diagrams',
+            'Activity Diagrams',
           ],
-          evidencedInProjects: ['proj-swap-on' as ProjectId],
+          evidencedInProjects: ['proj-wms' as ProjectId],
           standardsCompliance: [
-            'Cross-Platform Shared Logic',
-            'Compose Material 3 Standards',
-            'Stripe Secure Payment Guidelines',
+            'Structured SRS Documentation',
+            '16/16 SRS Verification',
           ],
         },
         {
-          id: 'cap-android-image-processing' as CapabilityId,
-          name: 'Native Android Engineering & Digital Image Processing',
+          id: 'cap-rbac-workflows' as CapabilityId,
+          name: 'Role-Based Access Control & Operational Workflows',
           scope:
-            'Developing high-performance Android applications with modern Kotlin, discrete RGB bitmap channel decomposition, real-time pixel frequency histogram calculations, and Canvas matrix manipulation.',
+            'Designing multi-role permission boundaries (Admin, Driver, Tenant) and operational status state machines for warehouse and fintech operations.',
           technologies: [
-            'Kotlin (Android SDK 34)',
-            'Android Studio / Jetpack',
-            'Bitmap Matrix Processing & Canvas',
-            'AndroidX AppCompat',
+            'RBAC Security Models',
+            'State Machine Transitions',
+            'User Journey Mapping',
           ],
-          evidencedInProjects: ['proj-mobile-image-editor' as ProjectId],
+          evidencedInProjects: ['proj-wms' as ProjectId, 'proj-swap-on' as ProjectId],
           standardsCompliance: [
-            'Android SDK 34 Guidelines',
-            'Direct Bitmap Matrix Operations',
+            'Principle of Least Privilege',
+            'Workflow State Determinism',
           ],
         },
       ],
     },
     {
-      domain: 'frontend_architecture',
-      title: 'Modern Frontend Engineering',
+      domain: 'frontend_delivery',
+      title: 'Frontend Delivery',
       description:
-        'Building responsive, accessible, and performant web interfaces with Next.js 15, React 19, Nuxt 4, Vue.js 3, TypeScript, and modern component design systems.',
+        'Building performant, accessible, and responsive user interfaces with Next.js 15, React 19, Nuxt 4, Vue.js 3, and reusable atomic component libraries.',
       items: [
         {
           id: 'cap-nextjs-react' as CapabilityId,
-          name: 'Next.js 15 & React 19 Enterprise Architecture',
+          name: 'Next.js 15 & React 19 Web Applications',
           scope:
-            'Architecting full-stack monorepo web clients with Next.js 15 App Router, React 19 Server Components, TanStack Query v5, real-time IoT temperature telemetry monitoring, and role-based operational hubs.',
+            'Developing web application frontends with Next.js 15 App Router, React 19 Server Components, TanStack Query v5, and responsive telemetry dashboards.',
           technologies: [
-            'Next.js 15 (React 19)',
+            'Next.js 15',
+            'React 19',
             'TypeScript',
             'Tailwind CSS',
-            'TanStack React Query v5',
+            'TanStack Query v5',
           ],
           evidencedInProjects: ['proj-wms' as ProjectId],
           standardsCompliance: [
-            'Next.js 15 App Router Architecture',
+            'Next.js App Router Standards',
             'W3C Semantic HTML5 & A11y',
           ],
         },
         {
           id: 'cap-nuxt-vue' as CapabilityId,
-          name: 'Nuxt 4 & Vue.js Dashboard Systems',
+          name: 'Nuxt 4, Vue.js 3 & Atomic UI Component Libraries',
           scope:
-            'Engineering scalable enterprise dashboards with Nuxt 4, Vue.js Composition API, Nitro server engine routes, and persistent Unstorage KV file CRUD architectures.',
+            'Engineering cross-border remittance and management dashboards using Vue 3 Composition API, Pinia state management, and reusable atomic UI components (~20 screens delivered).',
           technologies: [
             'Nuxt 4',
-            'Vue.js',
-            'Nitro API Engine',
-            'Tailwind CSS',
+            'Vue.js 3',
             'TypeScript',
+            'Tailwind CSS',
+            'Pinia',
+            'Vite',
           ],
-          evidencedInProjects: ['proj-mgmt-dashboard' as ProjectId],
+          evidencedInProjects: ['proj-swap-on' as ProjectId, 'proj-mgmt-dashboard' as ProjectId],
           standardsCompliance: [
+            'Atomic Component Architecture',
             'Vue 3 Composition API Patterns',
-            'Nitro Server Route Standards',
           ],
         },
         {
-          id: 'cap-ui-refactoring' as CapabilityId,
-          name: 'Enterprise CMS Frontend Modernization & Service Architecture',
+          id: 'cap-cms-refactoring' as CapabilityId,
+          name: 'CMS Frontend Refactoring & UI Remediation',
           scope:
-            'Auditing and modernizing legacy municipal CMS frontend modules, implementing clean OOP ServiceInterface layers, enforcing Zod schema validation, and resolving complex layout rendering glitches.',
+            'Refactoring legacy municipal CMS frontend modules, implementing clean service interfaces, enforcing schema validation, and resolving cross-browser layout defects in a 3-person team.',
           technologies: [
-            'Nuxt 3',
-            'Vue 3',
+            'Nuxt.js',
+            'Vue.js',
             'TypeScript',
             'Bootstrap 5',
-            'Zod',
             'Pinia',
-            'Vite',
             'Docker',
             'Git',
           ],
           evidencedInProjects: ['proj-diskominfo-cms' as ProjectId],
           standardsCompliance: [
-            'Clean OOP Service Layer (ServiceInterface)',
-            'Zod Schema Runtime Validation',
+            'Clean Service Layer Pattern',
+            'UI Defect Remediation',
           ],
         },
       ],
     },
     {
-      domain: 'fullstack_systems',
-      title: 'Full-Stack & Backend Systems',
+      domain: 'backend_and_systems',
+      title: 'Backend & Systems',
       description:
-        'Architecting end-to-end web services, RESTful APIs, relational databases, and monorepos connecting backend business logic with frontend client views.',
+        'Developing modular backend services, typed REST APIs, relational schemas, and automated test suites for scalable web applications.',
       items: [
         {
-          id: 'cap-nestjs-backend' as CapabilityId,
-          name: 'NestJS REST APIs & Microservices',
+          id: 'cap-nestjs-rest' as CapabilityId,
+          name: 'NestJS RESTful APIs & Monorepo Architecture',
           scope:
-            'Building modular backend services with NestJS 10, implementing 10 domain microservices, role-based access control (Admin, Driver, Tenant), and structured DTO controllers.',
-          technologies: ['NestJS 10.4', 'TypeScript', 'Docker & MinIO S3', 'REST API Design'],
+            'Developing modular backend services with NestJS 10, implementing 10 backend modules, 56 documented REST endpoints (Swagger), and coordinating monorepo shared TypeScript types.',
+          technologies: [
+            'NestJS 10',
+            'TypeScript',
+            'RESTful APIs',
+            'Swagger / OpenAPI',
+            'Docker',
+          ],
           evidencedInProjects: ['proj-wms' as ProjectId],
-          standardsCompliance: ['RESTful API Architecture', 'Role-Based Access Control (RBAC)'],
+          standardsCompliance: [
+            'Modular Architecture',
+            'Comprehensive OpenAPI Documentation',
+          ],
         },
         {
           id: 'cap-database-orm' as CapabilityId,
-          name: 'Relational Database Architecture & Connection Pooling',
+          name: 'Relational Databases & ORM Architecture',
           scope:
-            'Designing relational schemas, entity relationships, migrations, and query optimizations using Supabase PostgreSQL 16 with PgBouncer transaction pooling (port 6543, syd1) and Prisma ORM v6.',
-          technologies: ['Supabase PostgreSQL 16', 'Prisma ORM v6', 'SQL Data Modeling'],
+            'Designing relational data models (18 Prisma tables), migrations, connection pooling via PgBouncer, and object-relational mapping using Supabase PostgreSQL 16 and Prisma ORM v6.',
+          technologies: [
+            'PostgreSQL 16 (Supabase)',
+            'Prisma ORM v6',
+            'PgBouncer',
+            'SQL Data Modeling',
+          ],
           evidencedInProjects: ['proj-wms' as ProjectId],
-          standardsCompliance: ['Relational Normalization', 'ACID Transaction Guarantees', 'Serverless Connection Pooling'],
+          standardsCompliance: [
+            'Relational Normalization',
+            'Connection Pooling Optimization',
+          ],
         },
         {
-          id: 'cap-monorepo-mgmt' as CapabilityId,
-          name: 'Monorepo Architecture & Type Sharing',
+          id: 'cap-automated-testing' as CapabilityId,
+          name: 'Automated Testing & Quality Verification',
           scope:
-            'Structuring unified multi-package monorepos pairing Next.js 15 with NestJS 10, sharing TypeScript types, DTO contracts, and coordinated build pipelines with 100% SRS compliance.',
-          technologies: ['Next.js 15 (React 19)', 'NestJS 10.4', 'TypeScript', 'Git'],
+            'Writing unit, integration, and E2E test suites with Jest and automated test runners, achieving 214 passing tests across domain controllers and business logic.',
+          technologies: [
+            'Jest',
+            'Automated Integration Testing',
+            'CI/CD Pipelines',
+            'Git',
+          ],
           evidencedInProjects: ['proj-wms' as ProjectId],
-          standardsCompliance: ['End-to-End Type Safety', 'Modular Monorepo Architecture', '16/16 SRS Use Case Verification'],
+          standardsCompliance: [
+            '214 Automated Tests (100% Passing)',
+            'Continuous Quality Verification',
+          ],
         },
       ],
     },
     {
-      domain: 'ai_machine_learning',
-      title: 'Applied AI & Scientific Research',
+      domain: 'machine_learning_and_research',
+      title: 'Machine Learning & Research',
       description:
-        'Applying deep learning models to biomedical signal processing, academic laboratory instruction, and leveraging modern AI-assisted engineering tools.',
+        'Researching deep learning architectures for biomedical signal classification, academic instruction, and modern AI-assisted engineering.',
       items: [
         {
-          id: 'cap-deep-learning-research' as CapabilityId,
-          name: 'Deep Learning & Biomedical Signal Classification (BCI)',
+          id: 'cap-deep-learning-bci' as CapabilityId,
+          name: 'Deep Learning & Biomedical Signal Classification (EEG BCI)',
           scope:
-            'Engineering hybrid Graph Neural Networks (GNN) and Mamba State Space Models (SSM) with Wavelet Packet Transform (WPT db4) for 4-class motor imagery EEG classification, achieving 82.05% accuracy.',
+            'Developing hybrid Graph Convolutional Networks (GCN) and Mamba State Space Models (SSM) with Wavelet Packet Transform (WPT db4) for 4-class motor imagery EEG classification, achieving 82.05% mean accuracy across 9 subjects.',
           technologies: [
             'Python 3',
             'PyTorch',
-            'Mamba State Space Models (SSM)',
-            'Graph Convolutional Networks (GCN)',
+            'Mamba (SSM)',
+            'Graph Neural Networks (GCN)',
             'Wavelet Packet Transform (db4)',
-            'MNE-Python (EEG Processing)',
-            'Linear Discriminant Analysis (LDA)',
+            'MNE-Python',
+            'LDA',
           ],
           evidencedInProjects: ['proj-bci-research' as ProjectId],
           standardsCompliance: [
-            'IEEE ICIC 2025 Peer-Reviewed Academic Publication (#11309504)',
+            'IEEE ICIC 2025 Peer-Reviewed Publication (#11309504)',
             'BCI Competition IV-2a Benchmark Protocol',
           ],
         },
         {
-          id: 'cap-ai-pedagogy-tools' as CapabilityId,
-          name: 'AI Laboratory Instruction & AI-Assisted Development',
+          id: 'cap-ai-assisted-engineering' as CapabilityId,
+          name: 'AI-Assisted Software Engineering & Pedagogy',
           scope:
-            'Guiding students through fundamental AI programming workflows and actively leveraging AI-assisted development tools (Antigravity, OpenAI Codex) for rapid problem solving.',
-          technologies: ['Artificial Intelligence Pedagogy', 'Python 3', 'Antigravity', 'OpenAI Codex'],
-          evidencedInProjects: ['proj-bci-research' as ProjectId],
-          standardsCompliance: ['Academic Laboratory Curriculum Standards'],
-        },
-      ],
-    },
-    {
-      domain: 'systems_analysis',
-      title: 'Systems Analysis & Design Modeling',
-      description:
-        'Translating complex operational workflows into rigorous technical specifications, user flows, and formal UML architecture diagrams.',
-      items: [
-        {
-          id: 'cap-uml-modeling' as CapabilityId,
-          name: 'UML Architecture & Technical Documentation (SRS)',
-          scope:
-            'Formulating comprehensive 16-use-case Software Requirements Specifications (SRS), use case diagrams, sequence diagrams, and activity flows guiding enterprise engineering projects.',
-          technologies: ['UML Modeling', 'System Flowcharts', 'Software Requirements Specification (SRS)', 'Software Engineering Life Cycle'],
-          evidencedInProjects: ['proj-wms' as ProjectId],
-          standardsCompliance: ['OMG UML 2.5 Standard', 'Structured Systems Analysis & Design (16/16 SRS Verified)'],
-        },
-        {
-          id: 'cap-role-workflows' as CapabilityId,
-          name: 'Operational & Role-Based Workflow Design',
-          scope:
-            'Designing distinct operational boundaries and access levels for administrative controllers, field operators (drivers), and external corporate tenants with instant-persona authentication.',
-          technologies: ['RBAC Security Models', 'State Machine Modeling', 'User Journey Mapping'],
-          evidencedInProjects: ['proj-wms' as ProjectId, 'proj-swap-on' as ProjectId],
-          standardsCompliance: ['Principle of Least Privilege', 'User-Centered Process Flow'],
+            'Guiding undergraduate students through AI laboratory practicums in Python, and accelerating development velocity via modern AI tools (Antigravity, OpenAI Codex) while manually validating architecture and business logic.',
+          technologies: [
+            'Python 3',
+            'AI Practicum Mentoring',
+            'Google Antigravity',
+            'OpenAI Codex',
+          ],
+          evidencedInProjects: ['proj-bci-research' as ProjectId, 'proj-wms' as ProjectId],
+          standardsCompliance: [
+            'Academic Laboratory Curriculum',
+            'Transparent AI-Assisted Workflows',
+          ],
         },
       ],
     },
